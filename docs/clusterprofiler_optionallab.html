@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( June 2024 )</title>
+  <title>Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( November 2024 )</title>
   <meta name="description" content="Course covers the bioinformatics concepts and tools available for interpreting a gene list using pathway and network information." />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( June 2024 )" />
+  <meta property="og:title" content="Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( November 2024 )" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Course covers the bioinformatics concepts and tools available for interpreting a gene list using pathway and network information." />
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( June 2024 )" />
+  <meta name="twitter:title" content="Optional Module 8 Lab 3: Automated Enrichment and Visualisation Lab using clusterProfiler | Pathway and Network Analysis of -Omics Data ( November 2024 )" />
   
   <meta name="twitter:description" content="Course covers the bioinformatics concepts and tools available for interpreting a gene list using pathway and network information." />
   
@@ -659,7 +659,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Pathway and Network Analysis of -Omics Data ( June 2024 )</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Pathway and Network Analysis of -Omics Data ( November 2024 )</a>
           </h1>
         </div>
 
@@ -718,30 +718,51 @@ before following this module.</p>
 ##     CRAN: https://p3m.dev/cran/__linux__/jammy/latest</code></pre>
 <pre><code>## Bioconductor version 3.19 (BiocManager 1.30.23), R 4.4.0 (2024-04-24)</code></pre>
 <pre><code>## Warning: package(s) not installed when version(s) same as or greater than current; use
-##   `force = TRUE` to re-install: &#39;clusterProfiler&#39; &#39;org.Hs.eg.db&#39; &#39;DOSE&#39;
-##   &#39;tidyverse&#39; &#39;enrichplot&#39; &#39;ggupset&#39;</code></pre>
+##   `force = TRUE` to re-install: &#39;tidyverse&#39;</code></pre>
+<pre><code>## Installing package(s) &#39;clusterProfiler&#39;, &#39;org.Hs.eg.db&#39;, &#39;DOSE&#39;, &#39;enrichplot&#39;,
+##   &#39;ggupset&#39;</code></pre>
+<pre><code>## also installing the dependencies &#39;ggplotify&#39;, &#39;tidytree&#39;, &#39;treeio&#39;, &#39;downloader&#39;, &#39;GO.db&#39;, &#39;GOSemSim&#39;, &#39;gson&#39;, &#39;qvalue&#39;, &#39;yulab.utils&#39;, &#39;aplot&#39;, &#39;ggfun&#39;, &#39;ggnewscale&#39;, &#39;scatterpie&#39;, &#39;shadowtext&#39;, &#39;ggtree&#39;</code></pre>
 <pre><code>## Installation paths not writeable, unable to update packages
 ##   path: /usr/local/lib/R/library
 ##   packages:
-##     foreign, KernSmooth, MASS, nlme, survival</code></pre>
-<pre><code>## Old packages: &#39;BiocNeighbors&#39;, &#39;BiocStyle&#39;, &#39;Biostrings&#39;, &#39;cli&#39;, &#39;crayon&#39;,
-##   &#39;DBI&#39;, &#39;digest&#39;, &#39;downlit&#39;, &#39;dqrng&#39;, &#39;evaluate&#39;, &#39;filehash&#39;, &#39;GenomicRanges&#39;,
-##   &#39;GSVA&#39;, &#39;KEGGREST&#39;, &#39;knitr&#39;, &#39;limma&#39;, &#39;locfit&#39;, &#39;markdown&#39;, &#39;PKI&#39;,
-##   &#39;RcppArmadillo&#39;, &#39;reticulate&#39;, &#39;rlang&#39;, &#39;rsconnect&#39;, &#39;scater&#39;, &#39;secretbase&#39;,
-##   &#39;SparseM&#39;, &#39;spatstat.data&#39;, &#39;spatstat.sparse&#39;, &#39;spatstat.utils&#39;, &#39;targets&#39;,
-##   &#39;xfun&#39;, &#39;XML&#39;, &#39;xts&#39;</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="clusterprofiler_optionallab.html#cb25-1" tabindex="-1"></a><span class="co"># load all at once</span></span>
-<span id="cb25-2"><a href="clusterprofiler_optionallab.html#cb25-2" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(bio.pkgs, <span class="cf">function</span>(x) <span class="fu">library</span>(x, <span class="at">character.only=</span><span class="cn">TRUE</span>, <span class="at">quietly =</span> T)))</span></code></pre></div>
+##     boot, foreign, KernSmooth, MASS, nlme, survival</code></pre>
+<pre><code>## Old packages: &#39;abind&#39;, &#39;arrow&#39;, &#39;askpass&#39;, &#39;BiocManager&#39;, &#39;BiocNeighbors&#39;,
+##   &#39;BiocStyle&#39;, &#39;biomaRt&#39;, &#39;Biostrings&#39;, &#39;bit&#39;, &#39;bit64&#39;, &#39;bitops&#39;, &#39;bookdown&#39;,
+##   &#39;broom&#39;, &#39;bslib&#39;, &#39;caTools&#39;, &#39;checkmate&#39;, &#39;cli&#39;, &#39;colorspace&#39;, &#39;commonmark&#39;,
+##   &#39;cpp11&#39;, &#39;crayon&#39;, &#39;credentials&#39;, &#39;curl&#39;, &#39;data.table&#39;, &#39;DBI&#39;, &#39;digest&#39;,
+##   &#39;dotCall64&#39;, &#39;downlit&#39;, &#39;dqrng&#39;, &#39;e1071&#39;, &#39;edgeR&#39;, &#39;evaluate&#39;, &#39;fastDummies&#39;,
+##   &#39;filehash&#39;, &#39;fitdistrplus&#39;, &#39;FNN&#39;, &#39;foghorn&#39;, &#39;future&#39;, &#39;GenomicRanges&#39;,
+##   &#39;gert&#39;, &#39;ggrepel&#39;, &#39;glue&#39;, &#39;gplots&#39;, &#39;graphlayouts&#39;, &#39;GSVA&#39;, &#39;harmony&#39;,
+##   &#39;HDF5Array&#39;, &#39;hdf5r&#39;, &#39;hexbin&#39;, &#39;htmlTable&#39;, &#39;httr2&#39;, &#39;hunspell&#39;, &#39;IRanges&#39;,
+##   &#39;jsonlite&#39;, &#39;katex&#39;, &#39;KEGGREST&#39;, &#39;kernlab&#39;, &#39;knitr&#39;, &#39;limma&#39;, &#39;locfit&#39;,
+##   &#39;magick&#39;, &#39;markdown&#39;, &#39;matrixStats&#39;, &#39;multcomp&#39;, &#39;mvtnorm&#39;, &#39;openssl&#39;,
+##   &#39;parallelly&#39;, &#39;patchwork&#39;, &#39;pbdZMQ&#39;, &#39;pkgdown&#39;, &#39;pkgload&#39;, &#39;PKI&#39;, &#39;polyclip&#39;,
+##   &#39;profvis&#39;, &#39;ps&#39;, &#39;ragg&#39;, &#39;RANN&#39;, &#39;rbibutils&#39;, &#39;Rcpp&#39;, &#39;RcppArmadillo&#39;,
+##   &#39;RcppEigen&#39;, &#39;RcppParallel&#39;, &#39;RCurl&#39;, &#39;Rdpack&#39;, &#39;renv&#39;, &#39;reprex&#39;,
+##   &#39;reticulate&#39;, &#39;rjson&#39;, &#39;rlang&#39;, &#39;rmarkdown&#39;, &#39;robustbase&#39;, &#39;roxygen2&#39;,
+##   &#39;rsconnect&#39;, &#39;RSpectra&#39;, &#39;s2&#39;, &#39;S4Vectors&#39;, &#39;sandwich&#39;, &#39;scater&#39;,
+##   &#39;secretbase&#39;, &#39;segmented&#39;, &#39;servr&#39;, &#39;sf&#39;, &#39;shiny&#39;, &#39;spam&#39;, &#39;SparseM&#39;,
+##   &#39;spatstat.data&#39;, &#39;spatstat.explore&#39;, &#39;spatstat.geom&#39;, &#39;spatstat.random&#39;,
+##   &#39;spatstat.sparse&#39;, &#39;spatstat.utils&#39;, &#39;spelling&#39;, &#39;sys&#39;, &#39;targets&#39;, &#39;tinytex&#39;,
+##   &#39;usethis&#39;, &#39;uuid&#39;, &#39;V8&#39;, &#39;VGAM&#39;, &#39;waldo&#39;, &#39;withr&#39;, &#39;wk&#39;, &#39;WriteXLS&#39;, &#39;xfun&#39;,
+##   &#39;XML&#39;, &#39;xts&#39;, &#39;yaml&#39;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="clusterprofiler_optionallab.html#cb27-1" tabindex="-1"></a><span class="co"># load all at once</span></span>
+<span id="cb27-2"><a href="clusterprofiler_optionallab.html#cb27-2" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(bio.pkgs, <span class="cf">function</span>(x) <span class="fu">library</span>(x, <span class="at">character.only=</span><span class="cn">TRUE</span>, <span class="at">quietly =</span> T)))</span></code></pre></div>
 <pre><code>## </code></pre>
-<pre><code>## clusterProfiler v4.12.0  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
+<pre><code>## clusterProfiler v4.12.6 Learn more at https://yulab-smu.top/contribution-knowledge-mining/
 ## 
-## If you use clusterProfiler in published research, please cite:
-## T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu. clusterProfiler 4.0: A universal enrichment tool for interpreting omics data. The Innovation. 2021, 2(3):100141</code></pre>
+## Please cite:
+## 
+## Guangchuang Yu, Li-Gen Wang, Yanyan Han and Qing-Yu He.
+## clusterProfiler: an R package for comparing biological themes among
+## gene clusters. OMICS: A Journal of Integrative Biology. 2012,
+## 16(5):284-287</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;clusterProfiler&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:stats&#39;:
 ## 
 ##     filter</code></pre>
+<pre><code>## Warning: package &#39;org.Hs.eg.db&#39; was built under R version 4.4.1</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;BiocGenerics&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -782,7 +803,7 @@ before following this module.</p>
 ## 
 ##     select</code></pre>
 <pre><code>## </code></pre>
-<pre><code>## DOSE v3.30.1  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
+<pre><code>## DOSE v3.30.5  For help: https://yulab-smu.top/biomedical-knowledge-mining-book/
 ## 
 ## If you use DOSE in published research, please cite:
 ## Guangchuang Yu, Li-Gen Wang, Guang-Rong Yan, Qing-Yu He. DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis. Bioinformatics 2015, 31(4):608-609</code></pre>
@@ -831,9 +852,9 @@ samples were computed. Logarithm of these ratios (base 2) are stored in
 <code>geneList</code> dataset.
 </p>
 </div>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="clusterprofiler_optionallab.html#cb45-1" tabindex="-1"></a><span class="fu">data</span>(geneList, <span class="at">package=</span><span class="st">&quot;DOSE&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="clusterprofiler_optionallab.html#cb48-1" tabindex="-1"></a><span class="fu">data</span>(geneList, <span class="at">package=</span><span class="st">&quot;DOSE&quot;</span>)</span></code></pre></div>
 <p>A variable called <code>geneList</code> should be loaded in your R environment. What does it look like?</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="clusterprofiler_optionallab.html#cb46-1" tabindex="-1"></a><span class="fu">head</span>(geneList)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="clusterprofiler_optionallab.html#cb49-1" tabindex="-1"></a><span class="fu">head</span>(geneList)</span></code></pre></div>
 <pre><code>##     4312     8318    10874    55143    55388      991 
 ## 4.572613 4.514594 4.418218 4.144075 3.876258 3.677857</code></pre>
 <div class="rmd-note">
@@ -846,29 +867,29 @@ gene ID format and the second line has fold change values of genes.
 <div id="data-for-over-representation-analysis-using-clusterprofiler" class="section level3 hasAnchor">
 <h3>Data for over representation analysis using <code>clusterProfiler</code><a href="clusterprofiler_optionallab.html#data-for-over-representation-analysis-using-clusterprofiler" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For running an over representation analysis, we need only a list of gene names or IDs. Let us extract out the genes which had an expression value &gt;2 or &lt;-2 using the function <code>names()</code></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="clusterprofiler_optionallab.html#cb48-1" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="fu">names</span>(geneList)[<span class="fu">abs</span>(geneList) <span class="sc">&gt;</span> <span class="dv">2</span>]</span>
-<span id="cb48-2"><a href="clusterprofiler_optionallab.html#cb48-2" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="clusterprofiler_optionallab.html#cb48-3" tabindex="-1"></a><span class="fu">head</span>(gene)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="clusterprofiler_optionallab.html#cb51-1" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="fu">names</span>(geneList)[<span class="fu">abs</span>(geneList) <span class="sc">&gt;</span> <span class="dv">2</span>]</span>
+<span id="cb51-2"><a href="clusterprofiler_optionallab.html#cb51-2" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="clusterprofiler_optionallab.html#cb51-3" tabindex="-1"></a><span class="fu">head</span>(gene)</span></code></pre></div>
 <pre><code>## [1] &quot;4312&quot;  &quot;8318&quot;  &quot;10874&quot; &quot;55143&quot; &quot;55388&quot; &quot;991&quot;</code></pre>
 <p><code>gene</code> has a list of 207 genes.</p>
 </div>
 <div id="perform-go-over-representation-analysis" class="section level3 hasAnchor">
 <h3>Perform GO over representation analysis<a href="clusterprofiler_optionallab.html#perform-go-over-representation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Now, run <code>enrichGO()</code> with this list of genes and examine the results</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="clusterprofiler_optionallab.html#cb50-1" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene          =</span> gene,</span>
-<span id="cb50-2"><a href="clusterprofiler_optionallab.html#cb50-2" tabindex="-1"></a>                <span class="at">universe      =</span> <span class="fu">names</span>(geneList),</span>
-<span id="cb50-3"><a href="clusterprofiler_optionallab.html#cb50-3" tabindex="-1"></a>                <span class="at">OrgDb         =</span> org.Hs.eg.db,</span>
-<span id="cb50-4"><a href="clusterprofiler_optionallab.html#cb50-4" tabindex="-1"></a>                <span class="at">ont           =</span> <span class="st">&quot;ALL&quot;</span>,</span>
-<span id="cb50-5"><a href="clusterprofiler_optionallab.html#cb50-5" tabindex="-1"></a>                <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
-<span id="cb50-6"><a href="clusterprofiler_optionallab.html#cb50-6" tabindex="-1"></a>                <span class="at">pvalueCutoff  =</span> <span class="fl">0.01</span>,</span>
-<span id="cb50-7"><a href="clusterprofiler_optionallab.html#cb50-7" tabindex="-1"></a>                <span class="at">qvalueCutoff  =</span> <span class="fl">0.05</span>,</span>
-<span id="cb50-8"><a href="clusterprofiler_optionallab.html#cb50-8" tabindex="-1"></a>                <span class="at">readable      =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="clusterprofiler_optionallab.html#cb53-1" tabindex="-1"></a>ego <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(<span class="at">gene          =</span> gene,</span>
+<span id="cb53-2"><a href="clusterprofiler_optionallab.html#cb53-2" tabindex="-1"></a>                <span class="at">universe      =</span> <span class="fu">names</span>(geneList),</span>
+<span id="cb53-3"><a href="clusterprofiler_optionallab.html#cb53-3" tabindex="-1"></a>                <span class="at">OrgDb         =</span> org.Hs.eg.db,</span>
+<span id="cb53-4"><a href="clusterprofiler_optionallab.html#cb53-4" tabindex="-1"></a>                <span class="at">ont           =</span> <span class="st">&quot;ALL&quot;</span>,</span>
+<span id="cb53-5"><a href="clusterprofiler_optionallab.html#cb53-5" tabindex="-1"></a>                <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb53-6"><a href="clusterprofiler_optionallab.html#cb53-6" tabindex="-1"></a>                <span class="at">pvalueCutoff  =</span> <span class="fl">0.01</span>,</span>
+<span id="cb53-7"><a href="clusterprofiler_optionallab.html#cb53-7" tabindex="-1"></a>                <span class="at">qvalueCutoff  =</span> <span class="fl">0.05</span>,</span>
+<span id="cb53-8"><a href="clusterprofiler_optionallab.html#cb53-8" tabindex="-1"></a>                <span class="at">readable      =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="results-of-go-over-representation-analysis" class="section level3 hasAnchor">
 <h3>Results of GO over representation analysis<a href="clusterprofiler_optionallab.html#results-of-go-over-representation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Examine the results. Do you notice any similarities or differences between this output format and your results from <strong>Module 2</strong> <code>gProfiler</code>?</p>
 <p>The output table is stored in <code>ego@result</code>. In this example, 152 processes were significantly enriched.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="clusterprofiler_optionallab.html#cb51-1" tabindex="-1"></a><span class="fu">head</span>(ego)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="clusterprofiler_optionallab.html#cb54-1" tabindex="-1"></a><span class="fu">head</span>(ego)</span></code></pre></div>
 <pre><code>##            ONTOLOGY         ID                          Description GeneRatio
 ## GO:0098813       BP GO:0098813       nuclear chromosome segregation    34/197
 ## GO:0000070       BP GO:0000070 mitotic sister chromatid segregation    28/197
@@ -876,13 +897,20 @@ gene ID format and the second line has fold change values of genes.
 ## GO:0140014       BP GO:0140014             mitotic nuclear division    32/197
 ## GO:0007059       BP GO:0007059               chromosome segregation    37/197
 ## GO:0000280       BP GO:0000280                     nuclear division    37/197
-##              BgRatio       pvalue     p.adjust       qvalue
-## GO:0098813 238/11586 3.730986e-22 1.124892e-18 1.034858e-18
-## GO:0000070 152/11586 1.909540e-21 2.878631e-18 2.648230e-18
-## GO:0000819 185/11586 3.017475e-21 3.032563e-18 2.789841e-18
-## GO:0140014 224/11586 7.008600e-21 4.403280e-18 4.050849e-18
-## GO:0007059 319/11586 7.302289e-21 4.403280e-18 4.050849e-18
-## GO:0000280 327/11586 1.726930e-20 8.677821e-18 7.983262e-18
+##              BgRatio RichFactor FoldEnrichment   zScore       pvalue
+## GO:0098813 238/11586  0.1428571       8.401740 15.17403 3.730986e-22
+## GO:0000070 152/11586  0.1842105      10.833823 16.05031 1.909540e-21
+## GO:0000819 185/11586  0.1621622       9.537111 15.39443 3.017475e-21
+## GO:0140014 224/11586  0.1428571       8.401740 14.71190 7.008600e-21
+## GO:0007059 319/11586  0.1159875       6.821476 13.86636 7.302289e-21
+## GO:0000280 327/11586  0.1131498       6.654589 13.64154 1.726930e-20
+##                p.adjust       qvalue
+## GO:0098813 1.124892e-18 1.034858e-18
+## GO:0000070 2.878631e-18 2.648230e-18
+## GO:0000819 3.032563e-18 2.789841e-18
+## GO:0140014 4.403280e-18 4.050849e-18
+## GO:0007059 4.403280e-18 4.050849e-18
+## GO:0000280 8.677821e-18 7.983262e-18
 ##                                                                                                                                                                                                                                  geneID
 ## GO:0098813                     CDCA8/CDC20/KIF23/CENPE/MYBL2/CCNB2/NDC80/TOP2A/NCAPH/ASPM/DLGAP5/UBE2C/SKA1/NUSAP1/TPX2/TACC3/NEK2/CDK1/MAD2L1/KIF18A/CDT1/BIRC5/KIF11/TTK/NCAPG/AURKB/TRIP13/PRC1/KIFC1/KIF18B/AURKA/CCNB1/KIF4A/PTTG1
 ## GO:0000070                                                        CDCA8/CDC20/KIF23/CENPE/MYBL2/NDC80/NCAPH/DLGAP5/UBE2C/SKA1/NUSAP1/TPX2/NEK2/CDK1/MAD2L1/KIF18A/CDT1/BIRC5/KIF11/TTK/NCAPG/AURKB/TRIP13/PRC1/KIFC1/KIF18B/CCNB1/KIF4A
@@ -897,7 +925,7 @@ gene ID format and the second line has fold change values of genes.
 ## GO:0140014    32
 ## GO:0007059    37
 ## GO:0000280    37</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="clusterprofiler_optionallab.html#cb53-1" tabindex="-1"></a><span class="fu">nrow</span>(ego<span class="sc">@</span>result)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="clusterprofiler_optionallab.html#cb56-1" tabindex="-1"></a><span class="fu">nrow</span>(ego<span class="sc">@</span>result)</span></code></pre></div>
 <pre><code>## [1] 152</code></pre>
 </div>
 <div id="input-options-for-enrichgo" class="section level3 hasAnchor">
@@ -937,15 +965,15 @@ Gene IDs can be converted to different formats using
 <code>bitr()</code> function.
 </p>
 </div>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="clusterprofiler_optionallab.html#cb55-1" tabindex="-1"></a><span class="co"># convert from entrez gene ID to ensembl ID and gene symbols</span></span>
-<span id="cb55-2"><a href="clusterprofiler_optionallab.html#cb55-2" tabindex="-1"></a>gene.df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(gene, </span>
-<span id="cb55-3"><a href="clusterprofiler_optionallab.html#cb55-3" tabindex="-1"></a>                <span class="at">fromType =</span> <span class="st">&quot;ENTREZID&quot;</span>,</span>
-<span id="cb55-4"><a href="clusterprofiler_optionallab.html#cb55-4" tabindex="-1"></a>                <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENSEMBL&quot;</span>, <span class="st">&quot;SYMBOL&quot;</span>),</span>
-<span id="cb55-5"><a href="clusterprofiler_optionallab.html#cb55-5" tabindex="-1"></a>                <span class="at">OrgDb =</span> org.Hs.eg.db)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="clusterprofiler_optionallab.html#cb58-1" tabindex="-1"></a><span class="co"># convert from entrez gene ID to ensembl ID and gene symbols</span></span>
+<span id="cb58-2"><a href="clusterprofiler_optionallab.html#cb58-2" tabindex="-1"></a>gene.df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(gene, </span>
+<span id="cb58-3"><a href="clusterprofiler_optionallab.html#cb58-3" tabindex="-1"></a>                <span class="at">fromType =</span> <span class="st">&quot;ENTREZID&quot;</span>,</span>
+<span id="cb58-4"><a href="clusterprofiler_optionallab.html#cb58-4" tabindex="-1"></a>                <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENSEMBL&quot;</span>, <span class="st">&quot;SYMBOL&quot;</span>),</span>
+<span id="cb58-5"><a href="clusterprofiler_optionallab.html#cb58-5" tabindex="-1"></a>                <span class="at">OrgDb =</span> org.Hs.eg.db)</span></code></pre></div>
 <pre><code>## &#39;select()&#39; returned 1:many mapping between keys and columns</code></pre>
 <pre><code>## Warning in bitr(gene, fromType = &quot;ENTREZID&quot;, toType = c(&quot;ENSEMBL&quot;, &quot;SYMBOL&quot;), :
 ## 0.48% of input gene IDs are fail to map...</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="clusterprofiler_optionallab.html#cb58-1" tabindex="-1"></a><span class="fu">head</span>(gene.df)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="clusterprofiler_optionallab.html#cb61-1" tabindex="-1"></a><span class="fu">head</span>(gene.df)</span></code></pre></div>
 <pre><code>##   ENTREZID         ENSEMBL SYMBOL
 ## 1     4312 ENSG00000196611   MMP1
 ## 2     8318 ENSG00000093009  CDC45
@@ -964,8 +992,8 @@ Various options for <code>keyType</code> can be found using
 <div id="simplify-enrichgo-results" class="section level3 hasAnchor">
 <h3>Simplify <code>enrichGO()</code> results<a href="clusterprofiler_optionallab.html#simplify-enrichgo-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>GO enrichment typically contains redundant terms. You <strong>may</strong> use the <code>simplify()</code> function to reduce redundancy of enriched GO terms using the default parameters. Please note that simplifying is not always a necessary step. You can choose to omit it, based on the nature of your result tables.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="clusterprofiler_optionallab.html#cb60-1" tabindex="-1"></a>ego.sim <span class="ot">=</span> clusterProfiler<span class="sc">::</span><span class="fu">simplify</span>(ego)</span>
-<span id="cb60-2"><a href="clusterprofiler_optionallab.html#cb60-2" tabindex="-1"></a><span class="fu">nrow</span>(ego.sim)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="clusterprofiler_optionallab.html#cb63-1" tabindex="-1"></a>ego.sim <span class="ot">=</span> clusterProfiler<span class="sc">::</span><span class="fu">simplify</span>(ego)</span>
+<span id="cb63-2"><a href="clusterprofiler_optionallab.html#cb63-2" tabindex="-1"></a><span class="fu">nrow</span>(ego.sim)</span></code></pre></div>
 <pre><code>## [1] 46</code></pre>
 </div>
 </div>
@@ -974,32 +1002,32 @@ Various options for <code>keyType</code> can be found using
 <div id="barplot" class="section level3 hasAnchor">
 <h3>Barplot<a href="clusterprofiler_optionallab.html#barplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Bar plot is the most widely used method to visualize enriched terms. It shows the enrichment scores (e.g. p values) and gene count or ratio as bar height and color. You can specify the number of terms (most significant) to display via the <code>showCategory</code> parameter.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="clusterprofiler_optionallab.html#cb62-1" tabindex="-1"></a><span class="fu">barplot</span>(ego.sim, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA barplot (top 20)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="clusterprofiler_optionallab.html#cb65-1" tabindex="-1"></a><span class="fu">barplot</span>(ego.sim, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA barplot (top 20)&quot;</span>)</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-211-1.png" width="672" />
 You can plot other variables such as <code>log10(p.adjust)</code> by modifying using <code>mutate()</code> from the <code>tidyverse</code> package</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="clusterprofiler_optionallab.html#cb63-1" tabindex="-1"></a><span class="fu">mutate</span>(ego.sim, <span class="at">qscore =</span> <span class="sc">-</span><span class="fu">log</span>(p.adjust, <span class="at">base=</span><span class="dv">10</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb63-2"><a href="clusterprofiler_optionallab.html#cb63-2" tabindex="-1"></a>    <span class="fu">barplot</span>(<span class="at">x=</span><span class="st">&quot;qscore&quot;</span>, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA barplot - qvalue (top 20)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="clusterprofiler_optionallab.html#cb66-1" tabindex="-1"></a><span class="fu">mutate</span>(ego.sim, <span class="at">qscore =</span> <span class="sc">-</span><span class="fu">log</span>(p.adjust, <span class="at">base=</span><span class="dv">10</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-2"><a href="clusterprofiler_optionallab.html#cb66-2" tabindex="-1"></a>    <span class="fu">barplot</span>(<span class="at">x=</span><span class="st">&quot;qscore&quot;</span>, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA barplot - qvalue (top 20)&quot;</span>)</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
 </div>
 <div id="dotplot" class="section level3 hasAnchor">
 <h3>Dotplot<a href="clusterprofiler_optionallab.html#dotplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Dot plot is very similar to bar plot. It has additional capability to encode another score as dot size.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="clusterprofiler_optionallab.html#cb64-1" tabindex="-1"></a><span class="fu">dotplot</span>(ego.sim, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Dotplot for ORA (top 20)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="clusterprofiler_optionallab.html#cb67-1" tabindex="-1"></a><span class="fu">dotplot</span>(ego.sim, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Dotplot for ORA (top 20)&quot;</span>)</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
 </div>
 <div id="enrichment-map" class="section level3 hasAnchor">
 <h3>Enrichment Map<a href="clusterprofiler_optionallab.html#enrichment-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Enrichment map organizes enriched terms into a network with edges connecting overlapping gene sets. In this way, mutually overlapping gene sets are tend to cluster together, making it easy to identify functional module. Before making the map, similarity must be calculated. This can be done using <code>pairwise_termsim()</code></p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="clusterprofiler_optionallab.html#cb65-1" tabindex="-1"></a>edo <span class="ot">&lt;-</span> <span class="fu">pairwise_termsim</span>(ego.sim)</span>
-<span id="cb65-2"><a href="clusterprofiler_optionallab.html#cb65-2" tabindex="-1"></a><span class="fu">emapplot</span>(edo)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA Enrichment Map&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="clusterprofiler_optionallab.html#cb68-1" tabindex="-1"></a>edo <span class="ot">&lt;-</span> <span class="fu">pairwise_termsim</span>(ego.sim)</span>
+<span id="cb68-2"><a href="clusterprofiler_optionallab.html#cb68-2" tabindex="-1"></a><span class="fu">emapplot</span>(edo)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA Enrichment Map&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps</code></pre>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
 </div>
 <div id="upset-plot" class="section level3 hasAnchor">
 <h3>Upset plot<a href="clusterprofiler_optionallab.html#upset-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The upsetplot is for visualizing the complex association between genes and gene sets. It emphasizes the gene overlapping among different gene sets.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="clusterprofiler_optionallab.html#cb67-1" tabindex="-1"></a><span class="fu">upsetplot</span>(edo, <span class="at">n=</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA upset plot (top 5)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="clusterprofiler_optionallab.html#cb70-1" tabindex="-1"></a><span class="fu">upsetplot</span>(edo, <span class="at">n=</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;ORA upset plot (top 5)&quot;</span>)</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
 </div>
 <div id="details-about-the-input-arguments-for-enrichgo" class="section level3 hasAnchor">
@@ -1032,30 +1060,30 @@ You can plot other variables such as <code>log10(p.adjust)</code> by modifying u
 <li>sorted vector: number should be sorted in decreasing order</li>
 </ul>
 <p>Since <code>geneList</code> is already in the desired format, we will use it for this exercise. If you haven’t loaded it, use the command below to import the data. Please see the above section “Data for enrichment using <code>clusterProfiler</code>” for details regarding the dataset.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="clusterprofiler_optionallab.html#cb68-1" tabindex="-1"></a><span class="fu">data</span>(geneList, <span class="at">package=</span><span class="st">&quot;DOSE&quot;</span>)</span>
-<span id="cb68-2"><a href="clusterprofiler_optionallab.html#cb68-2" tabindex="-1"></a><span class="fu">head</span>(geneList)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="clusterprofiler_optionallab.html#cb71-1" tabindex="-1"></a><span class="fu">data</span>(geneList, <span class="at">package=</span><span class="st">&quot;DOSE&quot;</span>)</span>
+<span id="cb71-2"><a href="clusterprofiler_optionallab.html#cb71-2" tabindex="-1"></a><span class="fu">head</span>(geneList)</span></code></pre></div>
 <pre><code>##     4312     8318    10874    55143    55388      991 
 ## 4.572613 4.514594 4.418218 4.144075 3.876258 3.677857</code></pre>
 </div>
 <div id="perform-go-gene-set-enrichment-analysis" class="section level3 hasAnchor">
 <h3>Perform GO gene set enrichment analysis<a href="clusterprofiler_optionallab.html#perform-go-gene-set-enrichment-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>clusterProfiler</code> package provides the <code>gseGO()</code> function for gene set enrichment analysis using gene ontology. You can run GSEA as below:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="clusterprofiler_optionallab.html#cb70-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb70-2"><a href="clusterprofiler_optionallab.html#cb70-2" tabindex="-1"></a>egsea <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(<span class="at">geneList     =</span> geneList,</span>
-<span id="cb70-3"><a href="clusterprofiler_optionallab.html#cb70-3" tabindex="-1"></a>               <span class="at">OrgDb        =</span> org.Hs.eg.db,</span>
-<span id="cb70-4"><a href="clusterprofiler_optionallab.html#cb70-4" tabindex="-1"></a>               <span class="at">ont          =</span> <span class="st">&quot;ALL&quot;</span>,</span>
-<span id="cb70-5"><a href="clusterprofiler_optionallab.html#cb70-5" tabindex="-1"></a>               <span class="at">minGSSize    =</span> <span class="dv">100</span>,</span>
-<span id="cb70-6"><a href="clusterprofiler_optionallab.html#cb70-6" tabindex="-1"></a>               <span class="at">maxGSSize    =</span> <span class="dv">500</span>,</span>
-<span id="cb70-7"><a href="clusterprofiler_optionallab.html#cb70-7" tabindex="-1"></a>               <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
-<span id="cb70-8"><a href="clusterprofiler_optionallab.html#cb70-8" tabindex="-1"></a>               <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
-<span id="cb70-9"><a href="clusterprofiler_optionallab.html#cb70-9" tabindex="-1"></a>               <span class="at">eps =</span> <span class="dv">0</span>,</span>
-<span id="cb70-10"><a href="clusterprofiler_optionallab.html#cb70-10" tabindex="-1"></a>               <span class="at">verbose      =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="clusterprofiler_optionallab.html#cb73-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb73-2"><a href="clusterprofiler_optionallab.html#cb73-2" tabindex="-1"></a>egsea <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(<span class="at">geneList     =</span> geneList,</span>
+<span id="cb73-3"><a href="clusterprofiler_optionallab.html#cb73-3" tabindex="-1"></a>               <span class="at">OrgDb        =</span> org.Hs.eg.db,</span>
+<span id="cb73-4"><a href="clusterprofiler_optionallab.html#cb73-4" tabindex="-1"></a>               <span class="at">ont          =</span> <span class="st">&quot;ALL&quot;</span>,</span>
+<span id="cb73-5"><a href="clusterprofiler_optionallab.html#cb73-5" tabindex="-1"></a>               <span class="at">minGSSize    =</span> <span class="dv">100</span>,</span>
+<span id="cb73-6"><a href="clusterprofiler_optionallab.html#cb73-6" tabindex="-1"></a>               <span class="at">maxGSSize    =</span> <span class="dv">500</span>,</span>
+<span id="cb73-7"><a href="clusterprofiler_optionallab.html#cb73-7" tabindex="-1"></a>               <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>,</span>
+<span id="cb73-8"><a href="clusterprofiler_optionallab.html#cb73-8" tabindex="-1"></a>               <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb73-9"><a href="clusterprofiler_optionallab.html#cb73-9" tabindex="-1"></a>               <span class="at">eps =</span> <span class="dv">0</span>,</span>
+<span id="cb73-10"><a href="clusterprofiler_optionallab.html#cb73-10" tabindex="-1"></a>               <span class="at">verbose      =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="results-of-go-gene-set-enrichment-analysis" class="section level3 hasAnchor">
 <h3>Results of GO gene set enrichment analysis<a href="clusterprofiler_optionallab.html#results-of-go-gene-set-enrichment-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Examine the results. Do you notice any similarities or differences between this output format and your results from <strong>Module 2</strong> <code>GSEA</code>?</p>
 <p>The output table is stored in <code>egsea@result</code>. In this example, 512 processes were significantly enriched.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="clusterprofiler_optionallab.html#cb71-1" tabindex="-1"></a><span class="fu">head</span>(egsea)</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="clusterprofiler_optionallab.html#cb74-1" tabindex="-1"></a><span class="fu">head</span>(egsea)</span></code></pre></div>
 <pre><code>##            ONTOLOGY         ID                          Description setSize
 ## GO:0051276       BP GO:0051276              chromosome organization     473
 ## GO:0098813       BP GO:0098813       nuclear chromosome segregation     238
@@ -1084,7 +1112,7 @@ You can plot other variables such as <code>log10(p.adjust)</code> by modifying u
 ## GO:0000819                                                                                                                                                                                                                                                                                                                                                             55143/991/9493/1062/4605/10403/7153/23397/9787/11065/220134/51203/22974/10460/4751/983/4085/81930/81620/332/3832/7272/64151/9212/9319/9055/3833/146909/891/24137/9928/11004/990/5347/29127/701/11130/57405/10615/2491/9700/9918/699/1063/26271/55055
 ## GO:0000070                                                                                                                                                                                                                                                                                                                                                                      55143/991/9493/1062/4605/10403/23397/9787/11065/220134/51203/22974/4751/983/4085/81930/81620/332/3832/7272/64151/9212/9319/9055/3833/146909/891/24137/9928/11004/5347/29127/701/11130/57405/10615/2491/9700/9918/699/1063/26271/55055/54892
 ## GO:0000280                                                                                                                                              55143/991/9493/1062/4605/9133/10403/7153/23397/259266/9787/11065/220134/51203/22974/4751/10635/27338/983/4085/81930/81620/332/3832/7272/64151/9212/1111/9319/9055/3833/146909/6790/891/24137/9232/9928/1164/11004/4603/5347/29127/26255/701/11130/57405/10615/2491/8438/9700/5888/898/4288/9134/2175/91646/994/9918/699/1063/26271/55055/54892/5902/9585/9735/23310/2253/8877/9088/995/10051/79703/1104/79866/83990/5885/11200/2072/940/1761/84722/51115/7283/80010</code></pre>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="clusterprofiler_optionallab.html#cb73-1" tabindex="-1"></a><span class="fu">nrow</span>(egsea<span class="sc">@</span>result)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="clusterprofiler_optionallab.html#cb76-1" tabindex="-1"></a><span class="fu">nrow</span>(egsea<span class="sc">@</span>result)</span></code></pre></div>
 <pre><code>## [1] 517</code></pre>
 </div>
 <div id="input-options-for-gsego" class="section level3 hasAnchor">
@@ -1137,32 +1165,32 @@ Setting <code>eps</code> to zero improves estimation.
 <div id="dotplot-1" class="section level3 hasAnchor">
 <h3>Dotplot<a href="clusterprofiler_optionallab.html#dotplot-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You can use the function <code>dotplot()</code> to summarise GSEA results.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="clusterprofiler_optionallab.html#cb75-1" tabindex="-1"></a><span class="fu">dotplot</span>(egsea, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Dotplot for GSEA (top 20)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="clusterprofiler_optionallab.html#cb78-1" tabindex="-1"></a><span class="fu">dotplot</span>(egsea, <span class="at">showCategory=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Dotplot for GSEA (top 20)&quot;</span>)</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
 </div>
 <div id="ridgeline-plot" class="section level3 hasAnchor">
 <h3>Ridgeline plot<a href="clusterprofiler_optionallab.html#ridgeline-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The function <code>ridgeplot()</code> will visualize expression distributions of core enriched genes for GSEA enriched categories. It helps you to interpret up/down-regulated pathways.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="clusterprofiler_optionallab.html#cb76-1" tabindex="-1"></a>enrichplot<span class="sc">::</span><span class="fu">ridgeplot</span>(egsea, <span class="at">showCategory =</span> <span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Ridgeplot for GSEA (top 20)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="clusterprofiler_optionallab.html#cb79-1" tabindex="-1"></a>enrichplot<span class="sc">::</span><span class="fu">ridgeplot</span>(egsea, <span class="at">showCategory =</span> <span class="dv">20</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Ridgeplot for GSEA (top 20)&quot;</span>)</span></code></pre></div>
 <pre><code>## Picking joint bandwidth of 0.286</code></pre>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
 </div>
 <div id="running-score-and-preranked-list-of-gsea-result" class="section level3 hasAnchor">
 <h3>Running score and preranked list of GSEA result<a href="clusterprofiler_optionallab.html#running-score-and-preranked-list-of-gsea-result" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Running score and preranked list are traditional methods for visualizing GSEA result. You are familiar with these visualisations from Module 2. The function <code>gseaplot()</code> supports visualising both the distribution of the gene set and the enrichment score.</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="clusterprofiler_optionallab.html#cb78-1" tabindex="-1"></a><span class="fu">gseaplot</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="st">&quot;runningScore&quot;</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="clusterprofiler_optionallab.html#cb81-1" tabindex="-1"></a><span class="fu">gseaplot</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="st">&quot;runningScore&quot;</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="clusterprofiler_optionallab.html#cb79-1" tabindex="-1"></a><span class="fu">gseaplot</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="st">&quot;preranked&quot;</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="clusterprofiler_optionallab.html#cb82-1" tabindex="-1"></a><span class="fu">gseaplot</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="st">&quot;preranked&quot;</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-224-1.png" width="672" /></p>
 <p>Another method to plot GSEA result is the <code>gseaplot2</code> function:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="clusterprofiler_optionallab.html#cb80-1" tabindex="-1"></a><span class="fu">gseaplot2</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="clusterprofiler_optionallab.html#cb83-1" tabindex="-1"></a><span class="fu">gseaplot2</span>(egsea, <span class="at">geneSetID =</span> <span class="dv">1</span>, <span class="at">title =</span> egsea<span class="sc">$</span>Description[<span class="dv">1</span>])</span></code></pre></div>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
 </div>
 <div id="enrichment-map-1" class="section level3 hasAnchor">
 <h3>Enrichment Map<a href="clusterprofiler_optionallab.html#enrichment-map-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The function <code>emapplot</code> also supports visualising results of GSEA. As we did before, let us first calculate similarity using <code>pairwise_termsim()</code></p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="clusterprofiler_optionallab.html#cb81-1" tabindex="-1"></a>edo2 <span class="ot">&lt;-</span> <span class="fu">pairwise_termsim</span>(egsea)</span>
-<span id="cb81-2"><a href="clusterprofiler_optionallab.html#cb81-2" tabindex="-1"></a><span class="fu">emapplot</span>(edo2)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;GSEA Enrichment Map&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="clusterprofiler_optionallab.html#cb84-1" tabindex="-1"></a>edo2 <span class="ot">&lt;-</span> <span class="fu">pairwise_termsim</span>(egsea)</span>
+<span id="cb84-2"><a href="clusterprofiler_optionallab.html#cb84-2" tabindex="-1"></a><span class="fu">emapplot</span>(edo2)<span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;GSEA Enrichment Map&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: ggrepel: 6 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps</code></pre>
 <p><img src="CBW_Pathways_files/figure-html/unnamed-chunk-226-1.png" width="672" />
