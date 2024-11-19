@@ -202,6 +202,14 @@ We will select the bait protein VPR and all its associated prey proteins to use 
 <li>Click on the "Enrichment Table" in the Table Panel.</li>
 </ol>
 
+```{block, type="rmd-tip"}
+If the Enrichment Table tab is not in the Table Panel, Open Enrichment Table.  Go to:<br>
+Tools --> Enrichment Table --> Perform Gene Enrichment <br>
+to launch Enrichment Table Tab.<br><br>
+<img src="./Module3/cytoscape_primer/images/enrichment_table_launch.png" />
+
+```
+
 <ol start=4 type="1">
 <li>Click on the cog icon in the top right hand corner of the Enrichment Table panel
   <img src="./Module3/cytoscape_primer/images/enrichment_table_panel.png" width="75%" />
