@@ -1,4 +1,4 @@
-book_filename: "CBW_Pathways"
+book_filename: "Compute Ontario - Bioinformatics for Pathway Enrichment Analysis"
 language:
   ui:
 delete_merged_file: true

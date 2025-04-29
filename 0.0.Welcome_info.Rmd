@@ -1,26 +1,8 @@
 # Welcome <a id="welcome"></a>
 
-Welcome to Pathways and Network Analysis of -Omics Data 2024
+Welcome to Bioinformatics for Pathway Enrichment Analysis - June 2025
 
 ## Meet your Faculty
-
-### Gary Bader
-Principal Investigator, <br>University of Toronto 
-
-<img src="./images/faculty/gary_bader.jpeg" style="float:left;width:125px;padding-right:10px;" />
-Dr. Bader develops biological network analysis and pathway information resources. He created the Biomolecular Interation Network Database ( [BIND](http://bind.ca) ) while working on his PhD and currently helps lead development of the free Cytoscape network visualization and analysis software [Cytoscape](http://cytoscape.org/). 
-
-### Lincoln Stein
-Head, Adaptive Oncology,<br> OICR
-
-<img src="./images/faculty/lincoln_stein.jpeg" style="float:right;width:125px;padding-left:10px;" />
-Dr. Stein played an integral role in many large-scale data initiatives including the development of the first physical clone map of the human genome, and running the data coordinating centre and the data portal for the SNP Consortium and the HapMap Consortium. Dr. Stein has also led the creation and development of Wormbase, a community model organism database for C. elegans, and Reactome, which is now the largest open community database of biological reactions and pathways. At OICR, Dr. Stein has led several international cancer data sharing and research initiatives, including the creation and development of the data coordination centre for the International Cancer Genome Consortium and other related projects. He continues to collaborate with national and international partners to create and promote data sharing standards, protocols and implementations.
-
-### Gregory Schwartz
-Scientist,<br>Princess Margaret Cancer Centre, <br>University Health Network
-
-<img src="./images/faculty/gregory_schwartz.jpeg" style="float:left;width:125px;padding-right:10px;" />
-Dr. Schwartz is a Scientist at the Princess Margaret Cancer Centre and Assistant Professor in the Department of Medical Biophysics at the University of Toronto. He has developed several methodologies for mutation detection, data integration, and cellular population visualization to understand cancer heterogeneity and diverse responses to anti-cancer therapies. His current research involves integrating multi-omic information and leveraging single-cell resolution to identify underlying mechanisms of drug resistance in cancer.
 
 ### Veronique Voisin
 Research Associate,<br> Donnelly Centre for Cellular and Biomolecular Research, <br>University of Toronto 
@@ -37,25 +19,12 @@ Research data analyst,<br>Donnelly Centre for Cellular and Bimolecular Research,
 <img src="./images/faculty/ruth_isserlin.jpeg" style="float:left;width:125px;padding-right:10px;" />
 Bioinformatician and data analyst in the Bader lab applying pathway and data analysis to varied data types. Developed Enrichment Map App for Cytoscape, an app to visually translate functional enrichment results from popular enrichment tools like GSEA to networks. Further developed the Enrichment Map Pipeline including development of additional Apps to help summarize and analyze resulting Enrichment Maps, including PostAnalysis, WordCloud, and AutoAnnotate App. 
 
-### Chaitra Sarathy, PhD
-Bioinformatics Specialist, <br>Krembil Research Institute, <br>University Health Network
-
-<img src="./images/faculty/Chaitra_Sarathy.jpeg" style="float:right;width:125px;padding-left:10px;" />
-Dr. Sarathy is a computational biologist with industry experience in software development. Her previous research focussed on developing multi-scale mathematical models of human systems to characterise biochemical changes in obesity. In addition, she has developed methods based on machine learning and multi-omics integration to identify drug targets in cancer and stratify patients for clinical trials. She currently focusses on characterising genetic malfunctions in neurological diseases.
-
-
-### Nia Hughes
-Program Manager, Bioinformatics.ca<br>
-Toronto, ON, CA<br>
-nia.hughes@oicr.on.ca
-
-<img src="./images/faculty/nia_hughes.jpeg" style="float:left;width:125px;padding-right:10px;" />
-Nia is the Program Manager for Bioinformatics.ca, where she coordinates the Canadian Bioinformatics Workshop Series.  Prior to starting at the OICR, she completed her M.Sc in Bioinformatics from the University of Guelph in 2020 before working there as a bioinformatician studying epigenetic and transcriptomic patterns across maize varieties. 
 
 
 ***
 
-Thank you for attending the Pathway and Network Analysis of Omics Data workshop! Help us make this workshop better by filling out [our survey](https://forms.gle/D8w8qyJ1r71rFnZe9).
+Thank you for attending the Bioinformatics for Pathway Enrichment Analysis
+ workshop! Help us make this workshop better by filling out [our survey](https://forms.gle/D8w8qyJ1r71rFnZe9).
 
 *** 
 
@@ -211,18 +180,11 @@ Use your newly installed docker workshop_base_image to try out R and go through 
 ### Pre-workshop Readings and Lectures
 
   1. Video Module 1 - [Introduction to Pathway and Network Analysis by Gary Bader](#intro)
-  1. Video Module 5 - [Gene Function Prediction (GeneMania) by Quaid Morris](#intro-regulatory-networks)
   1. ***Pathway enrichment analysis and visualization of omics data using g:Profiler, GSEA, Cytoscape and EnrichmentMap*** Reimand J, Isserlin R, Voisin V, Kucera M, Tannus-Lopes C, Rostamianfar A, Wadi L, Meyer M, Wong J, Xu C, Merico D, Bader GD [Nat Protoc. 2019 Feb;14(2):482-517](https://www.nature.com/articles/s41596-018-0103-9) - [Available here as well](http://baderlab.org/Publications#EM_2019)
  
 ***
 
 ### Additional tutorials <a id="additionaltutorials"></a>
-
-  * ***iRegulon: from a gene list to a gene regulatory network using large motif and track collections***Janky R, Verfaillie A, Imrichová H, Van de Sande B, Standaert L, Christiaens V, Hulselmans G, Herten K, Naval Sanchez M, Potier D, Svetlichnyy D, Kalender Atak Z, Fiers M, Marine JC, Aerts S [PLoS Comput Biol. 2014 Jul 24;10(7)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003731) 
-
-  * ***The GeneMANIA prediction server: biological network integration for gene prioritization and predicting gene function*** Warde-Farley D, Donaldson SL, Comes O, Zuberi K, Badrawi R, Chao P, Franz M, Grouios C, Kazi F, Lopes CT, Maitland A, Mostafavi S, Montojo J, Shao Q, Wright G, Bader GD, Morris Q [Nucleic Acids Res 2010 Jul 1;38 Suppl:W214-20](https://academic.oup.com/nar/article/38/suppl_2/W214/1126704) - [Available here as well](http://baderlab.org/Publications#GeneMANIA_original)
-  
-  * ***GeneMANIA update 2018*** Franz M, Rodriguez H, Lopes C, Zuberi K, Montojo J, Bader GD, Morris Q [Nucleic Acids Res. 2018 Jun 15](https://academic.oup.com/nar/article/46/W1/W60/5038280) - [Available here as well](http://baderlab.org/Publications#GeneMANIA_2018)
   
   * ***How to visually interpret biological data using networks*** Merico D, Gfeller D, Bader GD [Nature Biotechnology 2009 Oct 27, 921-924](https://www.nature.com/articles/nbt.1567)  - [Available here as well](http://baderlab.org/Publications#interpret_networks)
   
@@ -232,8 +194,6 @@ Use your newly installed docker workshop_base_image to try out R and go through 
   
   * ***Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles*** Subramanian A, Tamayo P, Mootha VK, Mukherjee S, Ebert BL, Gillette MA, Paulovich A, Pomeroy SL, Golub TR, Lander ES, Mesirov JP [Proc Natl Acad Sci U S A. 2005 Oct 25;102(43)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1239896/)
   
-  * ***Expression data analysis with Reactome*** Jupe S, Fabregat A, Hermjakob H [Curr  Protoc Bioinformatics. 2015 Mar 9;49:8.20.1-9](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4407007/)
- 
 Interacting with Cytoscape using CyRest and command lines (for advanced users):
 https://github.com/cytoscape/cytoscape-automation/blob/master/for-scripters/R/advanced-cancer-networks-and-data-rcy3.Rmd
 

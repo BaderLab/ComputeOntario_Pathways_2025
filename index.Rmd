@@ -1,6 +1,6 @@
 --- 
-title: "Pathway and Network Analysis of -Omics Data ( November 2024 )" 
-author: "Gary Bader, Ruth Isserlin, Chaitra Sarathy, Veronique Voisin"
+title: "Compute Ontario - Bioinformatics for Pathway Enrichment Analysis ( June 2025 )" 
+author: "Ruth Isserlin,  Veronique Voisin"
 date: "last modified `r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -9,12 +9,11 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-favicon: images/favicon.ico
 description: "Course covers the bioinformatics concepts and tools available for interpreting a gene list using pathway and network information. "
 ---
-# Canadian Bioinformatics Workshops
+# Compute Ontario Summer School
 
-![](./images/cbw_pathways_cover_2024_async.png)
+![](./images/bioinfo_pathways_logo.png)
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
