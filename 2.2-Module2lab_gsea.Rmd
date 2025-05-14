@@ -1,14 +1,14 @@
-# Module 2 lab - GSEA {#gsea-lab}
+# Module 2 lab - fGSEA {#gsea-lab}
 
 Presenter: Ruth Isserlin
 
 ## Introduction
 
-This practical lab contains one exercise. It uses [GSEA](http://www.broadinstitute.org/gsea/index.jsp) to perform a gene-set enrichment analysis. 
+This practical lab contains one exercise. It uses [fGSEA](https://github.com/alserglab/fgsea) to perform a gene-set enrichment analysis. 
 
 ## Goal of the exercise
 
-Learn how to run GSEA and explore the results.
+Learn how to run fGSEA and explore the results.
 
 ## Data
 
@@ -28,7 +28,7 @@ The goal of this lab is to:
 
   * Upload the 2 required files into GSEA, 
   * Adjust relevant parameters, 
-  * Run GSEA, 
+  * Run fGSEA, 
   * Open and explore the gene-set enrichment results. 
   
 The 2 required files are:
@@ -99,182 +99,361 @@ Place it in the corresponding module directory of your CBW work directory.
 
 ### Step1.
 
-Launch GSEA by double clicking on the installed program icon.
+Load required libraries.
 
-```{block, type="rmd-troubleshooting"}
-If GSEA won't launch on MacOS. (This is relevant for MacOS users on older operating systems.  As I am not longer on this operating system I can't regenerate these screenshots so they reflect an older version of GSEA but the steps are still relelvant if you are working on Catalina with the latest version of GSEA) 
+```{r load_libraries}
+#install required R and bioconductor packages
+tryCatch(expr = { library("RCurl")}, 
+         error = function(e) {  
+           install.packages("RCurl")}, 
+         finally = library("RCurl"))
 
-Follow instructions specified on download page:
-  * ![](./Module2/gsea/images/gsea_troubleshooting.png)
+tryCatch(expr = { library("fgsea")}, 
+         error = function(e) {  
+           install.packages("fgsea")}, 
+         finally = library("fgsea"))
 
-  * If you see this error message:
-  * <img src="./Module2/gsea/images/gsea_mac_launch_error.png" alt="get_gmt" width="50%" />
-
-  * Open Settings -> Security & Privacy
-  * Click on "Open Anyways"
-  * <img src="./Module2/gsea/images/privacy_setting.png" alt="get_gmt" width="75%" />
+tryCatch(expr = { library("GSA")}, 
+         error = function(e) {  
+           install.packages("GSA")}, 
+         finally = library("GSA"))
 ```
 
 
 ### Step 2.
 
-Load Data
+Set up parameters need for the analysis.  
 
-2a. Locate the ‘*Load data*’ icon at the upper left corner of the window and click on it.
+```{r}
+# defined in the paramters at top of notebook
 
-<img src="./Module2/gsea/images/GSEAloaddata.png" alt="Load data" width="50%" />
+#directory where all the data files are found.  
+working_dir <- "./data/"
 
+#directory where all the data files are found.  
+output_dir <- "./generated_data/"
+if(!exists(output_dir)){
+  dir.create(output_dir)
+}
 
-2b. In the central panel, select ‘*Method 1*’ and ‘*Browse for files*’. A new window pops up.
+#The name to give the analysis in GSEA - for example
+analysis_name <- "Basal_vs_Classical"
 
-<img src="./Module2/gsea/images/GSEAbrowsefile2.png" alt="Browse files" width="100%" />
+#rank file to use in GSEA analysis.  
+rnk_file <- "TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnk"
 
-2c. Browse your computer to locate and select the 2 files : **Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol.gmt** and **TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnkk**. 
-
-2d. Click on **Open**. A message pops us when the files are loaded successfully. 
-
-<img src="./Module2/gsea/images/ORA4.png" alt="Locate files" width="75%" />
-
-2e. Click on **OK**.
-
-<img src="./Module2/gsea/images/ORA5.png" alt="Success" width="75%" />
-	
-```{block, type="rmd-tip"}
-Alternatively, you can choose **Method 3** to **drag and drop files here**. You need to click on the **Load these files!** button in this case.
+#set the gmt file you want to use if you don't want to use the latest gmt file.
+# For example, if you set dest_gmt_file =="" the below script will automatically
+# download the latest gmt file from baderlab webstie.  If it is set then it
+# will use the file specified.  
+dest_gmt_file = ""
 ```
 
-### Step3.
+### Step 3.
 
-Adjust parameters
+Download the latest pathway definition file
 
-3a. Under the **Tools** menu select **GseaPreRanked**.
+Only Human, Mouse, Rat, and Woodchuck gene set files are currently available on the baderlab downloads site. If you are working with a species other than human (and it is either rat,mouse or woodchuck) change the gmt_url below to the correct species. Check here to see all available species.
 
-<img src="./Module2/gsea/images/GSEAprerank.png" alt="GseaPreRanked" width="100%" />
+```{r download_gmt}
+if(dest_gmt_file == ""){
+  gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/"
+  
+  #list all the files on the server
+  filenames = getURL(gmt_url)
+  tc = textConnection(filenames)
+  contents = readLines(tc)
+  close(tc)
+  
+  #get the gmt that has all the pathways and does not include terms 
+  # inferred from electronic annotations(IEA)
+  #start with gmt file that has pathways only and GO Biological Process only.
+  rx = gregexpr("(?<=<a href=\")(.*.GOBP_AllPathways_noPFOCR_no_GO_iea.*.)(.gmt)(?=\">)",
+    contents, perl = TRUE)
+  gmt_file = unlist(regmatches(contents, rx))
+  
+  dest_gmt_file <- file.path(output_dir,gmt_file )
+  
+  #check if this gmt file already exists
+  if(!file.exists(dest_gmt_file)){
+    download.file(
+      paste(gmt_url,gmt_file,sep=""),
+      destfile=dest_gmt_file
+    )
+  }
+}else {
+  file.copy(dest_gmt_file,to = output_dir)
+}
+```
 
-3b. **Run GSEA on a Pre-Ranked gene list** tab will appear.
+Load your gmt file
 
-Specify the following parameters:
-
-3c. Gene sets database -
-
-  * Click on the radio button (…) located at the right of the blank field.
-  * Wait 5-10 sec for the gene-set selection window to appear.
-	
-<img src="./Module2/gsea/images/GSEAloadgeneset.png" alt="Gene sets database" width="100%" />
-
-  * Use the right arrow in the top field to see the Gene matrix (*Local gmx/gmt*) tab.
-  * Click to highlight **Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol.gmt**.
-  * Click on **OK** at the bottom of the window.
+```{r load_gmt}
+capture.output(all_gs <- GSA.read.gmt(dest_gmt_file) ,file="gsa_load.out")
+names(all_gs$genesets) <- all_gs$geneset.names
+```
 
 
-<img src="./Module2/gsea/images/ORA8.png" alt="Gene sets database" width="75%" />
+### Step 4.
 
-	
-  * **Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol.gmt** is now visible in the field corresponding to **Gene sets database**.
+Load your Rank file  
 
-<img src="./Module2/gsea/images/GSEAparameter.png" alt="GSEAparameters" width="100%" />
+```{r}
+current_ranks <- read.table(file.path(working_dir,rnk_file),header=TRUE,sep = "\t")
+    fgsea_ranks <- current_ranks[,2]
+    names(fgsea_ranks) <- current_ranks[,1]
+ 
+current_ranks <- fgsea_ranks
+ 
+#remove duplicated genes
+duplicated_gene_names <-   
+      names(current_ranks)[which(duplicated(names(current_ranks)))]
+    current_ranks <- current_ranks[which(!names(current_ranks) %in% 
+                                           duplicated_gene_names)]
 
-3d. Set **Number of permutations** to 100. The number of permutations is the number of times that the gene-sets will be randomized in order to create a null distribution to calculate the FDR.  
+current_ranks <- sort(current_ranks,decreasing = TRUE)
+```
 
+
+### Step 5.
+
+Run fGSEA - Adjust parameters
+
+[fGSEA](https://bioconductor.org/packages/release/bioc/html/fgsea.htm)] is an R package that runs a fast Gene Set Enrichment Analysis.
+
+In the below command the following options have been specified:
+
+  * pathways - list of genesets to use for the calculation
+  * stats - genes and their associated statistic, sorted
+  * max_size - maximum size for individual gene sets. In GSEA interface this is set to 500 but we prefer to use a more stringent setting of 200.
+  * min_size - minimum size for individual gene sets
+  * gseaParam - GSEA parameter value
 
 ```{block, type="rmd-caution"}
-Use 2000 when you do it for your own data outside the workshop.
+gseaParam - GSEA parameter value.  All ranks will be raised to this power when calculating the ES scores.  Equivalent to the weight in the original GSEA algorithm.  
 ```
 
-3e. **Ranked list** - select by clicking on the arrow and highlighting rank file.
-
-3f. **Collapse/Remap to gene symbols** - Change to *No_collapse*.  (Our rank file already contains the gene symbols so we don't need GSEA to try and convert probe names to gene symbols)
-
-
-3g. Click on **Show** button next to **Basic Fields** to display extra options.
-
-3h. **Analysis name** – change the default name **my_analysis** to a name that is specific to analysis. For example *Basal_vs_Classical_edgeR*. GSEA will use your specified name as part of the directory of results that it creates.
-
-3i. **Max size**: exclude larger sets – By default GSEA sets the upper limit to 500. In this protocol, the maximum is set to 200 to decrease some of the larger sets in the results.
-
-3j. **Min size**: exclude smaller sets – By default GSEA sets the lower limit to 15. In this protocol, the minimum is set to 10 to increase some of the smaller sets in the results.
-
-3k. **Save results in this folder** – navigate to where you want GSEA to put the results folder. By default GSEA will put the results into the directory *gsea_home/output/[date]* in your home directory.
-
-```{block, type="rmd-tip"}
-Set **Enrichment Statistics** to p2 if you want to add more weight on the most top up-regulated and top down-regulated. <br> **P2** is a more stringent parameter and it will result in less gene-sets significant under FDR <0.05.
+```{r}
+current_fgsea_results <- fgsea::fgsea(all_gs$genesets, 
+                                      current_ranks,
+                                      minSize=15,
+                                      maxSize = 500
+                                      )
 ```
 
-### Step 4. 
-
-Run GSEA
-
-4a. Click on **Run** button located at the bottom right corner of the window.
-
-```{block, type="rmd-tip"}
-Expand the window size if the run button is not visible
-```
-
-4b. On the panel located on the left side of the GSEA window, the bottom panel called **GSEA report** will show that a process was created, with a message that it is **Running**.
-
-
-<img src="./Module2/gsea/images/ORA10.png" alt="Running" width="50%" />
-
-
-
-<img src="./Module2/gsea/images/ORA11.png" alt="Running messages" width="75%" />
-
-
-On completion the status message will be updated to **Success…**.
-
-<img src="./Module2/gsea/images/ORA12.png" alt="Success" width="50%" />
 
 
 ```{block, type="rmd-tip"}
-There is no progress bar to indicate to the user how much time is left to complete the process. Depending on the size of your dataset and compute power of your machine, a GSEA run can take from a few minutes to a few hours. To check on the status of the GSEA run in the bottom left hand corner you can click on the **+** (red circle in above Figure) to see the updating status. Printouts in the format **shuffleGeneSet for GeneSet 5816/6878 nperm: 100** indicate how many permutations have been done (5816) out of the total that need to be performed (6878).
+Set **gseaParam** to 2 if you want to add more weight on the most top up-regulated and top down-regulated. <br> **2** is a more stringent parameter and it will result in less gene-sets significant under FDR <0.05.
 ```
 
-```{block, type="rmd-tip"}
-If the permutations have been completed but the status is still running, it means that GSEA is creating the report
-```
-
-```{block, type="rmd-troubleshooting"}
-Java Heap Space error. If GSEA returns an error **Java Heap space** it means that GSEA has run out of memory. If you are running GSEA from the webstart other than the 4GB option, then you will need to download a new version that allows for more memory allocation. The current maximum memory allocation that the GSEA webstart allows for is 4GB. If you are using this version and still receive the java heap error, you will need to download the GSEA java jar file and launch it from the command line as described in step 1.
-```
-
-### Step 5. 
+### Step 6. 
 
 Examining the results
 
-5a. Click on **Success** to launch the results in html format in your default web browser.
+Get the top results and visualize as table
 
-```{block, type="rmd-tip"}
-If the GSEA application has been closed, you can still see the results by opening the result folder and clicking on the **index** file – *index.html*. (see screenshot below). The first phenotype corresponds to gene-sets enriched in genes up-regulated in the Basal subtype. The second phenotype corresponds to gene-sets enriched in genes up-regulated in the Classical phenotype. 
+```{r top_pathways}
+topPathwaysUp <- current_fgsea_results[ES > 0][head(order(pval), n=10), pathway]
+topPathwaysDown <- current_fgsea_results[ES < 0][head(order(pval), n=10), pathway]
+topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
+plotGseaTable(all_gs$genesets[topPathways], current_ranks, current_fgsea_results, 
+              gseaParam=0.5)
 ```
-
-<img src="./Module2/gsea/images/ORA13.png" alt="Results1" width="75%" />
 
 
 When examining the results there are a few things to look for:
 
-5b. Check the number of gene-sets that have been used for the analysis.   
+Check the number of gene-sets that have been used for the analysis.   
 
 ```{block, type="rmd-tip"}
  A small number (a few hundred genesets if using baderlab genesets) could indicate an issue with identifier mapping.
 ```
 
-5c. Check the number of sets that have FDR less than 0.25 – in order to determine what thresholds to start with when creating the enrichment map. It is not uncommon to see a thousand gene sets pass the threshold of FDR less than 0.25. FDR less than 0.25 is a very lax threshold and for robust data we can set thresholds of FDR less than 0.05 or lower.
+Check the number of sets that have FDR less than 0.25 – in order to determine what thresholds to start with when creating the enrichment map. It is not uncommon to see a thousand gene sets pass the threshold of FDR less than 0.25. FDR less than 0.25 is a very lax threshold and for robust data we can set thresholds of FDR less than 0.05 or lower.
 
-5d. Click on **Snapshots** to see the trend for the top 20 genesets. For the positive phenotype the top genesets should show a distribution skewed to the left (positive) i.e. genesets have predominance of up-regulated genes. For the negative phenotype the top geneset should be inverted and skewed to the right (negative) i.e. geneset have predominance of down-regulated genes.
+Number of pathways with corrected pvalue < 0.05
 
+```{r num_top_pathways_corpval005}
+length(which(current_fgsea_results$padj < 0.05))
+```
 
-<img src="./Module2/gsea/images/ORA14.png" alt="Results2" width="75%" />
+Number of pathways with corrected pvalue < 0.01
+
+```{r num_top_pathways_corpval001}
+length(which(current_fgsea_results$padj < 0.01))
+```
+
+Number of Basal (up -regulated) pathways with corrected pvalue < 0.05
+
+```{r num_top_pathways_corpval005_up}
+length(which(current_fgsea_results$padj < 0.05 & current_fgsea_results$ES > 0))
+```
+
+Number of Classical (down -regulated) pathways with corrected pvalue < 0.05
+
+```{r num_top_pathways_corpval005_down}
+length(which(current_fgsea_results$padj < 0.05 & current_fgsea_results$ES < 0))
+```
 
 
 5e. Explore the tabular format of the results.
 
 #### Basal
 
-<img src="./Module2/gsea/images/ORA17.png" alt="Basal" width="100%" />
+```{r top_pathways_up}
+topPathwaysUp <- current_fgsea_results[ES > 0][head(order(pval), n=5), pathway]
+
+top_basal_hits <- current_fgsea_results[which(current_fgsea_results$pathway %in% topPathwaysUp),]
+
+#format the pathway name colum so that it is easier to see the whole table
+top_basal_hits$pathway <- substr(top_basal_hits$pathway, start = 1, stop=25)
+
+top_basal_hits
+```
+
 
 #### Classical
 
-<img src="./Module2/gsea/images/ORA18.png" alt="Classical" width="100%" />
+```{r top_pathways_down}
+topPathwaysDown <- current_fgsea_results[ES < 0][head(order(pval), n=5), pathway]
+
+top_classical_hits <- current_fgsea_results[which(current_fgsea_results$pathway %in% topPathwaysDown),]
+
+#format the pathway name colum so that it is easier to see the whole table
+top_classical_hits$pathway <- substr(top_classical_hits$pathway, start = 1, stop=25)
+
+top_classical_hits
+```
+
+### Step 7
+
+Output the results so we can visualize the results with programs like cytoscape. In order to do that we need to format the fGSEA output as a file that would be created by GSEA.  
+
+Required columns include:
+  * pathway name
+  * pathway description
+  * Details column - found in the GSEA results file but it is not used by Cytoscape
+  * size - gene set size
+  * ES - enrichment score
+  * NES - normalized enrichment score
+  * Pval - empirical p-value
+  * Padj  - adjusted p-value
+  * FWER 
+  * Rank at max - the rank of the gene when the ES score is at is max/min
+  * leading edge genes - the set of genes that contribute to the enrichment of this set.
+
+Create a function to output the properly formatted fgsea result.  
+
+The Function requires:
+  * current_fgsea_results - fgsea results returned
+  * current_results_dir - directory to the resulting file
+  * current_sample - name to give the file
+
+```{r create_func_output}
+write_sample_fgsea_results<- function(current_fgsea_results, current_results_dir, 
+                                       current_sample){
+    
+  current_sample <- current_sample
+  
+    current_sample_directory_fullpath <- file.path(current_results_dir, current_sample)
+    if(!dir.exists(current_sample_directory_fullpath)){
+      dir.create(current_sample_directory_fullpath)
+    }
+  
+    #calculate the rank at max
+    #fgsea returns the leading edge.  Just need to extract the highest rank from 
+    # set to get the rank at max
+    calculated_rank_at_max <- apply(current_fgsea_results,1,FUN=function(x){ max(which(names(current_ranks) %in% unlist(x[8])))})
+    
+    
+    fakeenr_current_sample <- cbind(current_fgsea_results$pathway,
+                                     current_fgsea_results$pathway,
+                                     "Details",
+                                     current_fgsea_results$size,
+                                     current_fgsea_results$ES,
+                                     current_fgsea_results$NES,
+                                     current_fgsea_results$pval,
+                                     current_fgsea_results$padj,
+                                     0,
+                                     calculated_rank_at_max,
+                                     apply(current_fgsea_results,1,
+                                           FUN=function(x){paste(unlist(x[8]),collapse=",")})) 
+    
+    colnames(fakeenr_current_sample) <- c("name","description","GS details","SIZE","ES","NES","pval","padj","FWER","Rank at Max","leading edge genes")
+    
+    fakeenr_filename <- paste0(current_sample, "_fgsea_enr_results.txt",sep="")
+    fakeenr_filename_docker <- file.path(current_sample_directory_fullpath,fakeenr_filename)
+    
+    write.table(fakeenr_current_sample ,
+                fakeenr_filename_docker,
+                col.name=TRUE,sep="\t",row.names=FALSE,quote=FALSE,fileEncoding="latin1")
+    
+    # "upload" the files to the host machine and replace each path with the host machine path
+    
+    #create a fake expression file
+    fakeexp <- data.frame(name = names(current_ranks), 
+                          description = names(current_ranks),current_ranks)
+    fakeexp_filename <- paste0(current_sample,"fakeexpression.txt",sep="")
+    fakeexp_name_docker <- file.path( current_sample_directory_fullpath,fakeexp_filename)
+
+    write.table(fakeexp,
+                fakeexp_name_docker,
+                col.name=TRUE,sep="\t",row.names=FALSE,quote=FALSE,fileEncoding="")
+    
+    
+    #create a rank expression file
+    fakernk <- data.frame(name = names(current_ranks), 
+                          current_ranks)
+    fakernk_filename <- paste0(current_sample,"fakeranks.rnk",sep="")
+    fakernk_name_docker <- file.path( current_sample_directory_fullpath,fakernk_filename)
+
+    write.table(fakernk,
+                fakernk_name_docker,
+                col.name=TRUE,sep="\t",row.names=FALSE,quote=FALSE,fileEncoding="")
+    
+      
+}
+```
+
+
+```{r output_results}
+#write out the fgsea results for this patient
+      write_sample_fgsea_results(current_fgsea_results,output_dir,analysis_name)
+```
+
+
+
+### Step 8 
+
+Try and run fgsea using the Dose package instead of the fgsea package directly
+
+```{r eval=FALSE, include=FALSE}
+library(DOSE)
+library(GSEABase)
+
+geneList <- current_ranks
+
+gmtFile <- dest_gmt_file
+gene_sets <- getGmt(gmtFile)
+
+# Convert the GeneSetCollection to a list of gene sets
+gene_set_list <- lapply(gene_sets, function(gs) {
+  gene_ids <- geneIds(gs)  # Extract gene identifiers
+  gene_ids[!is.na(gene_ids)]  # Remove any NA values
+})
+
+# Assign names to each gene set based on the setName
+names(gene_set_list) <- sapply(gene_sets, function(gs) setName(gs))
+
+gseaResults <- gseNCG(geneList, exponent = 1, nPerm = 1000, minGSSize = 10,
+                      maxGSSize = 500, pvalueCutoff = 0.05, pAdjustMethod = "BH",
+                      verbose = TRUE, seed = FALSE, by = "fgsea",geneSets = gene_set_list)
+
+```
+
+
+
 
 [Link to information about GSEA results](http://www.baderlab.org/CancerStemCellProject/VeroniqueVoisin/AdditionalResources/GSEA#GSEA_enrichment_scores_and_statistics)
 
