@@ -102,21 +102,28 @@ Place it in the corresponding module directory of your CBW work directory.
 Load required libraries.
 
 ```{r load_libraries}
-#install required R and bioconductor packages
-tryCatch(expr = { library("RCurl")}, 
-         error = function(e) {  
-           install.packages("RCurl")}, 
-         finally = library("RCurl"))
 
-tryCatch(expr = { library("fgsea")}, 
-         error = function(e) {  
-           install.packages("fgsea")}, 
-         finally = library("fgsea"))
+# List of required packages
+required_packages <- c(
+  "tidyverse",     # Data manipulation and visualization
+  "GSA",           # Gene set analysis
+  "RCurl",         # HTTP requests
+  "fgsea",         # fast GSEA
+  "data.table",    # for formatting the results
+  "ggridges"      # Ridgeline plots
+)
 
-tryCatch(expr = { library("GSA")}, 
-         error = function(e) {  
-           install.packages("GSA")}, 
-         finally = library("GSA"))
+# Install any missing packages
+installed <- rownames(installed.packages())
+for (pkg in required_packages) {
+  if (!(pkg %in% installed)) {
+    install.packages(pkg)
+  }
+}
+
+# Load all packages
+invisible(lapply(required_packages, library, character.only = TRUE))
+
 ```
 
 
@@ -325,8 +332,125 @@ top_classical_hits$pathway <- substr(top_classical_hits$pathway, start = 1, stop
 
 top_classical_hits
 ```
-
 ### Step 7
+
+Visualize the top results as different sorts of plots, as demonstrated in the first part of the lab.
+
+#### Bar plots
+
+  * top pathways associated with classical 
+
+```{r}
+topPathwaysDown <- current_fgsea_results[ES < 0][head(order(pval), n=20), pathway]
+
+enrichment_results_topdown <-current_fgsea_results[which(current_fgsea_results$pathway %in% topPathwaysDown),]
+
+#change the name to be just the first part of the name
+enrichment_results_topdown$pathway <- unlist(lapply(enrichment_results_topdown$pathway, FUN=function(x){unlist(strsplit(x,split = "%"))[1]}))
+
+##Calculate a score
+enrichment_results_topdown$score = -log10(as.numeric(enrichment_results_topdown$pval))
+
+enrichmentTidy <- enrichment_results_topdown %>%
+  as_tibble() %>%
+  arrange(desc(score)) %>%
+  slice_head(n = 20)
+
+p = ggplot(enrichmentTidy, aes(reorder(pathway, score), score)) +
+  geom_col(aes(fill = score), width=0.8) +
+  scale_fill_gradient(low = "#C1F6F8", high = "#00BFC4")+
+  coord_flip() +
+  labs(x="", y="Normalized Enrichment Score",
+       title="Pathway enrichment analysis - \nClassical PDAC") + 
+  theme_minimal()
+
+p
+```
+
+```{r}
+##YOUR TURN##
+
+## Generate the same bar plot for the top 20 Basal results.  
+## Change the colour of the bars to a different colour as they are a different phecotype from the Classical set.
+```
+
+#### Dot plot
+
+  * top pathways associated with classical 
+  
+```{r}
+
+p = ggplot(enrichment_results_topdown, aes(
+  y = fct_reorder(pathway, score),
+  x = score,
+  color = score,
+  size = score
+)) +
+  geom_point() +
+  scale_color_gradientn(
+    colours = c("lightpink", "lightblue", "blue"),
+    trans = "log10",
+    guide = guide_colorbar(reverse = FALSE, order = 1)
+  ) +
+  scale_size_continuous(range = c(4, 8)) +
+  theme_bw(base_size = 12) +
+  xlab("score -log10(adj pvalue)") +
+  ylab(NULL) +
+  ggtitle("Pathway Enrichment Analysis - \n Classical PDAC") +
+  theme(
+    axis.text.y = element_text(size = 7)
+  )
+p
+```
+
+#### Ridge plots
+
+  * top pathways associated with either class
+
+```{r message=FALSE, warning=FALSE}
+# Filter top pathways, e.g., by adjusted p-value
+topPathways <- current_fgsea_results[padj < 0.05][order(padj)][1:10]
+
+# Create a data.frame for plotting with the gene ranks for each of the top pathways
+ridge_data <- rbindlist(lapply(topPathways$pathway, function(pw) {
+  genes <- all_gs$genesets[[pw]]
+  data.frame(
+    gene = genes,
+    stat = current_ranks[genes],
+    pathway = pw
+  )
+}))
+
+
+# get NES for each of the top pathways
+nes_map <- setNames(topPathways$NES, topPathways$pathway)
+
+# Add NES values to ridge_data
+ridge_data$NES <- nes_map[ridge_data$pathway]
+
+#change the name to be just the first part of the name (because the actual names are too long)
+ridge_data$pathway <- unlist(lapply(ridge_data$pathway, FUN=function(x){unlist(strsplit(x,split = "%"))[1]}))
+
+#get rid of na values for genes found in the gene set but not ranked in our dataset.
+ridge_data <- ridge_data[!is.na(ridge_data$stat),]
+
+ggplot(ridge_data, aes(x = stat, y = reorder(pathway, NES), fill = NES)) +
+  geom_density_ridges(scale = 2, alpha = 0.8) +
+  scale_fill_gradient2(
+    low = "blue", mid = "white", high = "red", midpoint = 0,
+    name = "NES"
+  ) +
+  theme_ridges() +
+  theme(legend.position = "right",axis.text.y = element_text(size = 6)) +
+  labs(
+    title = "Ridgeplot of Gene Stats\n for Top Enriched Pathways",
+    x = "Gene-level Statistic",
+    y = "Pathway"
+  )
+```
+
+
+### Step 8
 
 Output the results so we can visualize the results with programs like cytoscape. In order to do that we need to format the fGSEA output as a file that would be created by GSEA.  
 
@@ -421,37 +545,6 @@ write_sample_fgsea_results<- function(current_fgsea_results, current_results_dir
 #write out the fgsea results for this patient
       write_sample_fgsea_results(current_fgsea_results,output_dir,analysis_name)
 ```
-
-
-
-### Step 8 
-
-Try and run fgsea using the Dose package instead of the fgsea package directly
-
-```{r eval=FALSE, include=FALSE}
-library(DOSE)
-library(GSEABase)
-
-geneList <- current_ranks
-
-gmtFile <- dest_gmt_file
-gene_sets <- getGmt(gmtFile)
-
-# Convert the GeneSetCollection to a list of gene sets
-gene_set_list <- lapply(gene_sets, function(gs) {
-  gene_ids <- geneIds(gs)  # Extract gene identifiers
-  gene_ids[!is.na(gene_ids)]  # Remove any NA values
-})
-
-# Assign names to each gene set based on the setName
-names(gene_set_list) <- sapply(gene_sets, function(gs) setName(gs))
-
-gseaResults <- gseNCG(geneList, exponent = 1, nPerm = 1000, minGSSize = 10,
-                      maxGSSize = 500, pvalueCutoff = 0.05, pAdjustMethod = "BH",
-                      verbose = TRUE, seed = FALSE, by = "fgsea",geneSets = gene_set_list)
-
-```
-
 
 
 

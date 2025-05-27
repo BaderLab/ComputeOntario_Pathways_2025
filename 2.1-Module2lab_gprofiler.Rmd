@@ -1,408 +1,766 @@
-# Module 2 lab - g:Profiler {#gprofiler-lab}
+# Module 2 lab - g:Profiler {#gprofiler-lab-new}
 
 **This work is licensed under a [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/deed.en_US). This means that you are able to copy, share and modify the work, as long as the result is distributed under the same license.**
+
+authors: Veronique Voisin and Ruth Isserlin
  
 ## Introduction
 
-Performing Over-Representation Analysis (ORA) with [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost).
+During this practical lab, we will perform pathway enrichment analysis using a defined gene list.
 
-The practical lab contains 2 exercises. The first exercise uses [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) to perform gene-set enrichment analysis. 
 
 ## Goal of the exercise 1
 
-Learn how to run *g:GOSt Functional profiling* from the g:Profiler website and explore the results.
+For this exercise, our goal is to run pathway enrichment analysis using g:Profiler and explore the results.
+g:Profiler performs a gene-set enrichment analysis using a hypergeometric test (Fisher’s exact test). The [Gene Ontology](http://geneontology.org/) Biological Process, [Reactome](https://reactome.org/) and [WikiPathways](https://www.wikipathways.org/) sources are going to be used as pathway databases. 
+
+g:Profiler can be used using the website at https://biit.cs.ut.ee/gprofiler/gost. However, for this practical lab, we will run it from the g:Profiler R package.
+
+We will run the query and explore the table of results and visualize the results as bar and dot plots.
+
+One of the greatest features of [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) is that it is updated on a regular basis and most of the previous versions are available online ont the [gprofiler archive](https://biit.cs.ut.ee/gprofiler/page/archives).
+
+The [gprofielr2](https://biit.cs.ut.ee/gprofiler/page/r) -[g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) R implementation is a wrapper for the web version.  You require an internet connection to get enrichment results.  
+
 
 ## Data
 
-g:Profiler requires a list of genes, one per line, in a text file or spreadsheet,
-ready to copy and paste into a web page: for this, we use genes with frequent somatic SNVs identified in TCGA exome sequencing data of 3,200 tumors of 12 types. The MuSiC cancer driver mutation detection software was used to find 127 cancer driver genes that displayed higher than expected mutation frequencies in cancer samples (Supplementary Table 1, which is derived from column B of Supplementary Table 4 in [Kandoth C. et al.](https://www.nature.com/articles/nature12634). Genes are ranked in decreasing order of significance (FDR Q value) and mutation frequency (not shown).
+g:Profiler requires a list of genes: for this, we use genes with frequent somatic SNVs identified in TCGA exome sequencing data of 3,200 tumors of 12 types. The MuSiC cancer driver mutation detection software was used to find 127 cancer driver genes that displayed higher than expected mutation frequencies in cancer samples (Supplementary Table 1, which is derived from column B of Supplementary Table 4 in [Kandoth C. et al.](https://www.nature.com/articles/nature12634). 
 
 ## Exercise 1 - run g:Profiler {#exercise-1}
-
-For this exercise, our goal is to run an analysis with g:Profiler.  We will copy and paste the list of genes into the g:Profiler web interface, adjust some parameters (e.g selecting the pathway databases), run the query and explore the results.
-
-g:Profiler performs a gene-set enrichment analysis using a hypergeometric test (Fisher’s exact test) with the option to consider the ranking of the genes in the calculation of the enrichment significance (minimum hypergeometric test). The [Gene Ontology](http://geneontology.org/) Biological Process, [Reactome](https://reactome.org/) and [WikiPathways](https://www.wikipathways.org/) sources are going to be used as pathway databases. The results are displayed as a table or downloadable as an Generic Enrichment Map (GEM) output file. 
-
 Before starting this exercise, download the required files:
 
 ```{block, type="rmd-datadownload"}
 Right click on link below and select "Save Link As...".
 
-Place it in the corresponding module directory of your CBW work directory.
+We recommend saving all these files in a personal project data folder before starting. We also recommend creating an additional result data folder to save the files generated while performing the protocol.
+
 ```
 
 
 * [Pancancer_genelist.txt](./Module2/gprofiler/data/Pancancer_genelist.txt)
-
-We recommend saving all these files in a personal project data folder before starting. We also recommend creating an additional result data folder to save the files generated while performing the protocol.
-
-### Step 1 - Launch g:Profiler.
-
-Open the g:Profiler website at [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) in your web browser.
-
-
-### Step 2 - input query
-
-Paste the gene list ([Pancancer_genelist.txt](./Module2/gprofiler/data/Pancancer_genelist.txt)) into the Query field in top-left corner of the screen. 
-
-
-```{block, type="rmd-tip"}
-Open the file in a simple text editor such as Notepad or Textedit to copy the list of genes. <br> Or right click on the file name above and select **Open link in new tab**
-```
-
-
-![](./Module2/gprofiler/images/gp1.png)
-
-```{block, type="rmd-note"}
-The gene list can be space-separated or one per line.<br> The organism for the analysis, Homo sapiens, is selected by default.<br> The input list can contain a mix of gene and protein IDs, symbols and accession numbers.<br> Duplicated and unrecognized IDs will be removed automatically, and ambiguous symbols can be refined in an interactive dialogue after submitting the query.<br> **Highlight driver terms in GO** is a recently (April 2023) added feature that tries to reduce the number of GO terms returned by g:Profiler and highlight a non-redundant set of GO terms. For more detailed information on this feature see [here](https://biit.cs.ut.ee/gprofiler/page/docs#highlighting-description)  
-```
-
-
-### Step 3 - Adjust parameters. 
-
-3a. Click on the *Advanced options* tab (black rectangle) to expand it.
-
-* Set *Significance threshold* to "Benjamini-Hochberg FDR"
-
-* *User threshold* - select 0.05 if you want g:Profiler to return only pathways that are significant (FDR < 0.05).
-
-```{block, type="rmd-tip"}
-If g:Profiler does not return any results increase the threshold (0.1, then 1) to check that g:Profiler is running successfully but there are simply no significant results for your query.
-```
-
-<p align="center">
-  <img src="./Module2/gprofiler/images/gp2.png" alt="workflow" width="50%" />
- </p>
-
-```{block, type="rmd-tip" }
-By default, g:Profiler will only return the sets that pass the defined threshold. Often you need the ability to tweak the thresholds in the resulting EM beyond the strict FDR < 0.05 threshold and therefore require all the results. In order to get all the results, even those that don’t pass correction, select *All results*.  
-```
-
-
-3b. Click on the *Data sources* tab (black rectangle) to expand it.
-
-* Unselect all gene-set databases by clicking the "clear all" button.
-* In the *Gene Ontology* category, check  *GO Biological Process* and *No electronic GO annotations*.
-* In the *biological pathways* category, check *Reactome* and check *WikiPathways*.
-
-<p align="center">
-  <img src="./Module2/gprofiler/images/gp3.png" alt="workflow" width="50%" />
-</p>
-
-```{block, type="rmd-note"}
-*No electronic GO annotations* option will discard less reliable GO annotations (inferred from electronic annotations (IEAs)) that are not manually reviewed.
-```
-
-```{block, type="rmd-tip"}
-if g:Profiler does not return any results uncheck the *No electronic GO annotation* option to expand annotations used in the test.
-```
-
-
-### Step 4 - Run query
-
-Click on the *Run query* button, below the input parameters, to run g:Profiler. 
-
-<img src="./Module2/gprofiler/images/gp3a.png" alt="workflow" width="100%" />
-
-Scroll down page to see results. 
-
-
-
-```{block, type="rmd-tip"}
-After clicking on *Run query* button, the analysis completes but if there is the following message (above results) - *Select the Ensembl ID with the most GO annotations (all)*, then do the following. For each ambiguous gene, select its correct mapping. Ambiguous mapping is often caused by multiple Ensembl ids for a given gene and are easy to resolve as a user. Rerun query.
-```
-
-<img src="./Module2/gprofiler/images/gp4.png" alt="workflow" width="100%" />
-
-
-### Step 5 - Explore the results. 
-
-Step 5a:
-
-* After the query has run, the results are displayed at the bottom of the page, below the input parameters.
-* By default, the "Overview" tab is selected. A global graph displays gene-sets that passed the significance threshold of 0.05 for each of the 3 data sources (shown on x-axis) that we have selected - GO Biological Process(GO:BP) and Reactome(REAC) and WikiPathways(WP). Numbers in parentheses indicate the number of gene-sets that passed the threshold.
-
-<img src="./Module2/gprofiler/images/gp5.png" alt="workflow" width="100%" />
-
-Step5b:
-
-* Click on "Detailed Results" to view the results in more depth. Three tables are displayed, one for each of the data sources selected. (If more than 3 data sources are selected there will be additional tables for each data source). Each row of the table contains:
-    * **Term name** - gene-set name
-    * **Term ID** - gene-set identifier
-    * **Padj** - FDR value 
-    * **-log10(Padj)** - enrichment score calculated using the formula -log10(padj)
-    * Variable number of gene columns (One for each gene in the query set) - If the gene is present in the current gene-set its cell is colored.  For any data source besides GO, the cell is colored black if the gene is found in the gene-set.  For the GO data source cells are colored according to the annotation evidence code. Expand the *Legend* tab for detailed coloring mapping of GO evidence codes. 
-    
-The first table displays the gene-sets significantly enriched at FDR 0.05 for the GO&#58;BP database.
-
-<img src="./Module2/gprofiler/images/gp6.png" alt="workflow" width="100%" />
-
-The second table displays the results corresponding to the Reactome database.
-
-<img src="./Module2/gprofiler/images/gp7.png" alt="workflow" width="100%" />
-
-The third table displays the results corresponding to the WikiPathways database.
-
-<img src="./Module2/gprofiler/images/gp6a.png" alt="workflow" width="100%" />
-
-### Step 6: Expand the stats tab
- Expand the *stats* tab by clicking on the double arrow located at the right of the tab.
- 
- <p align="center">
- <img src="./Module2/gprofiler/images/gp7a.png" alt="workflow" width="75%" />
- </p>
- 
- It displays the gene set size (T), the size of our gene list (Q) , the number of genes that overlap between our gene list and the tested gene-set (TnQ) as well as the number of genes in the background (U). 
- 
-
- * Above the GO:BP result table, locate the slide bar that enables to select for the minimum and maximum number of genes in the tested gene-sets (Term size). 
- * Change the maximum *Term size* from 10000 to **250** and 
- * Change the minimum *Term size* from 1 to **3** and 
- * Observe the results in the detailed stats panel:
- 
- <img src="./Module2/gprofiler/images/gp8a.png" alt="workflow" width="100%" />
-
-   * Without filtering term size, the top terms were GO terms containing more than 4000 or 5000 genes and often terms located high in the GO hierarchy (parent term). 
-   * With filtering the maximum term size to 250, the top list contains pathways with larger interpretative values. However, please note that the adjusted p-values were calculated using all gene-sets without size filtering.
-
-### Step 7: Save the results
- 
-7a.  In the *Detailed Results* panel, select "GEM" .  It will save the results in a text file in the "Generic Enrichment Map" format that we will use to visualize using Cytoscape.
-
-   * keep the minimum term size set to 3 (for all the three files we create below)
-   * set maximum term size to 10000 ( = no filtering by gene-set size) and click on the GEM button. A file is downloaded on your computer. (change the name to gProfiler_hsapiens_lab2_results_GEM_termmin3_max10000.gem.txt)
-  <p align="center">  
-  <img src="./Module2/gprofiler/images/gp13.png" alt="workflow" width="75%" />
-  </p>  
-   * set maximum term size to 1000 ( = filter by gene-set size) and click on the GEM button. A file is downloaded on your computer. (change the name to gProfiler_hsapiens_lab2_results_GEM_termmin3_max1000.gem.txt)
-  <p align="center">
-  <img src="./Module2/gprofiler/images/gp14.png" alt="workflow" width="75%" />
-  </p>
-   * select max term size to 250 ( = filter by gene-set size) and click on the GEM button. A file is downloaded on your computer. (change the name to gProfiler_hsapiens_lab2_results_GEM_termmin3_max250.gem.txt)
-  <p align="center">
-  <img src="./Module2/gprofiler/images/gp14a.png" alt="workflow" width="75%" />
-  </p>
-  
-7b:  Open the file that you saved using the gene-set threshold of 250 using Microsoft Office Excel or in an equivalent software.
-
-Observe the results included in this file:
-
- 1. Name of each gene-set
- 1. Description of each gene-set
- 1. Significance of the overlap (pvalue)
- 1. Significance of the overlap (adjusted pvalue/qvalue)
- 1. Phenotype
- 1. Genes included in each gene-set
-
-```{block, type="rmd-question"}
-Which GO&#58;BP term has the best corrected p-value?  <br> Which genes in our list are included in this term? <br> Observe that some genes can be present on several lines (pathways are related when they contain a lof of genes in common).
-```
-
-```{block, type="rmd-note"}
-The table is formatted for the input into Cytoscape EnrichmentMap. It is called the [*generic format*](https://enrichmentmap.readthedocs.io/en/latest/FileFormats.html#generic-results-files). The p-value and FDR columns contain identical values because g:Profiler directly outputs the FDR (= corrected p-value) meaning that the p-value column is already the FDR. Phenotype 1 means that each pathway will be represented by red nodes on the enrichment map (presented during next module). 
-```
-
-  <img src="./Module2/gprofiler/images/gp15.png" alt="workflow" width="100%" />
-
-
-The GO&#58;BP term *regulation of cell cycle G1/S phase transition* is the most significant gene-set (=the lowest FDR value).  Many gene-sets from the top of this list are related to each other and have genes in common. 
-
----
-
-### Step 8 (Optional but recommended)
-
-8a. Download the pathway database files.
-
-  * Go to the top of the page and expand the "Data sources" tab. Click on the 'combined name.gmt' link located at bottom of this tab. It will download a file named *combined name.gmt* containing a pathway database gmt file with all the available sources. 
-
-<p align="center">
-  <img src="./Module2/gprofiler/images/gp12.png" alt="workflow" width="60%" />
-</p>
-
-8b. concatenate the GO&#58;BP, Reactome and WikiPathways gmt files:
-
-If you want to create a smaller gmt file that doesn't contain all of the g:profiler datasources you can instead download *name.gmt.zip* that contains each datasource as its own gmt file.  You will need to concatenate the sources you require into one gmt file to use for later.
-
-#### Option 1: manually if you are not familiar with unix commands
-   * open a text editor such a Notepad or equivalent
-   * open hsapiens.GO&#58;BP.name.gmt using the text editor
-   * open gmt hsapiens.REAC.name.gmt using the text editor
-   * copy-paste all the rows from REAC file together with all the rows in GO&#58;BP file.
-   * open gmt hsapiens.WP.name.gmt using the text editor
-   * copy-paste all the rows from WP file together with all the rows in GO&#58;BP file.
-   * save the file as hsapiens.pathways.name.gmt .
-
-#### Option 2: using the cat command if you are familiar with unix commands
-   * open your terminal window
-   * cd to the unzipped gprofiler_hsapiens.name folder
-   * type the following command: 
-   ```
-    cat hsapiens.GO:BP.name.gmt hsapiens.REAC.name.gmt hsapiens.WP.name.gmt > hsapiens.pathways.name.gmt
-   ``` 
-
-```{block, type="rmd-note"}
-you will be using this optional hsapiens.pathways.name.gmt file in Cytoscape EnrichmentMap.
-```     
-
-
-### Step 9 (Optional by recommended)
-
- 9. Get and record the version of g:Profiler used in your analysis.  It is important to note in your future publication using your enrichment results the methods and the version of software used for any analysis.  g:Profiler is updated on a regular basis so you can not simply come back to the webpage at time of publication and get the version.   Also, if you ever want to verify the results that you have and re-run the analysis it is important to use the same version as the initial analysis (or your results might differ).  g:Profiler maintains an [archive](https://biit.cs.ut.ee/gprofiler/page/archives) so it is easy to revisit previous versions.   
- 
-<p align="center">
-  <img src="./Module2/gprofiler/images/gp_archive.png" alt="workflow" width="100%" />
-</p>
- 
- * The g:Profiler version can be found in two places - 
-   * At the bottom of overview tab the version is listed
-        <p align="center">
-          <img src="./Module2/gprofiler/images/gp_version1.png" alt="workflow" width="100%" />
-        </p>
-
-   * Or Click on the *Query Info* tab to see all the parameters, including the g:Profiler version, used for the analysis
-        <p align="center">
-          <img src="./Module2/gprofiler/images/gp_version2.png" alt="workflow" width="100%" />
-        </p>
-
-```{block, type="rmd-note"}
-Deciphering the version from the listed tag e111_eg58_p18_b51d8f08 :<br>
-  * e111 - Ensembl version 111 <br>
-  * eg56 - Ensembl genomes version 58<br>
-  
-```
-
-```{block, type="rmd-tip"}
-The version info can be recorded anywhere (for example in your lab notebook) but a convenient place is to embed it in the g:Profiler geneset file name used for the analysis.  <br>Instead of naming the file <br>
-  * hsapiens.pathways.name.gmt<br>
-Name it <br>
-  * hsapiens.pathways_e111_eg58_p18_b51d8f08.name.gmt<br>
-```
- 
----
-
-
-## Exercise 2: Load and use a custom .gmt file and run the query
-
-For this exercise, our goal is to copy and paste the list of genes into g:Profiler, upload a custom gmt file, adjust some parameters (e.g selecting the pathway databases), run the query and explore the results. Uploading a custom gmt file enables us to use alternate pathway data sources not available in g:Profiler.
-
-We are going to use a gmt file that contains a database of pathway gene sets used for pathway enrichment analysis in the standard GMT format downloaded from http://baderlab.org/GeneSets and updated monthly.
-
-This file contains pathways from eight data sources: 
-
-* GO, 
-* Reactome,
-* Panther, 
-* NetPath, 
-* NCI, 
-* MSigDB curated gene sets (C2 collection, excluding Reactome and
-KEGG), 
-* MSigDB Hallmark (H collection) and 
-* HumanCyc. 
-
-A GMT file is a text file in which each line represents a gene set for a single pathway. Each line includes a pathway ID, a name and the list of associated genes in a tab-separated format. This file has been filtered to exlclude gene-sets that contained more than 250 genes as these gene-sets are associated with more general terms.
-
-Before starting this exercise, download the required files:
 
 ```{block, type="rmd-datadownload"}
-Right click on link below and select "Save Link As...".
-
-Place it in the corresponding module directory of your CBW work directory.
+Open RStudio and follow script instructions below.
 ```
 
-* [Pancancer_genelist.txt](./Module2/gprofiler/data/Pancancer_genelist.txt)
 
-*  [Baderlab_genesets.gmt (from June 2024)](./Module2/gprofiler/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol_max250.gmt).
+### Step 1 - Install and Load libraries
+
+```{r message=FALSE, warning=FALSE}
+# List of required packages
+required_packages <- c(
+  "tidyverse",     # Data manipulation and visualization
+  "gprofiler2",    # Functional enrichment analysis
+  "knitr",         # Report generation
+  "kableExtra",    # Enhanced tables
+  "glue",          # String interpolation
+  "GSA",           # Gene set analysis
+  "RCurl",         # HTTP requests
+  "webshot2",      # Web content capture
+  "ggridges",      # Ridgeline plots
+  "igraph",        # Network analysis
+  "stringr"        # String manipulation
+)
+
+# Install any missing packages
+installed <- rownames(installed.packages())
+for (pkg in required_packages) {
+  if (!(pkg %in% installed)) {
+    install.packages(pkg)
+  }
+}
+
+# Load all packages
+invisible(lapply(required_packages, library, character.only = TRUE))
+
+```
 
 
-We recommend saving all these files in a personal project data folder before starting. We also recommend creating an additional result data folder to save the files generated while performing the protocol.
+### Step 2 - Input query
 
-STEPS:
+Save the gene list ([Pancancer_genelist.txt](./Module2/gprofiler/data/Pancancer_genelist.txt)) on your local computer. Remember where you stored it as you need to know the path to the file to start the practical lab.
 
- * Repeat step 1 to 3a from [Exercise 1](#exercise-1) (go back to exercise 1 to get detailed instructions) Briefly:
-   * Step 1:
-     * Open g:profiler
-   * Step 2a :
-     * Copy and paste the gene list in the Query field
-   * Step 2b: Click on the *Advanced options* tab (black rectangle) to expand it.
-     * Set *Significance threshold* to "Benjamini-Hochberg FDR".
-   * Step 3a: Click on the *Data sources* tab (black rectangle) to expand it.
-     * **Unselect all choices by clicking the "clear all" button.**
-   * Step 4:  Click on the *Custom GMT* tab (black rectangle) to expand it.
-     * Drag in the box the Baderlab gmt file [Baderlab_genesets.gmt](./Module2/gprofiler/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol_max250.gmt).
-     * Once uploaded successfully, the name of the file is displayed in the "File name used" box. 
+
+```{block, type="rmd-tip"}
+***Find path on Windows:***
+Using File Explorer
+Navigate to the file in File Explorer.
+
+Right-click the file and select "Properties".
+
+In the General tab, look for:
+
+Location: This shows the folder path.
+
+File name: Combine this with the location to get the full path.
+
+Example:
+
+Location: `C:\\Users\\Veronique\\Documents`
+
+File name: example.txt
+
+Full path: `C:\\Users\\Veronique\\Documents\\example.txt`
+```
+
+
+```{block, type="rmd-tip"}
+***Find path on a Mac:***
+Using Finder with Right-Click
+Open Finder and locate the file.
+
+Right-click (or Control-click) the file.
+
+Hold the Option key — the menu item “Copy [filename] as Pathname” will appear.
+
+Click it to copy the full file path.
+
+Paste it anywhere (e.g., in a Terminal or text editor) : `/Users/veronique/Documents/example.txt`
+
+```
+
+
+
+```{r}
+
+##The first step is to read the file containing the gene list. 
+# For this purpose, we need to know the path to the file = where we stored our file on our computer 
+# Please see my example below:
+# myfile = "/Users/veronique/Documents/CO_summer_school/Pancancer_genelist.txt" ##!!REPLACE BY YOUR PATH!!##
+
+myfile = "./Module2/gprofiler/data/Pancancer_genelist.txt"
+
+##YOUR TURN: create the myfile object using the path to your file / name of the file ##
+
+#This function will read the genelist file and import it as a data frame object in our R environment
+current_genelist <- read.table(  file = myfile,
+                                 header = FALSE,
+                                 sep = "\t", quote = "",
+                                 stringsAsFactors = FALSE)
+#head(current_genelist)
+#class(current_genelist)
+
+#We take the gene list which is stored as the first column of our dataframe and convert it to a character vector for future use
+query_set <- current_genelist$V1
+
+#class(query_set)
+
+```
+
+
+### Step 3 - Run g:Profiler
+The next step is to run pathway enrichment analysis using [gost g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) using the g:Profiler2 R package.
+For detailed descriptions of all the parameters that can be specified for the gost g:profiler function see the R package information - [here](https://cran.r-project.org/web/packages/gprofiler2/index.html) and [here](https://rdrr.io/cran/gprofiler2/man/gost.html).
+
+For this query we are specifying - 
+
+  * query - the set of genes of interest, as loaded in from the gene list file (`query_set`).
+  * significant - set to FALSE because we want g:Profiler to return all the results not just the ones that it deems significant by its predetermined threshold. We will filter the results for significance in a next step.
+  * ordered_query - set to FALSE (because we are not taking into account the order of the list)
+  * exclude_iea - set to TRUE. We are removing the electronic inferred annotations from the GO database
+  * correction_method - set to fdr.  by default g:Profiler uses g:Scs
+  * organism - set to "hsapiens" for homo sapiens.  Organism names are constructed by concatenating the first letter of the name and the family name (according to gprofiler2 documentation)
+  * source - the geneset source databases to use for the analysis.  We recommend using GO biological process (GO:BP), WikiPathways (WP) and Reactome (Reac) but there are additional sources you can add (GO molecular function or cellular component(GO:MF, GO:CC), KEGG, transcription factors (TF), microRNA targets (MIRNA), corum complexes (CORUM), Human protein atlas (HPA),Human phenotype ontology (HP) ) 
+
+```{r run gprofiler supplied gs}
+gprofiler_results <- gost(query = query_set ,
+                          significant=FALSE,
+                          ordered_query = FALSE,
+                          exclude_iea=TRUE,
+                          correction_method = "fdr",
+                          organism = "hsapiens",
+                          source = c("REAC","WP","GO:BP"))
+```
+
+```{r}
+#get the gprofiler results table
+enrichment_results <- gprofiler_results$result
+
+#display the names of all columns
+colnames(enrichment_results)
+
+#display the top rows
+head(enrichment_results)
+
+```
+
+The enrichment_results dataframe contains different columns. Let's rearrange the table to display the most important information. We will arrange the table so it contains: the database origin, the name of each of the pathway, term size , query size, intersection size and adjusted pvalue. - 
+
+  * Term size: number of genes in the pathway as it is in the database
+  * Query size: number of genes in our gene list
+  * Intersection size: number of genes overlapping between our gene list and the tested pathway
+  * pvalue: adjusted pvalue (corrected for multiple hypothesis testing using the Benjamini-Hochberg method)
+  
+The results are ordered by significance, from the most significant pathway (lowest p-value) to the least significant.
+
+```{r}
+
+enrichment_results$p_value <- formatC(enrichment_results$p_value, format = "e", digits = 2)
+
+enrichment_results = enrichment_results[ , c("source", "term_name", "term_size", "query_size", "intersection_size", "p_value")]
+
+kable(head(enrichment_results, n=20), caption = "Enrichment Result") %>%
+kable_styling(bootstrap_options = c("striped", "condensed"), font_size = 10)
+```
+
+
+
+### Step 4 - Explore top table of results
+
+
+For this analysis, we chose to use 3 databases: GO:BP, Reactome and Wikipathways. 
+If we look at the top table only, we are only going to see the results of GO:BP but it is interesting to look at the top results for each of the 3 databunique(enrichment_results$source)
+
+```{r}
+##Get the name of the databases
+unique(enrichment_results$source) 
+
+##Filter the dataframe to retrieve only the Reacome results
+enrichment_results_Reac <- enrichment_results %>%
+  filter(source == "REAC")
+
+##Now display the top 20 pathways
+kable(head(enrichment_results_Reac, n=20), caption = "Enrichment Result") %>%
+kable_styling(bootstrap_options = c("striped", "condensed"), font_size = 10)
+                                                  
+```
+```{r}
+##YOUR TURN##
+##DISPLAY THE TOP 20 PATHWAYS FOR THE WIKIPATHWAY DATABASE ("WP")
+```
+
+
+
+### Step 5 - Filter results by geneset size
+
+Restrict the results to just the ones that have at maximum gene-set size of 1000 and a minimum gene-set size of 10 and with an adjusted pvalue of 0.05.- 
+
+  * maximum gene-set size of 1000: will remove very generic pathway terms that are less informative like "regulation of gene expression"
+  * minimum gene-set size of 10: will remove small pathways where the pvalue is significant athough the overlap size is very small
+  * p_thres: aim is to retrieve only pathways that are significant under this adjusted pvalue threshold of 0.05 (5% false positive)
+
+
+```{r echo=TRUE}
+
+min_gs_size = 3
+max_gs_size = 1000
+p_thres = 0.05
+# filer by params defined above
+# by default we have set the max and min gs size to 250 and 3, respectively.
+
+
+##the pvalue was stored as a character vector, we have to transform back into a numerical vector to be able to use it to filter values
+enrichment_results$p_value <- as.numeric(enrichment_results$p_value) 
+
+enrichment_results_mxgssize_1000_min_10_adjp_0_05 <- 
+                        subset(enrichment_results,
+                                   term_size >= min_gs_size & 
+                                   term_size <= max_gs_size & 
+                                   p_value <= p_thres )
+
+#
+myrows = nrow(enrichment_results_mxgssize_1000_min_10_adjp_0_05)
+
+
+print(glue("It results in {myrows} selected pathways with maximum gene-set size of {max_gs_size} and minimum gene-set of {min_gs_size} with an adjusted p-value of {p_thres} . "))
+
+
+
+```
+
+
+In a second step, try different thresholds of maximum gene-set size and adjusted pvalue threshold: 500 and 250 for  * max_gs_size and 0.01 or 0.001 for pvalue- 
+
+   * Option 1 
+    *  max_gs_size = 500
+    * p_thres = 0.01
+  
+or
+
+   * Option 2 
+    *  max_gs_size = 250
+    *  p_thres = 0.001
+
+```{r}
+##YOUR TURN##
+
+## How many pathways do you get for each option (nrow()): copy your answer in the chat
+```
+
+
+### Step 6 - Run g:profiler with your own genesets (example using BaderLab genesets)
+
+With regards to pathway sets there are two options when using [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) - 
+
+  * Use the genesets that are supplied by [g:Profiler](https://biit.cs.ut.ee/gprofiler/gost) as we just did.
+  * Upload your own genesets. 
+  
+The most common reasons for supplying your own genesets is the ability to use up to date annotations or in-house annotations that might not be available in the public sphere yet.  It can be used to test the enrichment in a particular pathway of interest that might not be in the general pathway database but that you obtained for example by extracting the data from a published paper.
+You need to format this pathway in a [.gmt file](https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html).
+
+In this example, we will upload the Baderlab gene set file that contains multiple database sources. We will filter the gene-set prior to uploading the gene-set file to g:Profiler. This way, it will ensure that 
+
+### Step 7 - Download and load Bader lab geneset file
+
+Download the latest [Bader lab genesets](https://download.baderlab.org/EM_Genesets/current_release/Human/)
+The file will be downloaded on your local computer in the workin directory (working_dir) of your choice.
+
+
+```{r download baderlab gmt file, message=FALSE, warning=FALSE}
+
+dest_gmt_file = ""
+#working_dir = "/Users/veronique/Documents/CO_summer_school"
+working_dir = file.path(getwd(),"Module2","gprofiler","data")
+##  YOUR TURN: replace working directory by your own path to your working directory ##
+
+
+if(dest_gmt_file == ""){
+
+  gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/"
+
+  #list all the files on the server
+  filenames = RCurl::getURL(gmt_url)
+  tc = textConnection(filenames)
+  contents = readLines(tc)
+  close(tc)
+  
+  #get the gmt that has all the pathways and does not include 
+  # terms inferred from electronic annotations(IEA)
+  #start with gmt file that has pathways only
+  rx = gregexpr("(?<=<a href=\")(.*.GOBP_AllPathways_noPFOCR_no_GO_iea.*.)(.gmt)(?=\">)",
+    contents, perl = TRUE)
+  gmt_file = unlist(regmatches(contents, rx))
+  
+  dest_gmt_file <- file.path(working_dir,gmt_file)
+  
+  if(!file.exists(dest_gmt_file)){
+    download.file(
+      paste(gmt_url,gmt_file,sep=""),
+      destfile=dest_gmt_file
+    )
+  }
+}
+
+```
+
+Load in the GMT file
+
+This step will take the gmt file that we just downloaded on our computers and upload them into our R environment in the GSA.genesets object called "genesets_baderlab_genesets".
+The capture.output() function is only there to redirect the printed messages for a clearer notebook.
+```{r echo=TRUE}
+
+capt_output <- capture.output(genesets_baderlab_genesets <- 
+                                GSA.read.gmt(filename = dest_gmt_file))
+
+names(genesets_baderlab_genesets$genesets) <- 
+                                genesets_baderlab_genesets$geneset.names
+```
+
+### Step 8 -  Filter Bader lab geneset file
+
+The g:Profiler interface only allows for filtering genesets by size only after the analysis is complete.  After the analysis is complete means the filtering is happening after Multiple hypothesis testing.  Filtering prior to the analysis will generate more robust results because we exclude the uninformative large genesets prior to testing changing the sets that multiple hypothesis filtering will get rid of.  
+
+Create multiple gmt files with different filtering thresholds - remove 
+  * genesets greater than 250 genes
+  * geneset greater than 1000 genes
+  * geneset greater than 10000 genes
+
+```{r}
+# Filter geneset GSA object by specified gs size threshold 
+#
+# Given - 
+# genesets - in GSA object
+# gs_sizes - list of all the sizes of the genesets found in the genesets
+# filter_threshold - value to filter the geneset by.  
+# 
+
+#This function will return a filtered GSA object. We first create the function. 
+#  The function returns a filtered genesets in a GSA object
+filter_genesets <- function(genesets, gs_sizes, filter_threshold) {
+  
+  filtered_genesets <- genesets
+  
+  filtered_genesets$genesets <- genesets$genesets[
+                      which(gs_sizes<filter_threshold)]
+  filtered_genesets$geneset.names <- genesets$geneset.names[
+                      which(gs_sizes<filter_threshold)]
+  filtered_genesets$geneset.descriptions <- genesets$geneset.descriptions[
+                      which(gs_sizes<filter_threshold)]
+
+  return(filtered_genesets)
+}
+
+# You can not simply write a list of lists to a file in R.  In order
+# to output the new geneset file you need to convert it ot a data.frame
+# To do this convert the list of genes to a tab delmiated list in one column
+# of the dataframe.
+# format to write out to a file. 
+#
+# Given - 
+# genesets - in GSA object
+ 
+# This function returns the formatted genesets as data frame
+  
+format_genesets <- function(genesets) {
     
-    <img src="./Module2/gprofiler/images/gp16.png" alt="workflow" width="100%" />
-   
-   * Step 5: Click on *Run  query* .   
-   
-   * Step 6: Explore the detailed results
-   
-     <img src="./Module2/gprofiler/images/gp17a.png" alt="workflow" width="100%" />
-   
-   * Step 7: Save the file as GEM (rename file to gProfiler_hsapiens_Baderlab_max250.gem.txt)
+  collapsed_genesets <- data.frame(name=genesets$geneset.names, 
+                            description= genesets$geneset.description)
+  collapsed_genesets$genes <- unlist(lapply(genesets$genesets,
+                                             FUN=function(x){
+                                              paste(x,collapse = "\t")
+                                            }))
+  
+  return(collapsed_genesets)
+}
 
----
-
-## Optional steps 
-
-Please follow these optional steps if time permits and/or to explore more g:Profiler parameters.
-
-Here below are 3 optional steps that cover several options offered by g:Profiler:
-
-  1. test different data sources, 
-  1. take the order of the gene list into account,
-  1. use different types of multiple hypothesis correction methods.
-
-Use the same gene list as used in [exercise 1](#exercise-1) and modify paramters listed above. Observe the results. 
-
-<p align="center">
-<img src="./Module2/gprofiler/images/gp18.png" alt="workflow" width="60%" />
-</p>
-
-### **Optional 1**:   
-If time permits, play with input parameters, e.g. add *TRANSFAC * and *miRTarBase* databases, rerun the query and explore the new results.
- 
- <p align="center">
- <img src="./Module2/gprofiler/images/gp21.png" alt="workflow" width="60%" />
- </p>
- 
-```{block, type="rmd-note"}
-**Transfac**  putative transcription factor binding sites (TFBSs) from TRANSFAC database are retrieved into g:GOSt through a special prediction pipeline. First, TFBSs are found by matching TRANSFAC position specific matrices using the program Match on range +/-1kb from TSS as provided by APPRIS (Annotating principal splice isoforms) via Ensembl biomart. For genes with multiple primary TSS annotations we selected one with most TF matches. The matching range for C. elegans, D. melanogaster and S. cerevisiae is 1kb upstream from ATG (translation start site). A cut-off value to minimize the number of false positive matches (provided by TRANSFAC) is then applied to remove spurious motifs. Remaining matches are split into two inclusive groups based on the amount of matches, i.e TFBSs that have at least 1 match are classified as match class 0 and TFBSs that have at least 2 matches per gene are classified as match class 1.<br><br>
-**mirTarBase** is a database that holds experimentally validated information about genes that are targetted by miRNAs. We include all the organisms that are covered by mirTarBase.
 ```
 
-### **Option 2**:
-Re-run the g:Profiler using the **ordered** query checked.<br> This will run the minimum hypergeometric test. g:Profiler then performs incremental enrichment analysis with increasingly larger numbers of genes starting from the top of the list. When this option is checked, **it assumes that the genes were preordered by significance with the most significant gene at the top of the list**.<br> Compare the results between "ordered" and non ordered query.
 
-```{block, type="rmd-note"}
-for this practical lab, the genes were ordered by the number of mutations found in these genes for all samples. <br>For example, TP53, a highly mutated genes is listed at the top. 
+
+The format of the GMT file is described [https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29](here) and consists of rows with the following
+
+  * Name
+  * Description
+  * tab delimited list of genes a part of this geneset
+  
+Write out the gmt file with genenames
+
+```{r write output file genenames}
+
+#get the geneset sizes
+gs_sizes_baderlab_sets <- lapply(genesets_baderlab_genesets$genesets,
+                                 FUN = function(x){
+                                               length(x)
+                                                  })
+
+# max 10,000
+genesets_baderlab_genesets_max10000 <- filter_genesets(genesets_baderlab_genesets,
+                                                gs_sizes_baderlab_sets, 
+                                                10000)
+
+genesets_baderlab_genesets_max10000_filename <- gsub(x =dest_gmt_file, 
+                                                  pattern = "symbol" ,
+                                                  replacement = "symbol_max10000"
+                                                     )
+
+if(!file.exists(genesets_baderlab_genesets_max10000_filename)){
+
+  write.table(x = format_genesets(genesets_baderlab_genesets_max10000),
+            file = genesets_baderlab_genesets_max10000_filename,
+            quote = FALSE,sep = "\t",row.names = FALSE,
+            col.names=TRUE)
+}
+
+#max gs size of 1,000
+genesets_baderlab_genesets_max1000 <- filter_genesets(genesets_baderlab_genesets,
+                                                      gs_sizes_baderlab_sets, 
+                                                      1000)
+genesets_baderlab_genesets_max1000_filename <- gsub(x =dest_gmt_file, 
+                                                pattern = "symbol" ,
+                                                replacement = "symbol_max1000"
+                                                     )
+if(!file.exists(genesets_baderlab_genesets_max1000_filename)){
+
+  write.table(x = format_genesets(genesets_baderlab_genesets_max1000),
+            file = genesets_baderlab_genesets_max1000_filename,
+            quote = FALSE,sep = "\t",row.names = FALSE,
+            col.names=TRUE)
+}
+
+#max gs size of 250
+genesets_baderlab_genesets_max250 <- filter_genesets(genesets_baderlab_genesets,
+                                                      gs_sizes_baderlab_sets, 
+                                                      250)
+
+
+genesets_baderlab_genesets_max250_filename <- gsub(x =dest_gmt_file, 
+                                                  pattern = "symbol" ,
+                                                  replacement = "symbol_max250"
+                                                     )
+if(!file.exists(genesets_baderlab_genesets_max250_filename)){
+  write.table(x = format_genesets(genesets_baderlab_genesets_max250),
+            file = genesets_baderlab_genesets_max250_filename,
+            quote = FALSE,sep = "\t",row.names = FALSE,
+            col.names=TRUE)
+}
+
 ```
 
-<p align="center">
-<img src="./Module2/gprofiler/images/gp20.png" alt="workflow" width="75%" />
-</p>
+### Step 9 - Upload the gmt files to gprofiler and rerun g:Profiler
 
-### **Option 3** :
-
-Re-run g:Profiler and select g:SCS or Bonferonni as method to correct for multiple hypothesis testing. Do you get any significant results? 
-
-<p align="center">
-  <img src="./Module2/gprofiler/images/gp19.png" alt="workflow" width="75%" />
-</p>
-
-```{block, type="rmd-note"}
-you can get detailed information about these methods at https://biit.cs.ut.ee/gprofiler/page/docs in the section *Significance threshold*. 
+In order to use your own genesets with g:Profiler you need to upload the the file to g:Profiler server first.  The function will return an ID that you need to specify in the organism parameter of the g:Profiler gost function call. 
+It is done by using the upload_GMT_file() function which is included in the gprofiler2 package.
+Note: it took about 2 minutes to run this chunck of code.
+```{r}
+custom_gmt_max250 <- upload_GMT_file(
+                        gmtfile=genesets_baderlab_genesets_max250_filename)
+custom_gmt_max1000 <- upload_GMT_file(
+                        gmtfile=genesets_baderlab_genesets_max1000_filename)
+custom_gmt_max10000 <- upload_GMT_file(
+                        gmtfile=genesets_baderlab_genesets_max10000_filename)
 ```
-___
 
-## Bonus - Automation. 
+For this query we are specifying - 
 
-Run analysis directly from R for easy integration into existing pipelines.
+  * query - the set of genes of interest, as loaded in from the gene set file.
+  * significant - set to FALSE because we want g:Profiler to return all the results not just the ones that it deems significant by its perdetermined threshold.
+  * ordered_query - set to FALSE (but you can try setting it to true as well because for this set of genes they are ordered in order of their significance)
+  * correction_method - set to fdr.  by default g:Profiler uses g:Scs
+  * organism - set to the custom_gmt ID ( for this run it is - custom_gmt_max250) that we received when we uploaded our genetset file.
 
-```{block, type="rmd-bonus"}
-Instead of using the g:Profiler website g:profiler can be run directly from R or python see g:Profiler document for more info at https://biit.cs.ut.ee/gprofiler/page/r
 
-Follow the step by step instructions on how to run from R here - https://risserlin.github.io/CBW_pathways_workshop_R_notebooks/run-gprofiler-from-r.html
+```{r run gprofiler upload gs}
+gprofiler_results_custom_max250 <- gost(query = query_set ,
+                                     significant=TRUE,
+                                 ordered_query = FALSE,
+                                  exclude_iea=TRUE,
+                                     correction_method = "fdr",
+                                 organism = custom_gmt_max250
+                                     )
 
-First, make sure your environment is set up correctly by following there instructions - https://risserlin.github.io/CBW_pathways_workshop_R_notebooks/setup.html
+gprofiler_results_custom_max1000 <- gost(query = query_set ,
+                                     significant=TRUE,
+                                      ordered_query = FALSE,
+                                      exclude_iea=TRUE,
+                                     correction_method = "fdr",
+                                 organism = custom_gmt_max1000
+                                     )
+
+gprofiler_results_custom_max10000 <- gost(query = query_set ,
+                                     significant=TRUE,
+                                      ordered_query = FALSE,
+                                      exclude_iea=TRUE,
+                                     correction_method = "fdr",
+                                 organism = custom_gmt_max10000
+                                     )
 ```
+
+
+```{r}
+
+ #get the gprofiler results table
+enrichment_results_customgmt_max250 <- gprofiler_results_custom_max250$result
+enrichment_results_customgmt_max1000 <- gprofiler_results_custom_max1000$result
+enrichment_results_customgmt_max10000 <- gprofiler_results_custom_max10000$result
+
+    
+enrichment_results_customgmt_max250[1:5,]
+
+```
+
+Filter the table to include just the columns that are required for the generic enrichment map file results [GEM](https://enrichmentmap.readthedocs.io/en/latest/FileFormats.html#generic-results-files). Restrict the results to just the ones that have at least min_gs_size and less than max_gs_size terms and  min_intersection size include only the term_id, term_name, p_value (and p_value again because the p_value is actually the corrected p-value.  The output file does not contain the nominal p_value.  For down stream analysis though it is expected to have both a p-value and a q-value so just duplicate the q-value as both p-value and q-value)
+
+```{r}
+# filer by params defined above
+enrichment_results_customgmt_max250$p_value <- formatC(enrichment_results_customgmt_max250$p_value, format = "e", digits = 2)
+
+
+
+enrichment_results_customgmt_max250 = enrichment_results_customgmt_max250[ order(enrichment_results_customgmt_max250$p_value), c("term_id", "term_name", "term_size", "query_size", "intersection_size", "p_value")]
+
+kable(head(enrichment_results_customgmt_max250, n=20), caption = "Enrichment Result") %>%
+kable_styling(bootstrap_options = c("striped", "condensed"), font_size = 10)
+
+#kable(tail(enrichment_results_customgmt_max250, n=20), caption = "Enrichment Result") %>%
+#kable_styling(bootstrap_options = c("striped", "condensed"), font_size = 10)
+
+
+
+```
+```{r}
+##YOUR TURN##
+## Display the top tables for the gprofiler_results_custom_max1000 and enrichment_results_customgmt_max10000 results
+```
+
+## Exercise 2 - visualization
+We will use clusterProfiler style visualization.
+### Step 1 - Bar plot
+```{r}
+##Calculate a score
+enrichment_results_customgmt_max250$score = -log10(as.numeric(enrichment_results_customgmt_max250$p_value))
+
+enrichmentTidy <- enrichment_results_customgmt_max250 %>%
+  as_tibble() %>%
+  arrange(desc(score)) %>%
+  slice_head(n = 20)
+
+p = ggplot(enrichmentTidy, aes(reorder(term_name, score), score)) +
+  geom_col(aes(fill = score), width=0.8) +
+  scale_fill_gradient(low = "#C1F6F8", high = "#00BFC4")+
+  coord_flip() +
+  labs(x="", y="Normalized Enrichment Score",
+       title="Pathway enrichment analysis ") + 
+  theme_minimal()
+
+p
+
+
+```
+
+### Step 2 - Dot plot with segment
+```{r}
+
+enrichmentTop20 <- enrichmentTidy %>%
+  arrange(desc(score)) %>%
+  slice_head(n = 20)
+
+p = ggplot(enrichmentTop20, aes(
+  y = fct_reorder(term_name, score),
+  x = score,
+  color = score,
+  size = score
+)) +
+  geom_point() +
+  scale_color_gradientn(
+    colours = c("#56A443", "#8AA443", "#f7ca64"),
+    trans = "log10",
+    guide = guide_colorbar(reverse = FALSE, order = 1)
+  ) +
+  scale_size_continuous(range = c(4, 8)) +
+  theme_bw(base_size = 12) +
+  xlab("score -log10(adj pvalue)") +
+  ylab(NULL) +
+  ggtitle("Pathway Enrichment Analysis") +
+  theme(
+    axis.text.y = element_text(size = 10)
+  )
+p
+```
+
+### Step 3 - Ridge plot
+```{r}
+
+
+
+
+enrichmentTop20 <- enrichmentTidy %>%
+  arrange(desc(score)) %>%
+  slice_head(n = 20)
+
+# Expand each term to have multiple x values
+ridge_data <- enrichmentTop20 %>%
+  rowwise() %>%
+  mutate(x_vals = list(seq(-1, 1, length.out = 100))) %>%
+  unnest(x_vals)
+
+p = ggplot(ridge_data, aes(
+  x = x_vals,
+  y = fct_reorder(term_name, score),
+  height = score,
+  group = term_name,
+  fill = score
+)) +
+  geom_density_ridges(
+    stat = "identity",
+    scale = 0.9,
+    rel_min_height = 0.01,
+    color = "white",
+    alpha = 0.9
+  ) +
+  scale_fill_gradientn(
+    colours = c("#E6194B", "#3CB44B", "#4363D8"),
+    trans = "log10",
+    guide = guide_colorbar(title = "-log10(p-value)")
+  ) +
+  theme_ridges(font_size = 12, grid = TRUE) +
+  xlim(-1.2, 1.2) +
+  xlab("") +
+  ylab(NULL) +
+  ggtitle("Pathway enrichment analysis")
+
+p = p + theme_minimal(base_size = 12)
+
+p
+```
+
+### Step 4 - Network visualization - EnrichmentMap
+#### Get names of genes in the overlap for each pathway
+```{r message=FALSE, warning=FALSE, include=FALSE}
+gprofiler_results_custom_max250 <- gost(query = query_set ,
+                                     significant=TRUE,
+                                 ordered_query = FALSE,
+                                  exclude_iea=TRUE,
+                                     correction_method = "fdr",
+                                 organism = custom_gmt_max250
+                                     )
+
+
+subset_genesets <- genesets_baderlab_genesets$genesets[which(genesets_baderlab_genesets$geneset.names %in% gprofiler_results_custom_max250$result$term_id)]
+      
+
+genes <- lapply(subset_genesets,FUN=function(x){intersect(x,query_set)})
+  
+  # For each of the genes collapse to the comma separate text
+genes_collapsed <- unlist(lapply(genes,FUN=function(x){paste(x,collapse = ",")}))
+  
+genes_collapsed_df <- data.frame(
+                            term_id = names(genes), 
+                            genes = genes_collapsed,stringsAsFactors = FALSE)
+  
+
+
+formatted_results <- merge(gprofiler_results_custom_max250$result,genes_collapsed_df,by.x="term_id" , by.y="term_id" )
+
+formatted_results <- formatted_results[order(formatted_results$p_value),]
+colnames(formatted_results)     
+
+formatted_results_sel = formatted_results[ , c("term_name",  "genes") ]
+
+
+
+
+
+```
+
+#### Create the enrichment map
+```{r message=FALSE, warning=FALSE}
+# Create your data frame
+
+df = formatted_results_sel[1:10,]
+# Step 2: Convert gene strings into lists
+df$gene_list <- strsplit(df$genes, ",")
+
+# Create edges based on shared genes
+edges <- data.frame(from = character(), to = character(), weight = integer(), stringsAsFactors = FALSE)
+
+for (i in 1:(nrow(df) - 1)) {
+  for (j in (i + 1):nrow(df)) {
+    genes_i <- df$gene_list[[i]]
+    genes_j <- df$gene_list[[j]]
+    shared_genes <- intersect(genes_i, genes_j)
+    if (length(shared_genes) > 0) {
+      edges <- rbind(edges, data.frame(
+        from = df$term_name[i],
+        to = df$term_name[j],
+        weight = length(shared_genes),
+        stringsAsFactors = FALSE
+      ))
+    }
+  }
+}
+
+# Create igraph object
+g <- graph_from_data_frame(d = edges, vertices = df$term_name, directed = FALSE)
+
+# Plot the graph
+p = plot(
+  g,
+  vertex.label.cex = 0.8,
+  vertex.label.color = "black",
+  vertex.size = 30,
+  edge.width = E(g)$weight,
+  edge.color = "gray50",
+  vertex.color = "skyblue",
+  layout = layout_with_fr(g)
+)
+
+
+```
+
+
+
+
+
+
+
