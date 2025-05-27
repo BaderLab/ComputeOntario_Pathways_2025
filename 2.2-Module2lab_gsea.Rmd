@@ -452,6 +452,8 @@ ggplot(ridge_data, aes(x = stat, y = reorder(pathway, NES), fill = NES)) +
 
 ### Step 8
 
+The above plots are only showing a small piece of the underlying data.  Ideally we would like to visualize all the signficant results in one figure.  To do that we need to use [Cytoscape](https://cytoscape.org/).  Unfortunately that is beyond the scope of this current workshop but we will demo it quickly at the end of the workshop.
+
 Output the results so we can visualize the results with programs like cytoscape. In order to do that we need to format the fGSEA output as a file that would be created by GSEA.  
 
 Required columns include:
@@ -542,7 +544,7 @@ write_sample_fgsea_results<- function(current_fgsea_results, current_results_dir
 
 
 ```{r output_results}
-#write out the fgsea results for this patient
+#write out the fgsea results for this dataset
       write_sample_fgsea_results(current_fgsea_results,output_dir,analysis_name)
 ```
 

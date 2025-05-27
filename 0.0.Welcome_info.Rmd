@@ -77,8 +77,6 @@ Please install the latest version of [Cytoscape 3.10.3](https://github.com/cytos
       * install the following:  
           * EnrichmentMap 3.5.0
           * EnrichmentMap Pipeline Collection 1.1.0 (it will install ClusterMaker2 v2.3.4, WordCloud v3.1.4 and AutoAnnotate v1.5.0)
-          * GeneMANIA 3.5.3
-          * stringApp 2.0.3
           * yFiles Layout Algorithms	1.1.4
   
 ### RStudio Installation  
@@ -96,11 +94,20 @@ Please install the latest version of RStudio
   
   1. Install required packages
       * fGSEA
-      * clusterprofiler
       * GSA
+      * gprofiler2
       * httr
       * RCurl
-      * gpplot2
+      * data.table
+      * tidyverse
+      * gpplot2      
+      * ggridges
+      * webshot2
+      * igraph
+      * stringr
+      * kableExtra
+      * knitr
+      * glue
 
 
 ## Pre-workshop Tutorials
