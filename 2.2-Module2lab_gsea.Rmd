@@ -153,7 +153,7 @@ rnk_file <- "TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnk"
 # For example, if you set dest_gmt_file =="" the below script will automatically
 # download the latest gmt file from baderlab webstie.  If it is set then it
 # will use the file specified.  
-dest_gmt_file = ""
+dest_gmt_file = "./Module2/gprofiler/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt"
 ```
 
 ### Step 3.
@@ -163,7 +163,12 @@ Download the latest pathway definition file
 Only Human, Mouse, Rat, and Woodchuck gene set files are currently available on the baderlab downloads site. If you are working with a species other than human (and it is either rat,mouse or woodchuck) change the gmt_url below to the correct species. Check here to see all available species.
 
 ```{r download_gmt}
-if(dest_gmt_file == ""){
+#flag to trigger download of latest gmt file - change to TRUE 
+# if you want to check the website and download the latest
+# version instead of using the specified May 01, 2025 version. 
+downlaod_latest_version = FALSE
+
+if((dest_gmt_file == "") && download_latest_version){
   gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/"
   
   #list all the files on the server
@@ -188,7 +193,20 @@ if(dest_gmt_file == ""){
       destfile=dest_gmt_file
     )
   }
-}else {
+}else if(!downlaod_latest_version){
+  
+  gmt_url = "http://download.baderlab.org/EM_Genesets/May_01_2025/Human/symbol/"
+ gmt_file = "Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt"
+  
+  #download the specific file specified above
+  dest_gmt_file <- file.path(working_dir,gmt_file)
+  
+  if(!file.exists(dest_gmt_file)){
+    download.file(
+      paste(gmt_url,gmt_file,sep=""),
+      destfile=dest_gmt_file
+    )
+  } 
   file.copy(dest_gmt_file,to = output_dir)
 }
 ```

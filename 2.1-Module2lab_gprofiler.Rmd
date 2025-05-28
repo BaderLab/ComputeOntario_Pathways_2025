@@ -273,14 +273,14 @@ print(glue("It results in {myrows} selected pathways with maximum gene-set size 
 In a second step, try different thresholds of maximum gene-set size and adjusted pvalue threshold: 500 and 250 for  * max_gs_size and 0.01 or 0.001 for pvalue- 
 
    * Option 1 
-    *  max_gs_size = 500
-    * p_thres = 0.01
+     *  max_gs_size = 500
+     * p_thres = 0.01
   
 or
 
    * Option 2 
-    *  max_gs_size = 250
-    *  p_thres = 0.001
+     *  max_gs_size = 250
+     *  p_thres = 0.001
 
 ```{r}
 ##YOUR TURN##
@@ -310,12 +310,18 @@ The file will be downloaded on your local computer in the workin directory (work
 ```{r download baderlab gmt file, message=FALSE, warning=FALSE}
 
 dest_gmt_file = ""
+
+#flag to trigger download of latest gmt file - change to TRUE 
+# if you want to check the website and download the latest
+# version instead of using the specified May 01, 2025 version.
+downlaod_latest_version = FALSE
+
 #working_dir = "/Users/veronique/Documents/CO_summer_school"
 working_dir = file.path(getwd(),"Module2","gprofiler","data")
 ##  YOUR TURN: replace working directory by your own path to your working directory ##
 
 
-if(dest_gmt_file == ""){
+if((dest_gmt_file == "") && downlaod_latest_version){
 
   gmt_url = "http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/"
 
@@ -340,6 +346,21 @@ if(dest_gmt_file == ""){
       destfile=dest_gmt_file
     )
   }
+} else if(!downlaod_latest_version){
+  
+  gmt_url = "http://download.baderlab.org/EM_Genesets/May_01_2025/Human/symbol/"
+ gmt_file = "Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt"
+  
+  #download the specific file specified above
+  dest_gmt_file <- file.path(working_dir,gmt_file)
+  
+  if(!file.exists(dest_gmt_file)){
+    download.file(
+      paste(gmt_url,gmt_file,sep=""),
+      destfile=dest_gmt_file
+    )
+  }
+  
 }
 
 ```

@@ -501,16 +501,16 @@ could indicate an issue with identifier mapping.
 <p>Check the number of sets that have FDR less than 0.25 – in order to determine what thresholds to start with when creating the enrichment map. It is not uncommon to see a thousand gene sets pass the threshold of FDR less than 0.25. FDR less than 0.25 is a very lax threshold and for robust data we can set thresholds of FDR less than 0.05 or lower.</p>
 <p>Number of pathways with corrected pvalue &lt; 0.05</p>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="gsea-lab.html#cb57-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(current_fgsea_results<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>))</span></code></pre></div>
-<pre><code>## [1] 446</code></pre>
+<pre><code>## [1] 507</code></pre>
 <p>Number of pathways with corrected pvalue &lt; 0.01</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="gsea-lab.html#cb59-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(current_fgsea_results<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.01</span>))</span></code></pre></div>
-<pre><code>## [1] 202</code></pre>
+<pre><code>## [1] 228</code></pre>
 <p>Number of Basal (up -regulated) pathways with corrected pvalue &lt; 0.05</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="gsea-lab.html#cb61-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(current_fgsea_results<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> current_fgsea_results<span class="sc">$</span>ES <span class="sc">&gt;</span> <span class="dv">0</span>))</span></code></pre></div>
-<pre><code>## [1] 359</code></pre>
+<pre><code>## [1] 399</code></pre>
 <p>Number of Classical (down -regulated) pathways with corrected pvalue &lt; 0.05</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="gsea-lab.html#cb63-1" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(current_fgsea_results<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> current_fgsea_results<span class="sc">$</span>ES <span class="sc">&lt;</span> <span class="dv">0</span>))</span></code></pre></div>
-<pre><code>## [1] 87</code></pre>
+<pre><code>## [1] 108</code></pre>
 <p>5e. Explore the tabular format of the results.</p>
 <div id="basal" class="section level4 hasAnchor">
 <h4>Basal<a href="gsea-lab.html#basal" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -524,18 +524,18 @@ could indicate an issue with identifier mapping.
 <span id="cb65-8"><a href="gsea-lab.html#cb65-8" tabindex="-1"></a>top_basal_hits</span></code></pre></div>
 <pre><code>##                      pathway         pval         padj   log2err        ES
 ##                       &lt;char&gt;        &lt;num&gt;        &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
-## 1: CELL CYCLE CHECKPOINTS%RE 1.035901e-09 8.094274e-07 0.7881868 0.5400523
-## 2: CELL CYCLE, MITOTIC%REACT 6.002318e-16 1.876024e-12 1.0276699 0.5211659
-## 3: HALLMARK_EPITHELIAL_MESEN 2.886556e-16 1.804386e-12 1.0376962 0.6962643
-## 4: KERATINIZATION%REACTOME%R 3.854239e-10 3.707010e-07 0.8140358 0.8141973
-## 5: SKIN DEVELOPMENT%GOBP%GO: 1.524027e-10 1.905338e-07 0.8266573 0.7078168
+## 1: CELL CYCLE CHECKPOINTS%RE 6.128410e-10 4.788587e-07 0.8012156 0.5400523
+## 2: CELL CYCLE, MITOTIC%REACT 3.330404e-16 1.040918e-12 1.0376962 0.5211659
+## 3: HALLMARK_EPITHELIAL_MESEN 3.692251e-17 2.308026e-13 1.0672100 0.6962643
+## 4: KERATINIZATION%REACTOME%R 1.408105e-10 1.467011e-07 0.8266573 0.8141973
+## 5: SKIN DEVELOPMENT%GOBP%GO: 5.011099e-10 4.474912e-07 0.8012156 0.7078168
 ##         NES  size                            leadingEdge
 ##       &lt;num&gt; &lt;int&gt;                                 &lt;list&gt;
-## 1: 2.001538   243 PSMD2,MCM4,CENPH,KIF18A,MCM7,CHEK1,...
-## 2: 2.051389   469  PSMD2,MCM4,CCND1,FOXM1,TUBB,NUP93,...
-## 3: 2.449494   156  SNAI2,TGFBI,LAMC2,CDH2,NT5E,FSTL3,...
-## 4: 2.356405    47  KRT6A,KRT5,KRT81,KRT14,KRT13,KRT7,...
-## 5: 2.296988    87   KRT6A,ANXA1,KRT5,KRT81,TP63,KRT7,...</code></pre>
+## 1: 1.992380   243 PSMD2,MCM4,CENPH,KIF18A,MCM7,CHEK1,...
+## 2: 2.037485   469  PSMD2,MCM4,CCND1,FOXM1,TUBB,NUP93,...
+## 3: 2.434228   156  SNAI2,TGFBI,LAMC2,CDH2,NT5E,FSTL3,...
+## 4: 2.373091    47  KRT6A,KRT5,KRT81,KRT14,KRT13,KRT7,...
+## 5: 2.268033    87   KRT6A,ANXA1,KRT5,KRT81,TP63,KRT7,...</code></pre>
 </div>
 <div id="classical" class="section level4 hasAnchor">
 <h4>Classical<a href="gsea-lab.html#classical" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -549,18 +549,18 @@ could indicate an issue with identifier mapping.
 <span id="cb67-8"><a href="gsea-lab.html#cb67-8" tabindex="-1"></a>top_classical_hits</span></code></pre></div>
 <pre><code>##                      pathway         pval         padj   log2err         ES
 ##                       &lt;char&gt;        &lt;num&gt;        &lt;num&gt;     &lt;num&gt;      &lt;num&gt;
-## 1: AEROBIC RESPIRATION AND R 4.671818e-08 1.507468e-05 0.7195128 -0.5399018
-## 2: BIOLOGICAL OXIDATIONS%REA 4.151187e-10 3.707010e-07 0.8140358 -0.6362964
-## 3: CELLULAR RESPIRATION%GOBP 5.222845e-08 1.507468e-05 0.7195128 -0.6108973
-## 4: CELLULAR RESPONSE TO XENO 9.613105e-11 1.502288e-07 0.8390889 -0.7080315
-## 5: XENOBIOTIC METABOLIC PROC 4.668543e-11 9.727687e-08 0.8513391 -0.7533267
-##          NES  size                                leadingEdge
-##        &lt;num&gt; &lt;int&gt;                                     &lt;list&gt;
-## 1: -1.871827   228          MPC2,MPC1,COX15,SFXN4,PDK2,FH,...
-## 2: -2.096713   148   CYP2S1,ALDH2,ACSS1,ADH1C,AOC1,AKR7A3,...
-## 3: -2.000361   135 BLOC1S1,COA6,PPARGC1A,FH,ATP5ME,SUCLG1,...
-## 4: -2.226358    97     FMO5,HNF4A,CYP2S1,ALDH2,NR1I2,CES2,...
-## 5: -2.292135    78     FMO5,HNF4A,CYP2S1,ALDH2,NR1I2,CES2,...</code></pre>
+## 1: AEROBIC RESPIRATION AND R 5.066326e-08 1.201648e-05 0.7195128 -0.5399018
+## 2: BIOLOGICAL OXIDATIONS%REA 1.331423e-10 1.467011e-07 0.8266573 -0.6362964
+## 3: CARBOXYLIC ACID METABOLIC 4.289119e-08 1.138687e-05 0.7195128 -0.4563033
+## 4: CELLULAR RESPONSE TO XENO 1.263152e-10 1.467011e-07 0.8266573 -0.7080315
+## 5: XENOBIOTIC METABOLIC PROC 1.751063e-11 3.648632e-08 0.8634154 -0.7533267
+##          NES  size                               leadingEdge
+##        &lt;num&gt; &lt;int&gt;                                    &lt;list&gt;
+## 1: -1.868979   228         MPC2,MPC1,COX15,SFXN4,PDK2,FH,...
+## 2: -2.100773   148  CYP2S1,ALDH2,ACSS1,ADH1C,AOC1,AKR7A3,...
+## 3: -1.689999   490 ALDOB,CYP2S1,PLA2G10,ABHD3,CPS1,LPIN1,...
+## 4: -2.207874    97    FMO5,HNF4A,CYP2S1,ALDH2,NR1I2,CES2,...
+## 5: -2.281330    78    FMO5,HNF4A,CYP2S1,ALDH2,NR1I2,CES2,...</code></pre>
 </div>
 </div>
 <div id="step-7" class="section level3 hasAnchor">

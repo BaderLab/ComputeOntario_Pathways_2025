@@ -1362,14 +1362,18 @@ SUMO E3 ligases SUMOylate target proteins
 <p>In a second step, try different thresholds of maximum gene-set size and adjusted pvalue threshold: 500 and 250 for * max_gs_size and 0.01 or 0.001 for pvalue-</p>
 <ul>
 <li>Option 1
-* max_gs_size = 500
-* p_thres = 0.01</li>
+<ul>
+<li>max_gs_size = 500</li>
+<li>p_thres = 0.01</li>
+</ul></li>
 </ul>
 <p>or</p>
 <ul>
 <li>Option 2
-* max_gs_size = 250
-* p_thres = 0.001</li>
+<ul>
+<li>max_gs_size = 250</li>
+<li>p_thres = 0.001</li>
+</ul></li>
 </ul>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="gprofiler-lab-new.html#cb15-1" tabindex="-1"></a><span class="do">##YOUR TURN##</span></span>
 <span id="cb15-2"><a href="gprofiler-lab-new.html#cb15-2" tabindex="-1"></a></span>
@@ -1391,37 +1395,58 @@ You need to format this pathway in a <a href="https://www.gsea-msigdb.org/gsea/d
 <p>Download the latest <a href="https://download.baderlab.org/EM_Genesets/current_release/Human/">Bader lab genesets</a>
 The file will be downloaded on your local computer in the workin directory (working_dir) of your choice.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="gprofiler-lab-new.html#cb16-1" tabindex="-1"></a>dest_gmt_file <span class="ot">=</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb16-2"><a href="gprofiler-lab-new.html#cb16-2" tabindex="-1"></a><span class="co">#working_dir = &quot;/Users/veronique/Documents/CO_summer_school&quot;</span></span>
-<span id="cb16-3"><a href="gprofiler-lab-new.html#cb16-3" tabindex="-1"></a>working_dir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(),<span class="st">&quot;Module2&quot;</span>,<span class="st">&quot;gprofiler&quot;</span>,<span class="st">&quot;data&quot;</span>)</span>
-<span id="cb16-4"><a href="gprofiler-lab-new.html#cb16-4" tabindex="-1"></a><span class="do">##  YOUR TURN: replace working directory by your own path to your working directory ##</span></span>
-<span id="cb16-5"><a href="gprofiler-lab-new.html#cb16-5" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="gprofiler-lab-new.html#cb16-6" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="gprofiler-lab-new.html#cb16-7" tabindex="-1"></a><span class="cf">if</span>(dest_gmt_file <span class="sc">==</span> <span class="st">&quot;&quot;</span>){</span>
-<span id="cb16-8"><a href="gprofiler-lab-new.html#cb16-8" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="gprofiler-lab-new.html#cb16-9" tabindex="-1"></a>  gmt_url <span class="ot">=</span> <span class="st">&quot;http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/&quot;</span></span>
-<span id="cb16-10"><a href="gprofiler-lab-new.html#cb16-10" tabindex="-1"></a></span>
-<span id="cb16-11"><a href="gprofiler-lab-new.html#cb16-11" tabindex="-1"></a>  <span class="co">#list all the files on the server</span></span>
-<span id="cb16-12"><a href="gprofiler-lab-new.html#cb16-12" tabindex="-1"></a>  filenames <span class="ot">=</span> RCurl<span class="sc">::</span><span class="fu">getURL</span>(gmt_url)</span>
-<span id="cb16-13"><a href="gprofiler-lab-new.html#cb16-13" tabindex="-1"></a>  tc <span class="ot">=</span> <span class="fu">textConnection</span>(filenames)</span>
-<span id="cb16-14"><a href="gprofiler-lab-new.html#cb16-14" tabindex="-1"></a>  contents <span class="ot">=</span> <span class="fu">readLines</span>(tc)</span>
-<span id="cb16-15"><a href="gprofiler-lab-new.html#cb16-15" tabindex="-1"></a>  <span class="fu">close</span>(tc)</span>
-<span id="cb16-16"><a href="gprofiler-lab-new.html#cb16-16" tabindex="-1"></a>  </span>
-<span id="cb16-17"><a href="gprofiler-lab-new.html#cb16-17" tabindex="-1"></a>  <span class="co">#get the gmt that has all the pathways and does not include </span></span>
-<span id="cb16-18"><a href="gprofiler-lab-new.html#cb16-18" tabindex="-1"></a>  <span class="co"># terms inferred from electronic annotations(IEA)</span></span>
-<span id="cb16-19"><a href="gprofiler-lab-new.html#cb16-19" tabindex="-1"></a>  <span class="co">#start with gmt file that has pathways only</span></span>
-<span id="cb16-20"><a href="gprofiler-lab-new.html#cb16-20" tabindex="-1"></a>  rx <span class="ot">=</span> <span class="fu">gregexpr</span>(<span class="st">&quot;(?&lt;=&lt;a href=</span><span class="sc">\&quot;</span><span class="st">)(.*.GOBP_AllPathways_noPFOCR_no_GO_iea.*.)(.gmt)(?=</span><span class="sc">\&quot;</span><span class="st">&gt;)&quot;</span>,</span>
-<span id="cb16-21"><a href="gprofiler-lab-new.html#cb16-21" tabindex="-1"></a>    contents, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-22"><a href="gprofiler-lab-new.html#cb16-22" tabindex="-1"></a>  gmt_file <span class="ot">=</span> <span class="fu">unlist</span>(<span class="fu">regmatches</span>(contents, rx))</span>
-<span id="cb16-23"><a href="gprofiler-lab-new.html#cb16-23" tabindex="-1"></a>  </span>
-<span id="cb16-24"><a href="gprofiler-lab-new.html#cb16-24" tabindex="-1"></a>  dest_gmt_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(working_dir,gmt_file)</span>
-<span id="cb16-25"><a href="gprofiler-lab-new.html#cb16-25" tabindex="-1"></a>  </span>
-<span id="cb16-26"><a href="gprofiler-lab-new.html#cb16-26" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(dest_gmt_file)){</span>
-<span id="cb16-27"><a href="gprofiler-lab-new.html#cb16-27" tabindex="-1"></a>    <span class="fu">download.file</span>(</span>
-<span id="cb16-28"><a href="gprofiler-lab-new.html#cb16-28" tabindex="-1"></a>      <span class="fu">paste</span>(gmt_url,gmt_file,<span class="at">sep=</span><span class="st">&quot;&quot;</span>),</span>
-<span id="cb16-29"><a href="gprofiler-lab-new.html#cb16-29" tabindex="-1"></a>      <span class="at">destfile=</span>dest_gmt_file</span>
-<span id="cb16-30"><a href="gprofiler-lab-new.html#cb16-30" tabindex="-1"></a>    )</span>
-<span id="cb16-31"><a href="gprofiler-lab-new.html#cb16-31" tabindex="-1"></a>  }</span>
-<span id="cb16-32"><a href="gprofiler-lab-new.html#cb16-32" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb16-2"><a href="gprofiler-lab-new.html#cb16-2" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="gprofiler-lab-new.html#cb16-3" tabindex="-1"></a><span class="co">#flag to trigger download of latest gmt file - change to TRUE </span></span>
+<span id="cb16-4"><a href="gprofiler-lab-new.html#cb16-4" tabindex="-1"></a><span class="co"># if you want to check the website and download the latest</span></span>
+<span id="cb16-5"><a href="gprofiler-lab-new.html#cb16-5" tabindex="-1"></a><span class="co"># version instead of using the specified May 01, 2025 version.</span></span>
+<span id="cb16-6"><a href="gprofiler-lab-new.html#cb16-6" tabindex="-1"></a>downlaod_latest_version <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb16-7"><a href="gprofiler-lab-new.html#cb16-7" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="gprofiler-lab-new.html#cb16-8" tabindex="-1"></a><span class="co">#working_dir = &quot;/Users/veronique/Documents/CO_summer_school&quot;</span></span>
+<span id="cb16-9"><a href="gprofiler-lab-new.html#cb16-9" tabindex="-1"></a>working_dir <span class="ot">=</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(),<span class="st">&quot;Module2&quot;</span>,<span class="st">&quot;gprofiler&quot;</span>,<span class="st">&quot;data&quot;</span>)</span>
+<span id="cb16-10"><a href="gprofiler-lab-new.html#cb16-10" tabindex="-1"></a><span class="do">##  YOUR TURN: replace working directory by your own path to your working directory ##</span></span>
+<span id="cb16-11"><a href="gprofiler-lab-new.html#cb16-11" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="gprofiler-lab-new.html#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="gprofiler-lab-new.html#cb16-13" tabindex="-1"></a><span class="cf">if</span>((dest_gmt_file <span class="sc">==</span> <span class="st">&quot;&quot;</span>) <span class="sc">&amp;&amp;</span> downlaod_latest_version){</span>
+<span id="cb16-14"><a href="gprofiler-lab-new.html#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="gprofiler-lab-new.html#cb16-15" tabindex="-1"></a>  gmt_url <span class="ot">=</span> <span class="st">&quot;http://download.baderlab.org/EM_Genesets/current_release/Human/symbol/&quot;</span></span>
+<span id="cb16-16"><a href="gprofiler-lab-new.html#cb16-16" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="gprofiler-lab-new.html#cb16-17" tabindex="-1"></a>  <span class="co">#list all the files on the server</span></span>
+<span id="cb16-18"><a href="gprofiler-lab-new.html#cb16-18" tabindex="-1"></a>  filenames <span class="ot">=</span> RCurl<span class="sc">::</span><span class="fu">getURL</span>(gmt_url)</span>
+<span id="cb16-19"><a href="gprofiler-lab-new.html#cb16-19" tabindex="-1"></a>  tc <span class="ot">=</span> <span class="fu">textConnection</span>(filenames)</span>
+<span id="cb16-20"><a href="gprofiler-lab-new.html#cb16-20" tabindex="-1"></a>  contents <span class="ot">=</span> <span class="fu">readLines</span>(tc)</span>
+<span id="cb16-21"><a href="gprofiler-lab-new.html#cb16-21" tabindex="-1"></a>  <span class="fu">close</span>(tc)</span>
+<span id="cb16-22"><a href="gprofiler-lab-new.html#cb16-22" tabindex="-1"></a>  </span>
+<span id="cb16-23"><a href="gprofiler-lab-new.html#cb16-23" tabindex="-1"></a>  <span class="co">#get the gmt that has all the pathways and does not include </span></span>
+<span id="cb16-24"><a href="gprofiler-lab-new.html#cb16-24" tabindex="-1"></a>  <span class="co"># terms inferred from electronic annotations(IEA)</span></span>
+<span id="cb16-25"><a href="gprofiler-lab-new.html#cb16-25" tabindex="-1"></a>  <span class="co">#start with gmt file that has pathways only</span></span>
+<span id="cb16-26"><a href="gprofiler-lab-new.html#cb16-26" tabindex="-1"></a>  rx <span class="ot">=</span> <span class="fu">gregexpr</span>(<span class="st">&quot;(?&lt;=&lt;a href=</span><span class="sc">\&quot;</span><span class="st">)(.*.GOBP_AllPathways_noPFOCR_no_GO_iea.*.)(.gmt)(?=</span><span class="sc">\&quot;</span><span class="st">&gt;)&quot;</span>,</span>
+<span id="cb16-27"><a href="gprofiler-lab-new.html#cb16-27" tabindex="-1"></a>    contents, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-28"><a href="gprofiler-lab-new.html#cb16-28" tabindex="-1"></a>  gmt_file <span class="ot">=</span> <span class="fu">unlist</span>(<span class="fu">regmatches</span>(contents, rx))</span>
+<span id="cb16-29"><a href="gprofiler-lab-new.html#cb16-29" tabindex="-1"></a>  </span>
+<span id="cb16-30"><a href="gprofiler-lab-new.html#cb16-30" tabindex="-1"></a>  dest_gmt_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(working_dir,gmt_file)</span>
+<span id="cb16-31"><a href="gprofiler-lab-new.html#cb16-31" tabindex="-1"></a>  </span>
+<span id="cb16-32"><a href="gprofiler-lab-new.html#cb16-32" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(dest_gmt_file)){</span>
+<span id="cb16-33"><a href="gprofiler-lab-new.html#cb16-33" tabindex="-1"></a>    <span class="fu">download.file</span>(</span>
+<span id="cb16-34"><a href="gprofiler-lab-new.html#cb16-34" tabindex="-1"></a>      <span class="fu">paste</span>(gmt_url,gmt_file,<span class="at">sep=</span><span class="st">&quot;&quot;</span>),</span>
+<span id="cb16-35"><a href="gprofiler-lab-new.html#cb16-35" tabindex="-1"></a>      <span class="at">destfile=</span>dest_gmt_file</span>
+<span id="cb16-36"><a href="gprofiler-lab-new.html#cb16-36" tabindex="-1"></a>    )</span>
+<span id="cb16-37"><a href="gprofiler-lab-new.html#cb16-37" tabindex="-1"></a>  }</span>
+<span id="cb16-38"><a href="gprofiler-lab-new.html#cb16-38" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span>(<span class="sc">!</span>downlaod_latest_version){</span>
+<span id="cb16-39"><a href="gprofiler-lab-new.html#cb16-39" tabindex="-1"></a>  </span>
+<span id="cb16-40"><a href="gprofiler-lab-new.html#cb16-40" tabindex="-1"></a>  gmt_url <span class="ot">=</span> <span class="st">&quot;http://download.baderlab.org/EM_Genesets/May_01_2025/Human/symbol/&quot;</span></span>
+<span id="cb16-41"><a href="gprofiler-lab-new.html#cb16-41" tabindex="-1"></a> gmt_file <span class="ot">=</span> <span class="st">&quot;Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt&quot;</span></span>
+<span id="cb16-42"><a href="gprofiler-lab-new.html#cb16-42" tabindex="-1"></a>  </span>
+<span id="cb16-43"><a href="gprofiler-lab-new.html#cb16-43" tabindex="-1"></a>  <span class="co">#download the specific file specified above</span></span>
+<span id="cb16-44"><a href="gprofiler-lab-new.html#cb16-44" tabindex="-1"></a>  dest_gmt_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(working_dir,gmt_file)</span>
+<span id="cb16-45"><a href="gprofiler-lab-new.html#cb16-45" tabindex="-1"></a>  </span>
+<span id="cb16-46"><a href="gprofiler-lab-new.html#cb16-46" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(dest_gmt_file)){</span>
+<span id="cb16-47"><a href="gprofiler-lab-new.html#cb16-47" tabindex="-1"></a>    <span class="fu">download.file</span>(</span>
+<span id="cb16-48"><a href="gprofiler-lab-new.html#cb16-48" tabindex="-1"></a>      <span class="fu">paste</span>(gmt_url,gmt_file,<span class="at">sep=</span><span class="st">&quot;&quot;</span>),</span>
+<span id="cb16-49"><a href="gprofiler-lab-new.html#cb16-49" tabindex="-1"></a>      <span class="at">destfile=</span>dest_gmt_file</span>
+<span id="cb16-50"><a href="gprofiler-lab-new.html#cb16-50" tabindex="-1"></a>    )</span>
+<span id="cb16-51"><a href="gprofiler-lab-new.html#cb16-51" tabindex="-1"></a>  }</span>
+<span id="cb16-52"><a href="gprofiler-lab-new.html#cb16-52" tabindex="-1"></a>  </span>
+<span id="cb16-53"><a href="gprofiler-lab-new.html#cb16-53" tabindex="-1"></a>}</span></code></pre></div>
 <p>Load in the GMT file</p>
 <p>This step will take the gmt file that we just downloaded on our computers and upload them into our R environment in the GSA.genesets object called “genesets_baderlab_genesets”.
 The capture.output() function is only there to redirect the printed messages for a clearer notebook.</p>
@@ -1555,19 +1580,19 @@ It is done by using the upload_GMT_file() function which is included in the gpro
 Note: it took about 2 minutes to run this chunck of code.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="gprofiler-lab-new.html#cb20-1" tabindex="-1"></a>custom_gmt_max250 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb20-2"><a href="gprofiler-lab-new.html#cb20-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max250_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__bc50_7kxj_nE8.
+<pre><code>## Your custom annotations ID is gp__sg7V_Etz2_fPQ.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__bc50_7kxj_nE8&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__sg7V_Etz2_fPQ&#39;)</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gprofiler-lab-new.html#cb23-1" tabindex="-1"></a>custom_gmt_max1000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb23-2"><a href="gprofiler-lab-new.html#cb23-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max1000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__dwD9_iWBx_NEw.
+<pre><code>## Your custom annotations ID is gp__UNAS_J9IL_VCY.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__dwD9_iWBx_NEw&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__UNAS_J9IL_VCY&#39;)</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gprofiler-lab-new.html#cb26-1" tabindex="-1"></a>custom_gmt_max10000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb26-2"><a href="gprofiler-lab-new.html#cb26-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max10000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__04gU_tDwT_J5E.
+<pre><code>## Your custom annotations ID is gp__Hyk6_yiOB_uPM.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__04gU_tDwT_J5E&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__Hyk6_yiOB_uPM&#39;)</code></pre>
 <p>For this query we are specifying -</p>
 <ul>
 <li>query - the set of genes of interest, as loaded in from the gene set file.</li>
