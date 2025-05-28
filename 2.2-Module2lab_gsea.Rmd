@@ -69,7 +69,7 @@ You don't need to perform this step for the exercise, the .gmt file will be give
 Go to:
 
   * http://download.baderlab.org/EM_Genesets/
-  * Click on June_01_2024/
+  * Click on May_01_2025/
   * Click on Human/
   * Click on symbol/
   * Save the Human_GOBP_AllPathways_noPFOCR_no_GO_iea...gmt file on your computer
@@ -93,7 +93,7 @@ Right click on link below and select "Save Link As...".
 Place it in the corresponding module directory of your CBW work directory.
 ```
 
-* [Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol.gmt](./Module2/gsea/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_June_01_2024_symbol.gmt)
+* [Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt](./Module2/gsea/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt)
 * [TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnk](./Module2/gsea/data//TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnk)
 
 
@@ -153,7 +153,7 @@ rnk_file <- "TCGA-PAAD_GDC_Subtype_Moffitt_BasalvsClassical_ranks.rnk"
 # For example, if you set dest_gmt_file =="" the below script will automatically
 # download the latest gmt file from baderlab webstie.  If it is set then it
 # will use the file specified.  
-dest_gmt_file = "./Module2/gprofiler/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt"
+dest_gmt_file = "Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt"
 ```
 
 ### Step 3.
@@ -389,7 +389,8 @@ p
 ##YOUR TURN##
 
 ## Generate the same bar plot for the top 20 Basal results.  
-## Change the colour of the bars to a different colour as they are a different phecotype from the Classical set.
+## Change the colour of the bars to a different colour as 
+## they are a different phenotype than the Classical set.
 ```
 
 #### Dot plot
@@ -420,6 +421,15 @@ p = ggplot(enrichment_results_topdown, aes(
   )
 p
 ```
+```{r}
+##YOUR TURN##
+
+## Generate the same dot plot for the top 20 Basal results.  
+## Change the colour of the bars to a different colour  range as 
+## they are a different phenotype than the Classical set.
+```
+
+
 
 #### Ridge plots
 
@@ -561,12 +571,18 @@ write_sample_fgsea_results<- function(current_fgsea_results, current_results_dir
 ```
 
 
-```{r output_results}
+```{r output_results, message=FALSE, warning=FALSE}
 #write out the fgsea results for this dataset
-      write_sample_fgsea_results(current_fgsea_results,output_dir,analysis_name)
+write_sample_fgsea_results(current_fgsea_results,output_dir,analysis_name)
 ```
 
+```{r}
+##YOUR TURN##
 
+## Using the file we just created try and create an enrichment map   
+## in Cytoscape - see the bonus work for example notebooks with the 
+## detailed instructions
+```
 
 [Link to information about GSEA results](http://www.baderlab.org/CancerStemCellProject/VeroniqueVoisin/AdditionalResources/GSEA#GSEA_enrichment_scores_and_statistics)
 
@@ -586,6 +602,13 @@ write_sample_fgsea_results<- function(current_fgsea_results, current_results_dir
 Run analysis directly from R for easy integration into existing pipelines.
 
 ```{block, type="rmd-bonus"}
+
+Try out Cytoscape - following this tutorial - https://baderlab.github.io/CBW_Pathways_2024/cytoscape_mod3.html
+
+Create an enrichment map from g:profiler or GSEA results - 
+  * https://baderlab.github.io/CBW_Pathways_2024/gprofiler_mod3.html
+  * https://baderlab.github.io/CBW_Pathways_2024/gsea_mod3.html
+
 Instead of using the GSEA application you can run it directly from R using the GSEA java jar that can be easily used within the workshop docker image (workshop_base_image) that you setup duing your prework.
 
 Follow the step by step instructions on how to run from R here - https://risserlin.github.io/CBW_pathways_workshop_R_notebooks/run-gsea-from-within-r.html
