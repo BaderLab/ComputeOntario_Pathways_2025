@@ -58,6 +58,7 @@ step-6.
 basal
 classical
 step-7
+gsea-style-enrichment-plots
 bar-plots
 dot-plot
 ridge-plots
