@@ -108,6 +108,7 @@ library(enrichplot)
 
 Save the gene list ([Pancancer_genelist.txt](./Module2/gprofiler/data/Pancancer_genelist.txt)) on your local computer. Remember where you stored it as you need to know the path to the file to start the practical lab.
 
+We recommend that you save it in your home directory in a folder called Module2 (./Module2) as it will be easier for you to follow the notebook.
 
 ```{block, type="rmd-tip"}
 ***Find path on Windows:***
@@ -344,7 +345,7 @@ dest_gmt_file = ""
 downlaod_latest_version = FALSE
 
 #working_dir = "/Users/veronique/Documents/CO_summer_school"
-working_dir = file.path(getwd(),"Module2","gprofiler","data")
+working_dir = file.path(getwd(),"Module2")
 ##  YOUR TURN: replace working directory by your own path to your working directory ##
 
 

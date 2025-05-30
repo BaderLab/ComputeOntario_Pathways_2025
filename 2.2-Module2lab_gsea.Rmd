@@ -90,7 +90,7 @@ Before starting this exercise, download the 2 required files:
 ```{block, type="rmd-datadownload"}
 Right click on link below and select "Save Link As...".
 
-Place it in the corresponding module directory of your CBW work directory.
+Place it in a directory called data in your current working directory.
 ```
 
 * [Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt](./Module2/gsea/data/Human_GOBP_AllPathways_noPFOCR_no_GO_iea_May_01_2025_symbol.gmt)
@@ -166,10 +166,10 @@ Set up parameters need for the analysis.
 # defined in the paramters at top of notebook
 
 #directory where all the data files are found.  
-working_dir <- "./data/"
+working_dir <- file.path(".","data")
 
 #directory where all the data files are found.  
-output_dir <- "./generated_data/"
+output_dir <- file.path(".","generated_data")
 if(!exists(output_dir)){
   dir.create(output_dir)
 }
