@@ -388,6 +388,7 @@ Visualize the top results as different sorts of plots, as demonstrated in the fi
 #### GSEA style Enrichment Plots
 
 In order to create GSEA Enrichment plots we need to use the package:
+
   * [ClusterProfiler](https://bioconductor.org/packages/devel/bioc/html/clusterProfiler.html) and 
   * [enrichplot](https://bioconductor.org/packages/devel/bioc/html/enrichplot.html)
 
