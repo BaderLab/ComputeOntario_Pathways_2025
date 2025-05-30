@@ -48,32 +48,59 @@ Open RStudio and follow script instructions below.
 ### Step 1 - Install and Load libraries
 
 ```{r message=FALSE, warning=FALSE}
-# List of required packages
-required_packages <- c(
-  "tidyverse",     # Data manipulation and visualization
-  "gprofiler2",    # Functional enrichment analysis
-  "knitr",         # Report generation
-  "kableExtra",    # Enhanced tables
-  "glue",          # String interpolation
-  "GSA",           # Gene set analysis
-  "RCurl",         # HTTP requests
-  "webshot2",      # Web content capture
-  "ggridges",      # Ridgeline plots
-  "igraph",        # Network analysis
-  "stringr"        # String manipulation
+# CRAN and Bioconductor setup
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+# List of CRAN packages
+cran_packages <- c(
+  "tidyverse",
+  "knitr",
+  "kableExtra",
+  "glue",
+  "RCurl",
+  "webshot2",
+  "ggridges",
+  "igraph",
+  "stringr",
+  "data.table"
 )
-
-# Install any missing packages
-installed <- rownames(installed.packages())
-for (pkg in required_packages) {
-  if (!(pkg %in% installed)) {
+# List of Bioconductor packages
+bioc_packages <- c(
+  "gprofiler2",
+  "GSA",
+  "fgsea",
+  "clusterProfiler",
+  "enrichplot"
+)
+# Install CRAN packages if not already installed
+for (pkg in cran_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
     install.packages(pkg)
   }
 }
-
-# Load all packages
-invisible(lapply(required_packages, library, character.only = TRUE))
-
+# Install Bioconductor packages if not already installed
+for (pkg in bioc_packages) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    BiocManager::install(pkg)
+  }
+}
+# Load the libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(glue)
+library(RCurl)
+library(webshot2)
+library(ggridges)
+library(igraph)
+library(stringr)
+library(data.table)
+# Bioconductor packages
+library(gprofiler2)
+library(GSA)
+library(fgsea)
+library(clusterProfiler)
+library(enrichplot)
 ```
 
 
@@ -299,7 +326,7 @@ With regards to pathway sets there are two options when using [g:Profiler](https
 The most common reasons for supplying your own genesets is the ability to use up to date annotations or in-house annotations that might not be available in the public sphere yet.  It can be used to test the enrichment in a particular pathway of interest that might not be in the general pathway database but that you obtained for example by extracting the data from a published paper.
 You need to format this pathway in a [.gmt file](https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html).
 
-In this example, we will upload the Baderlab gene set file that contains multiple database sources. We will filter the gene-set prior to uploading the gene-set file to g:Profiler. This way, it will ensure that 
+In this example, we will upload the Baderlab gene set file that contains multiple database sources. We will filter the gene-set prior to uploading the gene-set file to g:Profiler. 
 
 ### Step 7 - Download and load Bader lab geneset file
 
@@ -697,7 +724,7 @@ p
 
 ### Step 4 - Network visualization - EnrichmentMap
 #### Get names of genes in the overlap for each pathway
-```{r message=FALSE, warning=FALSE, include=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 gprofiler_results_custom_max250 <- gost(query = query_set ,
                                      significant=TRUE,
                                  ordered_query = FALSE,

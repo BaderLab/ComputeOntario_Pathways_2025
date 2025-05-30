@@ -276,31 +276,59 @@ Open RStudio and follow script instructions below.
 </div>
 <div id="step-1---install-and-load-libraries" class="section level3 hasAnchor">
 <h3>Step 1 - Install and Load libraries<a href="gprofiler-lab-new.html#step-1---install-and-load-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gprofiler-lab-new.html#cb1-1" tabindex="-1"></a><span class="co"># List of required packages</span></span>
-<span id="cb1-2"><a href="gprofiler-lab-new.html#cb1-2" tabindex="-1"></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb1-3"><a href="gprofiler-lab-new.html#cb1-3" tabindex="-1"></a>  <span class="st">&quot;tidyverse&quot;</span>,     <span class="co"># Data manipulation and visualization</span></span>
-<span id="cb1-4"><a href="gprofiler-lab-new.html#cb1-4" tabindex="-1"></a>  <span class="st">&quot;gprofiler2&quot;</span>,    <span class="co"># Functional enrichment analysis</span></span>
-<span id="cb1-5"><a href="gprofiler-lab-new.html#cb1-5" tabindex="-1"></a>  <span class="st">&quot;knitr&quot;</span>,         <span class="co"># Report generation</span></span>
-<span id="cb1-6"><a href="gprofiler-lab-new.html#cb1-6" tabindex="-1"></a>  <span class="st">&quot;kableExtra&quot;</span>,    <span class="co"># Enhanced tables</span></span>
-<span id="cb1-7"><a href="gprofiler-lab-new.html#cb1-7" tabindex="-1"></a>  <span class="st">&quot;glue&quot;</span>,          <span class="co"># String interpolation</span></span>
-<span id="cb1-8"><a href="gprofiler-lab-new.html#cb1-8" tabindex="-1"></a>  <span class="st">&quot;GSA&quot;</span>,           <span class="co"># Gene set analysis</span></span>
-<span id="cb1-9"><a href="gprofiler-lab-new.html#cb1-9" tabindex="-1"></a>  <span class="st">&quot;RCurl&quot;</span>,         <span class="co"># HTTP requests</span></span>
-<span id="cb1-10"><a href="gprofiler-lab-new.html#cb1-10" tabindex="-1"></a>  <span class="st">&quot;webshot2&quot;</span>,      <span class="co"># Web content capture</span></span>
-<span id="cb1-11"><a href="gprofiler-lab-new.html#cb1-11" tabindex="-1"></a>  <span class="st">&quot;ggridges&quot;</span>,      <span class="co"># Ridgeline plots</span></span>
-<span id="cb1-12"><a href="gprofiler-lab-new.html#cb1-12" tabindex="-1"></a>  <span class="st">&quot;igraph&quot;</span>,        <span class="co"># Network analysis</span></span>
-<span id="cb1-13"><a href="gprofiler-lab-new.html#cb1-13" tabindex="-1"></a>  <span class="st">&quot;stringr&quot;</span>        <span class="co"># String manipulation</span></span>
-<span id="cb1-14"><a href="gprofiler-lab-new.html#cb1-14" tabindex="-1"></a>)</span>
-<span id="cb1-15"><a href="gprofiler-lab-new.html#cb1-15" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="gprofiler-lab-new.html#cb1-16" tabindex="-1"></a><span class="co"># Install any missing packages</span></span>
-<span id="cb1-17"><a href="gprofiler-lab-new.html#cb1-17" tabindex="-1"></a>installed <span class="ot">&lt;-</span> <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>
-<span id="cb1-18"><a href="gprofiler-lab-new.html#cb1-18" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> required_packages) {</span>
-<span id="cb1-19"><a href="gprofiler-lab-new.html#cb1-19" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>(pkg <span class="sc">%in%</span> installed)) {</span>
-<span id="cb1-20"><a href="gprofiler-lab-new.html#cb1-20" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg)</span>
-<span id="cb1-21"><a href="gprofiler-lab-new.html#cb1-21" tabindex="-1"></a>  }</span>
-<span id="cb1-22"><a href="gprofiler-lab-new.html#cb1-22" tabindex="-1"></a>}</span>
-<span id="cb1-23"><a href="gprofiler-lab-new.html#cb1-23" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="gprofiler-lab-new.html#cb1-24" tabindex="-1"></a><span class="co"># Load all packages</span></span>
-<span id="cb1-25"><a href="gprofiler-lab-new.html#cb1-25" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(required_packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="gprofiler-lab-new.html#cb1-1" tabindex="-1"></a><span class="co"># CRAN and Bioconductor setup</span></span>
+<span id="cb1-2"><a href="gprofiler-lab-new.html#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-3"><a href="gprofiler-lab-new.html#cb1-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb1-4"><a href="gprofiler-lab-new.html#cb1-4" tabindex="-1"></a><span class="co"># List of CRAN packages</span></span>
+<span id="cb1-5"><a href="gprofiler-lab-new.html#cb1-5" tabindex="-1"></a>cran_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-6"><a href="gprofiler-lab-new.html#cb1-6" tabindex="-1"></a>  <span class="st">&quot;tidyverse&quot;</span>,</span>
+<span id="cb1-7"><a href="gprofiler-lab-new.html#cb1-7" tabindex="-1"></a>  <span class="st">&quot;knitr&quot;</span>,</span>
+<span id="cb1-8"><a href="gprofiler-lab-new.html#cb1-8" tabindex="-1"></a>  <span class="st">&quot;kableExtra&quot;</span>,</span>
+<span id="cb1-9"><a href="gprofiler-lab-new.html#cb1-9" tabindex="-1"></a>  <span class="st">&quot;glue&quot;</span>,</span>
+<span id="cb1-10"><a href="gprofiler-lab-new.html#cb1-10" tabindex="-1"></a>  <span class="st">&quot;RCurl&quot;</span>,</span>
+<span id="cb1-11"><a href="gprofiler-lab-new.html#cb1-11" tabindex="-1"></a>  <span class="st">&quot;webshot2&quot;</span>,</span>
+<span id="cb1-12"><a href="gprofiler-lab-new.html#cb1-12" tabindex="-1"></a>  <span class="st">&quot;ggridges&quot;</span>,</span>
+<span id="cb1-13"><a href="gprofiler-lab-new.html#cb1-13" tabindex="-1"></a>  <span class="st">&quot;igraph&quot;</span>,</span>
+<span id="cb1-14"><a href="gprofiler-lab-new.html#cb1-14" tabindex="-1"></a>  <span class="st">&quot;stringr&quot;</span>,</span>
+<span id="cb1-15"><a href="gprofiler-lab-new.html#cb1-15" tabindex="-1"></a>  <span class="st">&quot;data.table&quot;</span></span>
+<span id="cb1-16"><a href="gprofiler-lab-new.html#cb1-16" tabindex="-1"></a>)</span>
+<span id="cb1-17"><a href="gprofiler-lab-new.html#cb1-17" tabindex="-1"></a><span class="co"># List of Bioconductor packages</span></span>
+<span id="cb1-18"><a href="gprofiler-lab-new.html#cb1-18" tabindex="-1"></a>bioc_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-19"><a href="gprofiler-lab-new.html#cb1-19" tabindex="-1"></a>  <span class="st">&quot;gprofiler2&quot;</span>,</span>
+<span id="cb1-20"><a href="gprofiler-lab-new.html#cb1-20" tabindex="-1"></a>  <span class="st">&quot;GSA&quot;</span>,</span>
+<span id="cb1-21"><a href="gprofiler-lab-new.html#cb1-21" tabindex="-1"></a>  <span class="st">&quot;fgsea&quot;</span>,</span>
+<span id="cb1-22"><a href="gprofiler-lab-new.html#cb1-22" tabindex="-1"></a>  <span class="st">&quot;clusterProfiler&quot;</span>,</span>
+<span id="cb1-23"><a href="gprofiler-lab-new.html#cb1-23" tabindex="-1"></a>  <span class="st">&quot;enrichplot&quot;</span></span>
+<span id="cb1-24"><a href="gprofiler-lab-new.html#cb1-24" tabindex="-1"></a>)</span>
+<span id="cb1-25"><a href="gprofiler-lab-new.html#cb1-25" tabindex="-1"></a><span class="co"># Install CRAN packages if not already installed</span></span>
+<span id="cb1-26"><a href="gprofiler-lab-new.html#cb1-26" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> cran_packages) {</span>
+<span id="cb1-27"><a href="gprofiler-lab-new.html#cb1-27" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(pkg, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-28"><a href="gprofiler-lab-new.html#cb1-28" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg)</span>
+<span id="cb1-29"><a href="gprofiler-lab-new.html#cb1-29" tabindex="-1"></a>  }</span>
+<span id="cb1-30"><a href="gprofiler-lab-new.html#cb1-30" tabindex="-1"></a>}</span>
+<span id="cb1-31"><a href="gprofiler-lab-new.html#cb1-31" tabindex="-1"></a><span class="co"># Install Bioconductor packages if not already installed</span></span>
+<span id="cb1-32"><a href="gprofiler-lab-new.html#cb1-32" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> bioc_packages) {</span>
+<span id="cb1-33"><a href="gprofiler-lab-new.html#cb1-33" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(pkg, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-34"><a href="gprofiler-lab-new.html#cb1-34" tabindex="-1"></a>    BiocManager<span class="sc">::</span><span class="fu">install</span>(pkg)</span>
+<span id="cb1-35"><a href="gprofiler-lab-new.html#cb1-35" tabindex="-1"></a>  }</span>
+<span id="cb1-36"><a href="gprofiler-lab-new.html#cb1-36" tabindex="-1"></a>}</span>
+<span id="cb1-37"><a href="gprofiler-lab-new.html#cb1-37" tabindex="-1"></a><span class="co"># Load the libraries</span></span>
+<span id="cb1-38"><a href="gprofiler-lab-new.html#cb1-38" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-39"><a href="gprofiler-lab-new.html#cb1-39" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-40"><a href="gprofiler-lab-new.html#cb1-40" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-41"><a href="gprofiler-lab-new.html#cb1-41" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb1-42"><a href="gprofiler-lab-new.html#cb1-42" tabindex="-1"></a><span class="fu">library</span>(RCurl)</span>
+<span id="cb1-43"><a href="gprofiler-lab-new.html#cb1-43" tabindex="-1"></a><span class="fu">library</span>(webshot2)</span>
+<span id="cb1-44"><a href="gprofiler-lab-new.html#cb1-44" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
+<span id="cb1-45"><a href="gprofiler-lab-new.html#cb1-45" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-46"><a href="gprofiler-lab-new.html#cb1-46" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-47"><a href="gprofiler-lab-new.html#cb1-47" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-48"><a href="gprofiler-lab-new.html#cb1-48" tabindex="-1"></a><span class="co"># Bioconductor packages</span></span>
+<span id="cb1-49"><a href="gprofiler-lab-new.html#cb1-49" tabindex="-1"></a><span class="fu">library</span>(gprofiler2)</span>
+<span id="cb1-50"><a href="gprofiler-lab-new.html#cb1-50" tabindex="-1"></a><span class="fu">library</span>(GSA)</span>
+<span id="cb1-51"><a href="gprofiler-lab-new.html#cb1-51" tabindex="-1"></a><span class="fu">library</span>(fgsea)</span>
+<span id="cb1-52"><a href="gprofiler-lab-new.html#cb1-52" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb1-53"><a href="gprofiler-lab-new.html#cb1-53" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span></code></pre></div>
 </div>
 <div id="step-2---input-query" class="section level3 hasAnchor">
 <h3>Step 2 - Input query<a href="gprofiler-lab-new.html#step-2---input-query" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -432,13 +460,13 @@ For detailed descriptions of all the parameters that can be specified for the go
 ## 4               regulation of macromolecule biosynthetic process
 ## 5 regulation of nucleobase-containing compound metabolic process
 ## 6                                  regulation of gene expression
-##   effective_domain_size source_order                            parents
-## 1                 16175        17800             GO:0019222, GO:0044238
-## 2                 16175        14472             GO:0019222, GO:0043170
-## 3                 16175         5599             GO:0008152, GO:0050794
-## 4                 16175         4209 GO:0009059, GO:0009889, GO:0060255
-## 5                 16175         5596             GO:0006139, GO:0080090
-## 6                 16175         4161             GO:0010467, GO:0010556</code></pre>
+##   effective_domain_size source_order      parents
+## 1                 16175        17800 GO:00192....
+## 2                 16175        14472 GO:00192....
+## 3                 16175         5599 GO:00081....
+## 4                 16175         4209 GO:00090....
+## 5                 16175         5596 GO:00061....
+## 6                 16175         4161 GO:00104....</code></pre>
 <p>The enrichment_results dataframe contains different columns. Let’s rearrange the table to display the most important information. We will arrange the table so it contains: the database origin, the name of each of the pathway, term size , query size, intersection size and adjusted pvalue. -</p>
 <ul>
 <li>Term size: number of genes in the pathway as it is in the database</li>
@@ -1388,7 +1416,7 @@ SUMO E3 ligases SUMOylate target proteins
 </ul>
 <p>The most common reasons for supplying your own genesets is the ability to use up to date annotations or in-house annotations that might not be available in the public sphere yet. It can be used to test the enrichment in a particular pathway of interest that might not be in the general pathway database but that you obtained for example by extracting the data from a published paper.
 You need to format this pathway in a <a href="https://www.gsea-msigdb.org/gsea/doc/GSEAUserGuideFrame.html">.gmt file</a>.</p>
-<p>In this example, we will upload the Baderlab gene set file that contains multiple database sources. We will filter the gene-set prior to uploading the gene-set file to g:Profiler. This way, it will ensure that</p>
+<p>In this example, we will upload the Baderlab gene set file that contains multiple database sources. We will filter the gene-set prior to uploading the gene-set file to g:Profiler.</p>
 </div>
 <div id="step-7---download-and-load-bader-lab-geneset-file" class="section level3 hasAnchor">
 <h3>Step 7 - Download and load Bader lab geneset file<a href="gprofiler-lab-new.html#step-7---download-and-load-bader-lab-geneset-file" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1580,19 +1608,19 @@ It is done by using the upload_GMT_file() function which is included in the gpro
 Note: it took about 2 minutes to run this chunck of code.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="gprofiler-lab-new.html#cb20-1" tabindex="-1"></a>custom_gmt_max250 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb20-2"><a href="gprofiler-lab-new.html#cb20-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max250_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__j8tY_XpaM_o9s.
+<pre><code>## Your custom annotations ID is gp__dCEN_48Lr_DyA.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__j8tY_XpaM_o9s&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__dCEN_48Lr_DyA&#39;)</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gprofiler-lab-new.html#cb23-1" tabindex="-1"></a>custom_gmt_max1000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb23-2"><a href="gprofiler-lab-new.html#cb23-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max1000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__LsVx_ginz_McA.
+<pre><code>## Your custom annotations ID is gp__FIlK_zygN_bHY.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__LsVx_ginz_McA&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__FIlK_zygN_bHY&#39;)</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gprofiler-lab-new.html#cb26-1" tabindex="-1"></a>custom_gmt_max10000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb26-2"><a href="gprofiler-lab-new.html#cb26-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max10000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__9BWk_UwPt_kvU.
+<pre><code>## Your custom annotations ID is gp__V23w_Ka9J_4E0.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__9BWk_UwPt_kvU&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__V23w_Ka9J_4E0&#39;)</code></pre>
 <p>For this query we are specifying -</p>
 <ul>
 <li>query - the set of genes of interest, as loaded in from the gene set file.</li>
@@ -1663,11 +1691,11 @@ Note: it took about 2 minutes to run this chunck of code.</p>
 ## 4                                    Cell cycle                 16997
 ## 5              Integrated breast cancer pathway                 16997
 ##   source_order parents
-## 1         5826    NULL
-## 2         5060    NULL
-## 3         5126    NULL
-## 4         5076    NULL
-## 5         5610    NULL</code></pre>
+## 1         5826        
+## 2         5060        
+## 3         5126        
+## 4         5076        
+## 5         5610</code></pre>
 <p>Filter the table to include just the columns that are required for the generic enrichment map file results <a href="https://enrichmentmap.readthedocs.io/en/latest/FileFormats.html#generic-results-files">GEM</a>. Restrict the results to just the ones that have at least min_gs_size and less than max_gs_size terms and min_intersection size include only the term_id, term_name, p_value (and p_value again because the p_value is actually the corrected p-value. The output file does not contain the nominal p_value. For down stream analysis though it is expected to have both a p-value and a q-value so just duplicate the q-value as both p-value and q-value)</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gprofiler-lab-new.html#cb37-1" tabindex="-1"></a><span class="co"># filer by params defined above</span></span>
 <span id="cb37-2"><a href="gprofiler-lab-new.html#cb37-2" tabindex="-1"></a>enrichment_results_customgmt_max250<span class="sc">$</span>p_value <span class="ot">&lt;-</span> <span class="fu">formatC</span>(enrichment_results_customgmt_max250<span class="sc">$</span>p_value, <span class="at">format =</span> <span class="st">&quot;e&quot;</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span>
@@ -2272,48 +2300,81 @@ regulation of cell proliferation involved in heart valve morphogenesis
 <h3>Step 4 - Network visualization - EnrichmentMap<a href="gprofiler-lab-new.html#step-4---network-visualization---enrichmentmap" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="get-names-of-genes-in-the-overlap-for-each-pathway" class="section level4 hasAnchor">
 <h4>Get names of genes in the overlap for each pathway<a href="gprofiler-lab-new.html#get-names-of-genes-in-the-overlap-for-each-pathway" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="gprofiler-lab-new.html#cb43-1" tabindex="-1"></a>gprofiler_results_custom_max250 <span class="ot">&lt;-</span> <span class="fu">gost</span>(<span class="at">query =</span> query_set ,</span>
+<span id="cb43-2"><a href="gprofiler-lab-new.html#cb43-2" tabindex="-1"></a>                                     <span class="at">significant=</span><span class="cn">TRUE</span>,</span>
+<span id="cb43-3"><a href="gprofiler-lab-new.html#cb43-3" tabindex="-1"></a>                                 <span class="at">ordered_query =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb43-4"><a href="gprofiler-lab-new.html#cb43-4" tabindex="-1"></a>                                  <span class="at">exclude_iea=</span><span class="cn">TRUE</span>,</span>
+<span id="cb43-5"><a href="gprofiler-lab-new.html#cb43-5" tabindex="-1"></a>                                     <span class="at">correction_method =</span> <span class="st">&quot;fdr&quot;</span>,</span>
+<span id="cb43-6"><a href="gprofiler-lab-new.html#cb43-6" tabindex="-1"></a>                                 <span class="at">organism =</span> custom_gmt_max250</span>
+<span id="cb43-7"><a href="gprofiler-lab-new.html#cb43-7" tabindex="-1"></a>                                     )</span>
+<span id="cb43-8"><a href="gprofiler-lab-new.html#cb43-8" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="gprofiler-lab-new.html#cb43-9" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="gprofiler-lab-new.html#cb43-10" tabindex="-1"></a>subset_genesets <span class="ot">&lt;-</span> genesets_baderlab_genesets<span class="sc">$</span>genesets[<span class="fu">which</span>(genesets_baderlab_genesets<span class="sc">$</span>geneset.names <span class="sc">%in%</span> gprofiler_results_custom_max250<span class="sc">$</span>result<span class="sc">$</span>term_id)]</span>
+<span id="cb43-11"><a href="gprofiler-lab-new.html#cb43-11" tabindex="-1"></a>      </span>
+<span id="cb43-12"><a href="gprofiler-lab-new.html#cb43-12" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="gprofiler-lab-new.html#cb43-13" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">lapply</span>(subset_genesets,<span class="at">FUN=</span><span class="cf">function</span>(x){<span class="fu">intersect</span>(x,query_set)})</span>
+<span id="cb43-14"><a href="gprofiler-lab-new.html#cb43-14" tabindex="-1"></a>  </span>
+<span id="cb43-15"><a href="gprofiler-lab-new.html#cb43-15" tabindex="-1"></a>  <span class="co"># For each of the genes collapse to the comma separate text</span></span>
+<span id="cb43-16"><a href="gprofiler-lab-new.html#cb43-16" tabindex="-1"></a>genes_collapsed <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(genes,<span class="at">FUN=</span><span class="cf">function</span>(x){<span class="fu">paste</span>(x,<span class="at">collapse =</span> <span class="st">&quot;,&quot;</span>)}))</span>
+<span id="cb43-17"><a href="gprofiler-lab-new.html#cb43-17" tabindex="-1"></a>  </span>
+<span id="cb43-18"><a href="gprofiler-lab-new.html#cb43-18" tabindex="-1"></a>genes_collapsed_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb43-19"><a href="gprofiler-lab-new.html#cb43-19" tabindex="-1"></a>                            <span class="at">term_id =</span> <span class="fu">names</span>(genes), </span>
+<span id="cb43-20"><a href="gprofiler-lab-new.html#cb43-20" tabindex="-1"></a>                            <span class="at">genes =</span> genes_collapsed,<span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb43-21"><a href="gprofiler-lab-new.html#cb43-21" tabindex="-1"></a>  </span>
+<span id="cb43-22"><a href="gprofiler-lab-new.html#cb43-22" tabindex="-1"></a></span>
+<span id="cb43-23"><a href="gprofiler-lab-new.html#cb43-23" tabindex="-1"></a></span>
+<span id="cb43-24"><a href="gprofiler-lab-new.html#cb43-24" tabindex="-1"></a>formatted_results <span class="ot">&lt;-</span> <span class="fu">merge</span>(gprofiler_results_custom_max250<span class="sc">$</span>result,genes_collapsed_df,<span class="at">by.x=</span><span class="st">&quot;term_id&quot;</span> , <span class="at">by.y=</span><span class="st">&quot;term_id&quot;</span> )</span>
+<span id="cb43-25"><a href="gprofiler-lab-new.html#cb43-25" tabindex="-1"></a></span>
+<span id="cb43-26"><a href="gprofiler-lab-new.html#cb43-26" tabindex="-1"></a>formatted_results <span class="ot">&lt;-</span> formatted_results[<span class="fu">order</span>(formatted_results<span class="sc">$</span>p_value),]</span>
+<span id="cb43-27"><a href="gprofiler-lab-new.html#cb43-27" tabindex="-1"></a><span class="fu">colnames</span>(formatted_results)     </span></code></pre></div>
+<pre><code>##  [1] &quot;term_id&quot;               &quot;query&quot;                 &quot;significant&quot;          
+##  [4] &quot;p_value&quot;               &quot;term_size&quot;             &quot;query_size&quot;           
+##  [7] &quot;intersection_size&quot;     &quot;precision&quot;             &quot;recall&quot;               
+## [10] &quot;source&quot;                &quot;term_name&quot;             &quot;effective_domain_size&quot;
+## [13] &quot;source_order&quot;          &quot;parents&quot;               &quot;genes&quot;</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="gprofiler-lab-new.html#cb45-1" tabindex="-1"></a>formatted_results_sel <span class="ot">=</span> formatted_results[ , <span class="fu">c</span>(<span class="st">&quot;term_name&quot;</span>,  <span class="st">&quot;genes&quot;</span>) ]</span></code></pre></div>
 </div>
 <div id="create-the-enrichment-map" class="section level4 hasAnchor">
 <h4>Create the enrichment map<a href="gprofiler-lab-new.html#create-the-enrichment-map" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="gprofiler-lab-new.html#cb43-1" tabindex="-1"></a><span class="co"># Create your data frame</span></span>
-<span id="cb43-2"><a href="gprofiler-lab-new.html#cb43-2" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="gprofiler-lab-new.html#cb43-3" tabindex="-1"></a>df <span class="ot">=</span> formatted_results_sel[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span>
-<span id="cb43-4"><a href="gprofiler-lab-new.html#cb43-4" tabindex="-1"></a><span class="co"># Step 2: Convert gene strings into lists</span></span>
-<span id="cb43-5"><a href="gprofiler-lab-new.html#cb43-5" tabindex="-1"></a>df<span class="sc">$</span>gene_list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(df<span class="sc">$</span>genes, <span class="st">&quot;,&quot;</span>)</span>
-<span id="cb43-6"><a href="gprofiler-lab-new.html#cb43-6" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="gprofiler-lab-new.html#cb43-7" tabindex="-1"></a><span class="co"># Create edges based on shared genes</span></span>
-<span id="cb43-8"><a href="gprofiler-lab-new.html#cb43-8" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from =</span> <span class="fu">character</span>(), <span class="at">to =</span> <span class="fu">character</span>(), <span class="at">weight =</span> <span class="fu">integer</span>(), <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb43-9"><a href="gprofiler-lab-new.html#cb43-9" tabindex="-1"></a></span>
-<span id="cb43-10"><a href="gprofiler-lab-new.html#cb43-10" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(df) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
-<span id="cb43-11"><a href="gprofiler-lab-new.html#cb43-11" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(df)) {</span>
-<span id="cb43-12"><a href="gprofiler-lab-new.html#cb43-12" tabindex="-1"></a>    genes_i <span class="ot">&lt;-</span> df<span class="sc">$</span>gene_list[[i]]</span>
-<span id="cb43-13"><a href="gprofiler-lab-new.html#cb43-13" tabindex="-1"></a>    genes_j <span class="ot">&lt;-</span> df<span class="sc">$</span>gene_list[[j]]</span>
-<span id="cb43-14"><a href="gprofiler-lab-new.html#cb43-14" tabindex="-1"></a>    shared_genes <span class="ot">&lt;-</span> <span class="fu">intersect</span>(genes_i, genes_j)</span>
-<span id="cb43-15"><a href="gprofiler-lab-new.html#cb43-15" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(shared_genes) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb43-16"><a href="gprofiler-lab-new.html#cb43-16" tabindex="-1"></a>      edges <span class="ot">&lt;-</span> <span class="fu">rbind</span>(edges, <span class="fu">data.frame</span>(</span>
-<span id="cb43-17"><a href="gprofiler-lab-new.html#cb43-17" tabindex="-1"></a>        <span class="at">from =</span> df<span class="sc">$</span>term_name[i],</span>
-<span id="cb43-18"><a href="gprofiler-lab-new.html#cb43-18" tabindex="-1"></a>        <span class="at">to =</span> df<span class="sc">$</span>term_name[j],</span>
-<span id="cb43-19"><a href="gprofiler-lab-new.html#cb43-19" tabindex="-1"></a>        <span class="at">weight =</span> <span class="fu">length</span>(shared_genes),</span>
-<span id="cb43-20"><a href="gprofiler-lab-new.html#cb43-20" tabindex="-1"></a>        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
-<span id="cb43-21"><a href="gprofiler-lab-new.html#cb43-21" tabindex="-1"></a>      ))</span>
-<span id="cb43-22"><a href="gprofiler-lab-new.html#cb43-22" tabindex="-1"></a>    }</span>
-<span id="cb43-23"><a href="gprofiler-lab-new.html#cb43-23" tabindex="-1"></a>  }</span>
-<span id="cb43-24"><a href="gprofiler-lab-new.html#cb43-24" tabindex="-1"></a>}</span>
-<span id="cb43-25"><a href="gprofiler-lab-new.html#cb43-25" tabindex="-1"></a></span>
-<span id="cb43-26"><a href="gprofiler-lab-new.html#cb43-26" tabindex="-1"></a><span class="co"># Create igraph object</span></span>
-<span id="cb43-27"><a href="gprofiler-lab-new.html#cb43-27" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(<span class="at">d =</span> edges, <span class="at">vertices =</span> df<span class="sc">$</span>term_name, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb43-28"><a href="gprofiler-lab-new.html#cb43-28" tabindex="-1"></a></span>
-<span id="cb43-29"><a href="gprofiler-lab-new.html#cb43-29" tabindex="-1"></a><span class="co"># Plot the graph</span></span>
-<span id="cb43-30"><a href="gprofiler-lab-new.html#cb43-30" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">plot</span>(</span>
-<span id="cb43-31"><a href="gprofiler-lab-new.html#cb43-31" tabindex="-1"></a>  g,</span>
-<span id="cb43-32"><a href="gprofiler-lab-new.html#cb43-32" tabindex="-1"></a>  <span class="at">vertex.label.cex =</span> <span class="fl">0.8</span>,</span>
-<span id="cb43-33"><a href="gprofiler-lab-new.html#cb43-33" tabindex="-1"></a>  <span class="at">vertex.label.color =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb43-34"><a href="gprofiler-lab-new.html#cb43-34" tabindex="-1"></a>  <span class="at">vertex.size =</span> <span class="dv">30</span>,</span>
-<span id="cb43-35"><a href="gprofiler-lab-new.html#cb43-35" tabindex="-1"></a>  <span class="at">edge.width =</span> <span class="fu">E</span>(g)<span class="sc">$</span>weight,</span>
-<span id="cb43-36"><a href="gprofiler-lab-new.html#cb43-36" tabindex="-1"></a>  <span class="at">edge.color =</span> <span class="st">&quot;gray50&quot;</span>,</span>
-<span id="cb43-37"><a href="gprofiler-lab-new.html#cb43-37" tabindex="-1"></a>  <span class="at">vertex.color =</span> <span class="st">&quot;skyblue&quot;</span>,</span>
-<span id="cb43-38"><a href="gprofiler-lab-new.html#cb43-38" tabindex="-1"></a>  <span class="at">layout =</span> <span class="fu">layout_with_fr</span>(g)</span>
-<span id="cb43-39"><a href="gprofiler-lab-new.html#cb43-39" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="gprofiler-lab-new.html#cb46-1" tabindex="-1"></a><span class="co"># Create your data frame</span></span>
+<span id="cb46-2"><a href="gprofiler-lab-new.html#cb46-2" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="gprofiler-lab-new.html#cb46-3" tabindex="-1"></a>df <span class="ot">=</span> formatted_results_sel[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span>
+<span id="cb46-4"><a href="gprofiler-lab-new.html#cb46-4" tabindex="-1"></a><span class="co"># Step 2: Convert gene strings into lists</span></span>
+<span id="cb46-5"><a href="gprofiler-lab-new.html#cb46-5" tabindex="-1"></a>df<span class="sc">$</span>gene_list <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(df<span class="sc">$</span>genes, <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb46-6"><a href="gprofiler-lab-new.html#cb46-6" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="gprofiler-lab-new.html#cb46-7" tabindex="-1"></a><span class="co"># Create edges based on shared genes</span></span>
+<span id="cb46-8"><a href="gprofiler-lab-new.html#cb46-8" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from =</span> <span class="fu">character</span>(), <span class="at">to =</span> <span class="fu">character</span>(), <span class="at">weight =</span> <span class="fu">integer</span>(), <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb46-9"><a href="gprofiler-lab-new.html#cb46-9" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="gprofiler-lab-new.html#cb46-10" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(df) <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb46-11"><a href="gprofiler-lab-new.html#cb46-11" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(df)) {</span>
+<span id="cb46-12"><a href="gprofiler-lab-new.html#cb46-12" tabindex="-1"></a>    genes_i <span class="ot">&lt;-</span> df<span class="sc">$</span>gene_list[[i]]</span>
+<span id="cb46-13"><a href="gprofiler-lab-new.html#cb46-13" tabindex="-1"></a>    genes_j <span class="ot">&lt;-</span> df<span class="sc">$</span>gene_list[[j]]</span>
+<span id="cb46-14"><a href="gprofiler-lab-new.html#cb46-14" tabindex="-1"></a>    shared_genes <span class="ot">&lt;-</span> <span class="fu">intersect</span>(genes_i, genes_j)</span>
+<span id="cb46-15"><a href="gprofiler-lab-new.html#cb46-15" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(shared_genes) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb46-16"><a href="gprofiler-lab-new.html#cb46-16" tabindex="-1"></a>      edges <span class="ot">&lt;-</span> <span class="fu">rbind</span>(edges, <span class="fu">data.frame</span>(</span>
+<span id="cb46-17"><a href="gprofiler-lab-new.html#cb46-17" tabindex="-1"></a>        <span class="at">from =</span> df<span class="sc">$</span>term_name[i],</span>
+<span id="cb46-18"><a href="gprofiler-lab-new.html#cb46-18" tabindex="-1"></a>        <span class="at">to =</span> df<span class="sc">$</span>term_name[j],</span>
+<span id="cb46-19"><a href="gprofiler-lab-new.html#cb46-19" tabindex="-1"></a>        <span class="at">weight =</span> <span class="fu">length</span>(shared_genes),</span>
+<span id="cb46-20"><a href="gprofiler-lab-new.html#cb46-20" tabindex="-1"></a>        <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb46-21"><a href="gprofiler-lab-new.html#cb46-21" tabindex="-1"></a>      ))</span>
+<span id="cb46-22"><a href="gprofiler-lab-new.html#cb46-22" tabindex="-1"></a>    }</span>
+<span id="cb46-23"><a href="gprofiler-lab-new.html#cb46-23" tabindex="-1"></a>  }</span>
+<span id="cb46-24"><a href="gprofiler-lab-new.html#cb46-24" tabindex="-1"></a>}</span>
+<span id="cb46-25"><a href="gprofiler-lab-new.html#cb46-25" tabindex="-1"></a></span>
+<span id="cb46-26"><a href="gprofiler-lab-new.html#cb46-26" tabindex="-1"></a><span class="co"># Create igraph object</span></span>
+<span id="cb46-27"><a href="gprofiler-lab-new.html#cb46-27" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(<span class="at">d =</span> edges, <span class="at">vertices =</span> df<span class="sc">$</span>term_name, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb46-28"><a href="gprofiler-lab-new.html#cb46-28" tabindex="-1"></a></span>
+<span id="cb46-29"><a href="gprofiler-lab-new.html#cb46-29" tabindex="-1"></a><span class="co"># Plot the graph</span></span>
+<span id="cb46-30"><a href="gprofiler-lab-new.html#cb46-30" tabindex="-1"></a>p <span class="ot">=</span> <span class="fu">plot</span>(</span>
+<span id="cb46-31"><a href="gprofiler-lab-new.html#cb46-31" tabindex="-1"></a>  g,</span>
+<span id="cb46-32"><a href="gprofiler-lab-new.html#cb46-32" tabindex="-1"></a>  <span class="at">vertex.label.cex =</span> <span class="fl">0.8</span>,</span>
+<span id="cb46-33"><a href="gprofiler-lab-new.html#cb46-33" tabindex="-1"></a>  <span class="at">vertex.label.color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb46-34"><a href="gprofiler-lab-new.html#cb46-34" tabindex="-1"></a>  <span class="at">vertex.size =</span> <span class="dv">30</span>,</span>
+<span id="cb46-35"><a href="gprofiler-lab-new.html#cb46-35" tabindex="-1"></a>  <span class="at">edge.width =</span> <span class="fu">E</span>(g)<span class="sc">$</span>weight,</span>
+<span id="cb46-36"><a href="gprofiler-lab-new.html#cb46-36" tabindex="-1"></a>  <span class="at">edge.color =</span> <span class="st">&quot;gray50&quot;</span>,</span>
+<span id="cb46-37"><a href="gprofiler-lab-new.html#cb46-37" tabindex="-1"></a>  <span class="at">vertex.color =</span> <span class="st">&quot;skyblue&quot;</span>,</span>
+<span id="cb46-38"><a href="gprofiler-lab-new.html#cb46-38" tabindex="-1"></a>  <span class="at">layout =</span> <span class="fu">layout_with_fr</span>(g)</span>
+<span id="cb46-39"><a href="gprofiler-lab-new.html#cb46-39" tabindex="-1"></a>)</span></code></pre></div>
 <p><img src="Compute-Ontario---Bioinformatics-for-Pathway-Enrichment-Analysis_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 
 </div>
