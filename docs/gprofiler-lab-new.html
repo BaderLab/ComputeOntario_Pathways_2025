@@ -256,6 +256,8 @@ g:Profiler performs a gene-set enrichment analysis using a hypergeometric test (
 <div id="exercise-1" class="section level2 hasAnchor">
 <h2>Exercise 1 - run g:Profiler<a href="gprofiler-lab-new.html#exercise-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Before starting this exercise, download the required files:</p>
+<p>Save the gene list (<a href="./Module2/gprofiler/data/Pancancer_genelist.txt">Pancancer_genelist.txt</a>) on your local computer. Remember where you stored it as you need to know the path to the file to start the practical lab.</p>
+<p>We recommend that you save it in your home directory in a folder called Module2 (./Module2) as it will be easier for you to follow the notebook.</p>
 <div class="rmd-datadownload">
 <p>
 Right click on link below and select “Save Link As…”.
@@ -266,9 +268,6 @@ before starting. We also recommend creating an additional result data
 folder to save the files generated while performing the protocol.
 </p>
 </div>
-<ul>
-<li><a href="./Module2/gprofiler/data/Pancancer_genelist.txt">Pancancer_genelist.txt</a></li>
-</ul>
 <div class="rmd-datadownload">
 <p>
 Open RStudio and follow script instructions below.
@@ -332,8 +331,6 @@ Open RStudio and follow script instructions below.
 </div>
 <div id="step-2---input-query" class="section level3 hasAnchor">
 <h3>Step 2 - Input query<a href="gprofiler-lab-new.html#step-2---input-query" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Save the gene list (<a href="./Module2/gprofiler/data/Pancancer_genelist.txt">Pancancer_genelist.txt</a>) on your local computer. Remember where you stored it as you need to know the path to the file to start the practical lab.</p>
-<p>We recommend that you save it in your home directory in a folder called Module2 (./Module2) as it will be easier for you to follow the notebook.</p>
 <div class="rmd-tip">
 <p>
 <strong><em>Find path on Windows:</em></strong> Using File Explorer
@@ -1609,19 +1606,19 @@ It is done by using the upload_GMT_file() function which is included in the gpro
 Note: it took about 2 minutes to run this chunck of code.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="gprofiler-lab-new.html#cb20-1" tabindex="-1"></a>custom_gmt_max250 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb20-2"><a href="gprofiler-lab-new.html#cb20-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max250_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__wGEF_atUv_0Ho.
+<pre><code>## Your custom annotations ID is gp__2EIp_t9Sa_kTc.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__wGEF_atUv_0Ho&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__2EIp_t9Sa_kTc&#39;)</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gprofiler-lab-new.html#cb23-1" tabindex="-1"></a>custom_gmt_max1000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb23-2"><a href="gprofiler-lab-new.html#cb23-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max1000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__79q2_IfgZ_84M.
+<pre><code>## Your custom annotations ID is gp__wZpW_qXrN_bMU.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__79q2_IfgZ_84M&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__wZpW_qXrN_bMU&#39;)</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gprofiler-lab-new.html#cb26-1" tabindex="-1"></a>custom_gmt_max10000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb26-2"><a href="gprofiler-lab-new.html#cb26-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max10000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__3z2L_rYnu_ABQ.
+<pre><code>## Your custom annotations ID is gp__OhS9_EHqM_kms.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__3z2L_rYnu_ABQ&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__OhS9_EHqM_kms&#39;)</code></pre>
 <p>For this query we are specifying -</p>
 <ul>
 <li>query - the set of genes of interest, as loaded in from the gene set file.</li>
