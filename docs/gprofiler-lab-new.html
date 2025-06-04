@@ -235,7 +235,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="gprofiler-lab-new" class="section level1 hasAnchor">
 <h1>Module 2 lab - g:Profiler<a href="gprofiler-lab-new.html#gprofiler-lab-new" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. This means that you are able to copy, share and modify the work, as long as the result is distributed under the same license.</strong></p>
-<p>authors: Veronique Voisin and Ruth Isserlin</p>
+<p>Authors: Veronique Voisin, Ruth Isserlin and Ali Chegini</p>
+<p>Presenter: Veronique Voisin</p>
 <div id="introduction" class="section level2 hasAnchor">
 <h2>Introduction<a href="gprofiler-lab-new.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>During this practical lab, we will perform pathway enrichment analysis using a defined gene list.</p>
@@ -1606,19 +1607,19 @@ It is done by using the upload_GMT_file() function which is included in the gpro
 Note: it took about 2 minutes to run this chunck of code.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="gprofiler-lab-new.html#cb20-1" tabindex="-1"></a>custom_gmt_max250 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb20-2"><a href="gprofiler-lab-new.html#cb20-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max250_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__2EIp_t9Sa_kTc.
+<pre><code>## Your custom annotations ID is gp__4ikE_Ep2T_hDA.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__2EIp_t9Sa_kTc&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__4ikE_Ep2T_hDA&#39;)</code></pre>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gprofiler-lab-new.html#cb23-1" tabindex="-1"></a>custom_gmt_max1000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb23-2"><a href="gprofiler-lab-new.html#cb23-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max1000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__wZpW_qXrN_bMU.
+<pre><code>## Your custom annotations ID is gp__7pXw_Z6X8_F4Y.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__wZpW_qXrN_bMU&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__7pXw_Z6X8_F4Y&#39;)</code></pre>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gprofiler-lab-new.html#cb26-1" tabindex="-1"></a>custom_gmt_max10000 <span class="ot">&lt;-</span> <span class="fu">upload_GMT_file</span>(</span>
 <span id="cb26-2"><a href="gprofiler-lab-new.html#cb26-2" tabindex="-1"></a>                        <span class="at">gmtfile=</span>genesets_baderlab_genesets_max10000_filename)</span></code></pre></div>
-<pre><code>## Your custom annotations ID is gp__OhS9_EHqM_kms.
+<pre><code>## Your custom annotations ID is gp__wSjn_ZSNm_37E.
 ## You can use this ID as an &#39;organism&#39; name in all the related enrichment tests against this custom source.</code></pre>
-<pre><code>## Just use: gost(my_genes, organism = &#39;gp__OhS9_EHqM_kms&#39;)</code></pre>
+<pre><code>## Just use: gost(my_genes, organism = &#39;gp__wSjn_ZSNm_37E&#39;)</code></pre>
 <p>For this query we are specifying -</p>
 <ul>
 <li>query - the set of genes of interest, as loaded in from the gene set file.</li>
